@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / cache files
 __pycache__/
 *.pyc
@@ -21,3 +22,23 @@ staticfiles/
 # IDEs and editors
 .vscode/
 .idea/
+=======
+# Environnement virtuel
+.venv/
+env/
+
+# Fichiers Python compilés
+__pycache__/
+*.pyc
+
+# Fichiers d'environnement
+.env
+
+# Base de données locale
+db.sqlite3
+
+# Autres fichiers inutiles
+*.log
+*.pot
+*.py[cod]
+>>>>>>> 0bd6784246ed0f6cde65e163deb1cd09cc935ad0
