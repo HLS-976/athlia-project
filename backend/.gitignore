@@ -1,0 +1,23 @@
+# Byte-compiled / cache files
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.env
+
+# SQLite database file
+*.sqlite3
+
+# Log files
+*.log
+
+# Static files collected by collectstatic
+staticfiles/
+
+# Environment variables and secrets
+.env
+
+# IDEs and editors
+.vscode/
+.idea/
