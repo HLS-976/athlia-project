@@ -7,7 +7,7 @@ class CategoryExercise(models.Model):
     class Meta:
         verbose_name = "Category Exercise"
         verbose_name_plural = "Category Exercises"
-        ordering = ['name']  # Tri par nom par défaut
+        ordering = ['name']
 
     def __str__(self):
         return self.name or "Unnamed Category"
