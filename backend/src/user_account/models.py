@@ -40,7 +40,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=150, blank=False)
-    user_name = models.CharField(max_length=150, )
+    user_name = models.CharField(max_length=150, blank=False)
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
