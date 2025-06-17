@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_account',
-    'exercises_app'
+    'exercises_app',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
