@@ -5,9 +5,9 @@ import "./SignUpPage.css";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    username: "",
+    first_name: "",
+    last_name: "",
+    user_name: "",
     email: "",
     password: "",
   });
@@ -21,21 +21,41 @@ function SignUpPage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password.trim() === "") {
-      alert("Password is required.");
+    if (
+      formData.email.trim() === "" ||
+      formData.password.trim() === "" ||
+      formData.user_name.trim() === ""
+    ) {
+      alert("Email, username et password sont obligatoires.");
       return;
     }
 
-    if (formData.user.trim() === "") {
-      alert("User is required.");
-      return;
-    }
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/users/register/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-    console.log("Inscription réussie :", formData);
-    setSubmitted(true);
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Register succefully :", data);
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Error when register :", error);
+      alert("Error when register please try again.");
+    }
   };
 
   return (
@@ -54,7 +74,7 @@ function SignUpPage() {
                 <label>First name : </label>
                 <input
                   type="text"
-                  name="firstname"
+                  name="first_name"
                   value={formData.firstname}
                   onChange={handleChange}
                   placeholder="Enter your first name"
@@ -65,7 +85,7 @@ function SignUpPage() {
                 <label>Last name : </label>
                 <input
                   type="text"
-                  name="lastname"
+                  name="last_name"
                   value={formData.lastname}
                   onChange={handleChange}
                   placeholder="Enter your last name"
@@ -76,7 +96,7 @@ function SignUpPage() {
             <label>Username* : </label>
             <input
               type="text"
-              name="username"
+              name="user_name"
               value={formData.username}
               onChange={handleChange}
               placeholder="Enter your username"
@@ -84,7 +104,7 @@ function SignUpPage() {
             />
             <label>Email* : </label>
             <input
-              type="text"
+              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}

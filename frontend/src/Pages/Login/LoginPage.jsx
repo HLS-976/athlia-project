@@ -10,24 +10,40 @@ function LoginPage() {
   const queryParams = new URLSearchParams(location.search);
   const redirectTo = queryParams.get("redirect") || "/dashboard";
 
-  // ⚙️ États pour email et mot de passe
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // 💡 Simule une authentification
-    const isAuthenticated = email && password;
+    if (!email.trim() || !password.trim()) {
+      setErrorMsg("Please enter both email and password");
+      return;
+    }
 
-    if (isAuthenticated) {
-      // ✅ Stocke l'état de connexion
+    try {
+      const response = await fetch("http://localhost:8000/api/users/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid email or pasword");
+      }
+
+      const data = await response.json();
+
       localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userToken", data.token);
 
-      // 🔁 Redirige vers la page demandée
       navigate(redirectTo, { replace: true });
-    } else {
-      alert("Please enter both email and password");
+    } catch (error) {
+      console.error("Login error:", error);
+      setErrorMsg("Login failed. Please check your email or password.");
     }
   };
 
@@ -45,6 +61,7 @@ function LoginPage() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <label>Password</label>
           <input
@@ -52,7 +69,9 @@ function LoginPage() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
+          {errorMsg && <p className="error">{errorMsg}</p>}
           <button type="submit">Log In</button>
           <p id="signup-link">
             Don't have an account? <Link to="/signup">Sign up</Link>
@@ -62,7 +81,5 @@ function LoginPage() {
     </main>
   );
 }
-
-// TODO : ajouter "Mot de passe oublié ?" ici si besoin
 
 export default LoginPage;
