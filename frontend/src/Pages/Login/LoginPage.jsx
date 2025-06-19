@@ -18,7 +18,7 @@ function LoginPage() {
     e.preventDefault();
 
     if (!email.trim() || !password.trim()) {
-      setErrorMsg("Please enter both email and password");
+      alert("Please enter both email and password");
       return;
     }
 
@@ -43,7 +43,7 @@ function LoginPage() {
       navigate(redirectTo, { replace: true });
     } catch (error) {
       console.error("Login error:", error);
-      setErrorMsg("Login failed. Please check your email or password.");
+      alert("Login failed. Please check your email or password.");
     }
   };
 
