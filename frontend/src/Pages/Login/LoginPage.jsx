@@ -10,9 +10,9 @@ function LoginPage() {
   const queryParams = new URLSearchParams(location.search);
   const redirectTo = queryParams.get("redirect") || "/dashboard";
 
+  // ⚙️ États pour email et mot de passe
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -61,7 +61,6 @@ function LoginPage() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
           <label>Password</label>
           <input
@@ -69,9 +68,7 @@ function LoginPage() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
-          {errorMsg && <p className="error">{errorMsg}</p>}
           <button type="submit">Log In</button>
           <p id="signup-link">
             Don't have an account? <Link to="/signup">Sign up</Link>
@@ -81,5 +78,7 @@ function LoginPage() {
     </main>
   );
 }
+
+// TODO : ajouter "Mot de passe oublié ?" ici si besoin
 
 export default LoginPage;
