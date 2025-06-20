@@ -1,11 +1,8 @@
 asgiref==3.8.1
 Django==5.2.3
-<<<<<<< HEAD
-=======
 django-cors-headers==4.7.0
 djangorestframework==3.16.0
 psycopg2-binary==2.9.10
->>>>>>> 0bd6784246ed0f6cde65e163deb1cd09cc935ad0
 python-decouple==3.8
 sqlparse==0.5.3
 typing_extensions==4.14.0
