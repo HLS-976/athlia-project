@@ -19,3 +19,9 @@ class CategoryDetailAPIView(APIView):
         category = get_object_or_404(CategoryExercise, slug=slug)
         serializer = CategoryExerciseDetailSerializer(category)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class ExerciseAPIView(APIView):
+    def get(self, request):
+        exercise = Exercise.objects.all()
+        serializer = ExerciseSerializer(exercise, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
