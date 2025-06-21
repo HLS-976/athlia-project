@@ -10,15 +10,20 @@ function LoginPage() {
   const queryParams = new URLSearchParams(location.search);
   const redirectTo = queryParams.get("redirect") || "/dashboard";
 
-  // ⚙️ États pour email et mot de passe
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!email.trim() || !password.trim()) {
-      alert("Please enter both email and password");
+    if (!email.trim() || !email.includes("@")) {
+      setErrorMsg("Please enter a valid email");
+      return;
+    }
+
+    if (!password.trim()) {
+      setErrorMsg("Please enter a password");
       return;
     }
 
@@ -31,19 +36,29 @@ function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        throw new Error("Invalid email or pasword");
-      }
-
       const data = await response.json();
 
+      if (!response.ok) {
+        setErrorMsg(
+          data.detail || "Login failed. Please check your email or password."
+        );
+        console.error("Server responded with error:", data);
+        return;
+      }
+
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userToken", data.token);
+      localStorage.setItem("refreshToken", data.refresh);
+
+      const token = localStorage.getItem("refreshToken");
+
+      if (token) {
+        console.log("Token correctly saved:", data);
+      }
 
       navigate(redirectTo, { replace: true });
     } catch (error) {
       console.error("Login error:", error);
-      alert("Login failed. Please check your email or password.");
+      setErrorMsg("Login failed. Please check your email or password.");
     }
   };
 
@@ -61,6 +76,7 @@ function LoginPage() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <label>Password</label>
           <input
@@ -68,7 +84,9 @@ function LoginPage() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
+          {errorMsg && <p id="error">{errorMsg}</p>}
           <button type="submit">Log In</button>
           <p id="signup-link">
             Don't have an account? <Link to="/signup">Sign up</Link>
@@ -78,7 +96,5 @@ function LoginPage() {
     </main>
   );
 }
-
-// TODO : ajouter "Mot de passe oublié ?" ici si besoin
 
 export default LoginPage;
