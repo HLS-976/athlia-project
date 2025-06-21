@@ -1,0 +1,49 @@
+#login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 40px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.05);
+  font-family: "Segoe UI", sans-serif;
+}
+
+#login-container h2 {
+  margin-bottom: 30px;
+  color: #1f1f1f;
+  text-align: center;
+}
+
+#login {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#login input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#login button {
+  padding: 12px;
+  background-color: #2460f2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#login button:hover {
+  background-color: #1e4ed8;
+}
+
+#signup-link {
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 10px;
+}

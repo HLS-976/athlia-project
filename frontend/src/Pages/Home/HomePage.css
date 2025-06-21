@@ -1,0 +1,58 @@
+#home {
+  padding: 80px 10%;
+  max-width: 800px;
+}
+
+#tittle {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1f1f1f;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+#tittle span {
+  color: #2460f2;
+}
+
+#presentation {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 30px;
+  display: block;
+}
+
+#Home-Button {
+  display: flex;
+  gap: 15px;
+}
+
+#Get-Started {
+  background-color: #2460f2;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#Get-Started:hover {
+  background-color: #1e4ed8;
+}
+
+#Explore-Features {
+  background: white;
+  color: #2460f2;
+  border: 2px solid #2460f2;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#Explore-Features:hover {
+  background-color: #f0f4ff;
+}

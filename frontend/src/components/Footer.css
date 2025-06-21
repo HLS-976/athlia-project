@@ -1,0 +1,13 @@
+#footer {
+  padding: 20px 0;
+  background-color: #f8f9ff;
+  color: #777;
+  font-size: 0.9rem;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+#footer p {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+}
