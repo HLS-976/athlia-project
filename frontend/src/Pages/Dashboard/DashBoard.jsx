@@ -2,12 +2,27 @@ import Sidebar from "./SideBar";
 import Header from "./Header";
 import "./DashBoard.css";
 
+/**
+ * Dashboard component
+ *
+ * Displays the main dashboard layout with sidebar, header, metrics, today's program, and weekly progress.
+ *
+ * Sections:
+ * - Metrics: Shows calories burned, workouts completed, and minutes trained.
+ * - Today's Program: Lists the user's scheduled workouts for the day.
+ * - Weekly Progress: Placeholder for weekly progress visualization.
+ */
+
 const Dashboard = () => {
   return (
     <div className="dashboard-container">
+      {/* Sidebar navigation */}
       <Sidebar />
       <main className="dashboard-main">
+        {/* Top header */}
         <Header />
+
+        {/* Metrics section: calories, workouts, minutes */}
         <section className="dashboard-metrics">
           <div className="card">
             🔥<p>Calories Burned</p>
@@ -23,6 +38,7 @@ const Dashboard = () => {
           </div>
         </section>
 
+        {/* Today's Program section */}
         <section className="dashboard-program">
           <h2>Today's Program</h2>
           <div className="program-cards">
@@ -50,6 +66,7 @@ const Dashboard = () => {
           </div>
         </section>
 
+        {/* Weekly Progress section */}
         <section className="dashboard-progress">
           <h2>Weekly Progress</h2>
           <div className="progress-placeholder"></div>
