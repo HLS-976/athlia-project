@@ -25,23 +25,23 @@ const HomePage = () => {
       <header>
         <Header />
       </header>
-      <div id="HomePage">
-        <div id="home">
-          {/* Main title and presentation */}
-          <h1 id="tittle">{tittle}</h1>
-          <p id="presentation">{presentation}</p>
-          {/* Main action buttons */}
-          <div id="Home-Button">
-            {/* Get Started button (links to login) */}
-            <Link to="/login">
-              <button id="Get-Started">Get Started</button>
-            </Link>
-            {/* Explore Features button */}
-            <button id="Explore-Features">Explore Features</button>
+      <div id="Home-Contenaire">
+        <div id="HomePage">
+          <div id="home">
+            {/* Main title and presentation */}
+            <h1 id="tittle">{tittle}</h1>
+            <p id="presentation">{presentation}</p>
+            {/* Main action buttons */}
+            <div id="Home-Button">
+              {/* Get Started button (links to login) */}
+              <Link to="/login">
+                <button id="Get-Started">Get Started</button>
+              </Link>
+              {/* Explore Features button */}
+              <button id="Explore-Features">Explore Features</button>
+            </div>
           </div>
-        </div>
-        {/* Feature cards section */}
-        <div id="HomeCards">
+          {/* Feature cards section */}
           <CardsFeatures />
         </div>
       </div>
