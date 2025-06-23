@@ -24,15 +24,15 @@ const Dashboard = () => {
 
         {/* Metrics section: calories, workouts, minutes */}
         <section className="dashboard-metrics">
-          <div className="card">
+          <div className="dashboard-cards">
             🔥<p>Calories Burned</p>
             <h2>520</h2>
           </div>
-          <div className="card">
+          <div className="dashboard-cards">
             🏃<p>Workouts Completed</p>
             <h2>12</h2>
           </div>
-          <div className="card">
+          <div className="dashboard-cards">
             ⏳<p>Minutes Trained</p>
             <h2>350</h2>
           </div>
