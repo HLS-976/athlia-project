@@ -47,3 +47,10 @@
   color: #777;
   margin-top: 10px;
 }
+
+#error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
