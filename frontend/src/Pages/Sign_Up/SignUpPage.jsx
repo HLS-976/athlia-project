@@ -174,7 +174,7 @@ function SignUpPage() {
             {/* Error messages */}
             {errorMsg.length > 0 &&
               errorMsg.map((msg, i) => (
-                <p key={i} className="error-message">
+                <p key={i} id="error">
                   {msg}
                 </p>
               ))}
