@@ -14,7 +14,7 @@ function CardsFeatures() {
   return (
     <section id="cards-features">
       {/* Progress Tracking card */}
-      <div id="card">
+      <div className="card">
         <h3>Progress Tracking</h3>
         <p>
           Monitor your improvements and stay motivated with detailed stats and
@@ -22,7 +22,7 @@ function CardsFeatures() {
         </p>
       </div>
       {/* Personalized Programs card */}
-      <div id="card">
+      <div className="card">
         <h3>Personalized Programs</h3>
         <p>
           Customized exercise plans suited to your level and goals, updated as
@@ -30,7 +30,7 @@ function CardsFeatures() {
         </p>
       </div>
       {/* 3D Mannequin card */}
-      <div id="card">
+      <div className="card">
         <h3>3D Mannequin</h3>
         <p>Use a 3D model to choose the part you want to work.</p>
       </div>

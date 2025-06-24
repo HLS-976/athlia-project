@@ -5,11 +5,10 @@
   justify-content: center;
   gap: 30px;
   padding: 60px 10%;
-  background-color: #f8f9ff;
   flex-wrap: wrap;
 }
 
-#card {
+.card {
   background: white;
   padding: 30px 20px;
   border-radius: 20px;
@@ -19,18 +18,18 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#card:hover {
+.card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
-#card h3 {
+.card h3 {
   color: #1f1f1f;
   font-size: 1.2rem;
   margin-bottom: 15px;
 }
 
-#card p {
+.card p {
   color: #555;
   font-size: 0.95rem;
   line-height: 1.5;
