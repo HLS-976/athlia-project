@@ -1,0 +1,57 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fbff;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 2rem;
+}
+
+.dashboard-metrics {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-cards {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #e0e0e0;
+  flex: 1;
+}
+
+.dashboard-cards p {
+  color: #6c757d;
+  margin: 0.5rem 0;
+}
+
+.dashboard-program h2,
+.dashboard-progress h2 {
+  margin-bottom: 1rem;
+}
+
+.program-cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.program-card {
+  background: #eaf2fc;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.progress-placeholder {
+  background: #e1eaf4;
+  height: 150px;
+  border-radius: 10px;
+}
