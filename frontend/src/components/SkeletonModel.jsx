@@ -17,13 +17,43 @@ const zonesData = {
     'Non classé': { color: new THREE.Color(0x607D8B) },
 }
 
-const SkeletonModel = forwardRef((props, ref) => {
+const SkeletonModel = forwardRef(({ onZoneClick, onZoneDeselect, selectedZones = [] }, ref) => {
     const modelGroupRef = useRef();
     const [gltf, setGltf] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [hoveredMesh, setHoveredMesh] = useState(null);
     const [, setSelectionCount] = useState(0);
+
+    // Effet pour mettre à jour les couleurs basées sur les zones sélectionnées
+    useEffect(() => {
+        if (!modelGroupRef.current) return;
+
+        // Réinitialiser toutes les couleurs
+        modelGroupRef.current.traverse((child) => {
+            if (child.isMesh) {
+                child.material.color.set(DEFAULT_COLOR);
+                child.userData.originalColor = new THREE.Color().copy(DEFAULT_COLOR);
+            }
+        });
+
+        // Mettre en couleur les zones sélectionnées
+        selectedZones.forEach(zoneName => {
+            modelGroupRef.current.traverse((child) => {
+                if (child.isMesh && child.userData.zone === zoneName) {
+                    const targetColor = zonesData[zoneName].color;
+                    child.material.color.set(targetColor);
+                    selectedMeshes.set(child.uuid, {
+                        mesh: child,
+                        name: child.name,
+                        zone: zoneName
+                    });
+                }
+            });
+        });
+
+        setSelectionCount(prev => prev + 1);
+    }, [selectedZones]);
 
     useEffect(() => {
         const loader = new GLTFLoader();
@@ -98,10 +128,17 @@ const SkeletonModel = forwardRef((props, ref) => {
 
         if (zoneName && zoneName !== 'Non classé') {
             if (selectedMeshes.has(clickedObject.uuid)) {
+                // Désélection - remettre la couleur originale
                 clickedObject.material.color.set(clickedObject.userData.originalColor);
                 selectedMeshes.delete(clickedObject.uuid);
                 console.log(`❌ Désélectionné: ${clickedObject.name} (${zoneName})`);
+                
+                // Appeler la fonction de callback pour la désélection avec le nom de la zone
+                if (onZoneDeselect) {
+                    onZoneDeselect(zoneName);
+                }
             } else {
+                // Sélection - mettre en couleur de zone
                 const targetColor = zonesData[zoneName].color;
                 clickedObject.material.color.set(targetColor);
                 selectedMeshes.set(clickedObject.uuid, {
@@ -110,6 +147,11 @@ const SkeletonModel = forwardRef((props, ref) => {
                     zone: zoneName
                 });
                 console.log(`✅ Sélectionné: ${clickedObject.name} (${zoneName})`);
+                
+                // Appeler la fonction de callback pour la sélection
+                if (onZoneClick) {
+                    onZoneClick(zoneName);
+                }
             }
 
             setSelectionCount(prev => prev + 1);
