@@ -4,7 +4,7 @@ import Login from "./Pages/Login/LoginPage";
 import SignUpPage from "./Pages/Sign_Up/SignUpPage";
 import Footer from "./components/Footer";
 import Dashboard from "./Pages/Dashboard/DashBoard";
-import ExercicesPage from "./Pages/Exercises/ExercicesPage";
+import ExercisesPage from "./Pages/Exercises/ExercisesPage";
 import PrivateRoute from "./Pages/Dashboard/PrivateRoute";
 import "./App.css";
 
@@ -26,10 +26,10 @@ function App() {
               }
             />
             <Route
-              path="/exercices"
+              path="/exercises"
               element={
                 <PrivateRoute>
-                  <ExercicesPage />
+                  <ExercisesPage />
                 </PrivateRoute>
               }
             />
