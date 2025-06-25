@@ -5,8 +5,9 @@ import SignUpPage from "./Pages/Sign_Up/SignUpPage";
 import Footer from "./components/Footer";
 import Dashboard from "./Pages/Dashboard/DashBoard";
 import ExercisesPage from "./Pages/Exercises/ExercisesPage";
-import PrivateRoute from "./Pages/Dashboard/PrivateRoute";
 import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
+import CombinedPage from "./Pages/CombinedPage/CombinedPage";
+import PrivateRoute from "./Pages/Dashboard/PrivateRoute";
 import "./App.css";
 
 function App() {
@@ -35,10 +36,26 @@ function App() {
               }
             />
             <Route
-              path="/SkeletonModel"
+              path="/skeleton"
               element={
                 <PrivateRoute>
                   <SkeletonPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/combined"
+              element={
+                <PrivateRoute>
+                  <CombinedPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/CombinedPage"
+              element={
+                <PrivateRoute>
+                  <CombinedPage />
                 </PrivateRoute>
               }
             />
