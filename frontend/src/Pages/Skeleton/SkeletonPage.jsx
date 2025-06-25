@@ -1,38 +1,15 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import SkeletonModel from '../../components/SkeletonModel';
 
-function SkeletonPage() {
+function SkeletonPage({ 
+  selectedZones = [], 
+  onZoneClick = null, 
+  onZoneDeselect = null 
+}) {
     const skeletonModelRef = useRef();
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // Simuler la fin du chargement après un délai
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-    }, []);
-
-    if (loading) {
-        return (
-            <div style={{ 
-                position: 'relative', 
-                width: '100vw', 
-                height: '100vh', 
-                display: 'flex', 
-                justifyContent: 'center', 
-                alignItems: 'center',
-                backgroundColor: '#f0f0f0'
-            }}>
-                <div style={{ fontSize: '24px', color: '#333' }}>
-                    Chargement du modèle 3D...
-                </div>
-            </div>
-        );
-    }
 
     if (error) {
         return (
@@ -43,9 +20,16 @@ function SkeletonPage() {
                 display: 'flex', 
                 justifyContent: 'center', 
                 alignItems: 'center',
-                backgroundColor: '#f0f0f0'
+                backgroundColor: 'transparent'
             }}>
-                <div style={{ fontSize: '24px', color: '#ff0000' }}>
+                <div style={{ 
+                    fontSize: '24px', 
+                    color: '#ff0000',
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    padding: '20px 40px',
+                    borderRadius: '20px',
+                    backdropFilter: 'blur(5px)'
+                }}>
                     Erreur de chargement: {error.message}
                 </div>
             </div>
@@ -53,7 +37,7 @@ function SkeletonPage() {
     }
 
     return (
-        <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', backgroundColor: 'transparent' }}>
             <Canvas
                 camera={{ position: [0, 0, 400], fov: 75 }}
                 shadows
@@ -99,7 +83,12 @@ function SkeletonPage() {
                     target={[0, 0, 0]}    
                 />
 
-                <SkeletonModel ref={skeletonModelRef} />
+                <SkeletonModel 
+                    ref={skeletonModelRef}
+                    selectedZones={selectedZones}
+                    onZoneClick={onZoneClick}
+                    onZoneDeselect={onZoneDeselect}
+                />
             </Canvas>
         </div>
     );   
