@@ -1,36 +1,40 @@
-/* CardsFeatures.css */
-
 #cards-features {
   display: flex;
   justify-content: center;
   gap: 30px;
   padding: 60px 10%;
   flex-wrap: wrap;
+  background-color: transparent;
 }
 
 .card {
-  background: white;
+  background: rgba(255, 255, 255, 0.7);
   padding: 30px 20px;
   border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   width: 280px;
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(224, 224, 224, 0.4);
+  backdrop-filter: blur(5px);
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .card h3 {
   color: #1f1f1f;
   font-size: 1.2rem;
   margin-bottom: 15px;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .card p {
   color: #555;
   font-size: 0.95rem;
   line-height: 1.5;
+  font-family: "Segoe UI", sans-serif;
 }
