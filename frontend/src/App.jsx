@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import Dashboard from "./Pages/Dashboard/DashBoard";
 import ExercicesPage from "./Pages/Exercises/ExercicesPage";
 import PrivateRoute from "./Pages/Dashboard/PrivateRoute";
+import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
 import "./App.css";
 
 function App() {
@@ -30,6 +31,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <ExercicesPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/SkeletonModel"
+              element={
+                <PrivateRoute>
+                  <SkeletonPage />
                 </PrivateRoute>
               }
             />
