@@ -7,8 +7,7 @@ import Dashboard from "./Pages/Dashboard/DashBoard";
 import ExercisesPage from "./Pages/Exercises/ExercisesPage";
 import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
 import CombinedPage from "./Pages/CombinedPage/CombinedPage";
-import PrivateRoute from "./Pages/Dashboard/PrivateRoute";
-import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
+import PrivateRoute from "./components/PrivateRoute";
 import "./App.css";
 
 function App() {
@@ -44,8 +43,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="*" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
             <Route
               path="/combined"
               element={
@@ -62,6 +59,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="*" element={<div>Page not found</div>} />
           </Routes>
         </main>
         <Footer />

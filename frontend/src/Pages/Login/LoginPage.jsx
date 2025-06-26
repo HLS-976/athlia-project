@@ -60,12 +60,15 @@ function LoginPage() {
 
     // Send login request to backend
     try {
-      const response = await fetch("http://localhost:8000/api/users/login/", {
+      const response = await fetch("http://localhost:8000/api/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
       // Parse response data
@@ -80,18 +83,19 @@ function LoginPage() {
         return;
       }
 
-      // Save login state and token in localStorage only if the token exists
-      if (data.refresh) {
+      // Save login state and tokens in localStorage only if the tokens exist
+      if (data.access && data.refresh) {
         localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("accessToken", data.access);
         localStorage.setItem("refreshToken", data.refresh);
 
         // Optional: log token for debugging
-        console.log("Token correctly saved:", data);
+        console.log("Tokens correctly saved:", data);
 
         // Redirect to the intended page after login
         navigate(redirectTo, { replace: true });
       } else {
-        setErrorMsg("Login failed. No token received.");
+        setErrorMsg("Login failed. No tokens received.");
       }
     } catch (error) {
       // Handle network or unexpected errors

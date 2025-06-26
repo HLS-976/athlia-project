@@ -8,7 +8,8 @@ const ExercisesPage = ({
   onExerciseSelect = null,
   isExerciseSelected = null,
   showHeader = true,
-}) {
+  user = null
+}) => {
   const [showAlert, setShowAlert] = useState(false);
 
   // --- 1. Helper function to check sessionStorage ---
@@ -42,7 +43,7 @@ const ExercisesPage = ({
           </div>
 
           <span id="alert-message">
-            Don’t forget to complete your sport profile for a better experience!
+            Don't forget to complete your sport profile for a better experience!
           </span>
 
           <div id="close-icon">
@@ -58,8 +59,7 @@ const ExercisesPage = ({
       )}
 
       <div id="Exercises">
-        <ExercicsesCards
-
+        <ExercicesCards
           selectedZones={selectedZones}
           onExerciseSelect={onExerciseSelect}
           isExerciseSelected={isExerciseSelected}
@@ -67,6 +67,6 @@ const ExercisesPage = ({
       </div>
     </main>
   );
-}
+};
 
 export default ExercisesPage;
