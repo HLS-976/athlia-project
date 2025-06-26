@@ -3,8 +3,7 @@ import Header from "./Header";
 import ExercicesCards from "./ExercisesCards";
 import "./ExercisesPage.css";
 
-function ExercisesPage({
-  user,
+const ExercisesPage = ({
   selectedZones = [],
   onExerciseSelect = null,
   isExerciseSelected = null,
@@ -59,7 +58,8 @@ function ExercisesPage({
       )}
 
       <div id="Exercises">
-        <ExercicesCards
+        <ExercicsesCards
+
           selectedZones={selectedZones}
           onExerciseSelect={onExerciseSelect}
           isExerciseSelected={isExerciseSelected}

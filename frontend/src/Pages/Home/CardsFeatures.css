@@ -1,8 +1,8 @@
 #cards-features {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  padding: 80px 10%;
+  gap: 30px;
+  padding: 60px 10%;
   flex-wrap: wrap;
   background-color: transparent;
   position: relative;
@@ -98,7 +98,7 @@
 
 .card p {
   color: #555;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.5;
   font-family: "Segoe UI", sans-serif;
   position: relative;

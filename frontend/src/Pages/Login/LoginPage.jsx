@@ -74,7 +74,7 @@ function LoginPage() {
       // If login failed, show error message
       if (!response.ok) {
         setErrorMsg(
-          data.detail || "Login failed. Please check your email or password."
+          data.detail || "Login failed. Please check your email or password.",
         );
         console.error("Server responded with error:", data);
         return;

@@ -23,15 +23,15 @@ class CategoryExercise(models.Model):
 
 
 class Exercise(models.Model):
-    DIFFICULTY_LOW = "low"
-    DIFFICULTY_MODERATE = "moderate"
-    DIFFICULTY_HIGH = "high"
+    DIFFICULTY_LOW = "beginner"
+    DIFFICULTY_MODERATE = "intermediate"
+    DIFFICULTY_HIGH = "advanced"
     DIFFICULTY_NULL = "null"
 
     DIFFICULTY_CHOICES = [
-        (DIFFICULTY_LOW, "Low"),
-        (DIFFICULTY_MODERATE, "Moderate"),
-        (DIFFICULTY_HIGH, "High"),
+        (DIFFICULTY_LOW, "Beginner"),
+        (DIFFICULTY_MODERATE, "Intermediate"),
+        (DIFFICULTY_HIGH, "Advanced"),
         (DIFFICULTY_NULL, 'Null')
     ]
 
@@ -39,7 +39,7 @@ class Exercise(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True)
     difficulty = models.CharField(
-        max_length=10,
+        max_length=50,
         choices=DIFFICULTY_CHOICES,
         default=DIFFICULTY_NULL
     )

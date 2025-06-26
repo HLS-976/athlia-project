@@ -7,8 +7,8 @@ import Dashboard from "./Pages/Dashboard/DashBoard";
 import ExercisesPage from "./Pages/Exercises/ExercisesPage";
 import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
 import CombinedPage from "./Pages/CombinedPage/CombinedPage";
-import PrivateRoute from "./components/PrivateRoute";
-import NotFound from "./Pages/NotFound/NotFoundPage";
+import PrivateRoute from "./Pages/Dashboard/PrivateRoute";
+import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
 import "./App.css";
 
 function App() {
