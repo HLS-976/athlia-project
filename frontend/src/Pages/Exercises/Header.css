@@ -1,30 +1,49 @@
 #header {
-  display: inline-flex;
-  gap: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#logo img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 16px;
 }
 
 #header-profil,
-#header-signout {
+#header-logout {
+  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
   font-weight: 600;
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: "Segoe UI", sans-serif;
 }
 
 #header-profil {
   background-color: white;
   color: #2460f2;
   border: 2px solid #2460f2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#header-signout {
+#header-logout {
   background-color: #2460f2;
   color: white;
-  border: 2px solid white;
+  border: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -32,6 +51,6 @@
   background-color: #f0f4ff;
 }
 
-#header-signout:hover {
+#header-logout:hover {
   background-color: #1e4ed8;
 }

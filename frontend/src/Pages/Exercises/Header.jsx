@@ -1,24 +1,44 @@
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 
 /**
  * Header component
  *
- * This component displays the header for the home page.
+ * This component displays the header for the exercises pages.
  *
  * - The returned JSX contains:
- *   - A right-aligned header bar.
- *   - A "Login" button linking to the login page.
- *   - A "Sign Up" button linking to the signup page.
+ *   - A header bar with the logo on the left (clickable, links to home).
+ *   - A "Profil" button linking to the profil page, on the right.
+ *   - A "Logout" button linking to the logout page, on the right.
+ *   - Both buttons are spaced using the "header-buttons" CSS class.
  */
 function Header() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
-    <div style={{ textAlign: "right", padding: "20px" }}>
-      {/* Header bar with profile and signout buttons */}
-      <header id="header">
+    <header id="header">
+      {/* Header bar with logo, profil and logout buttons */}
+      <div id="logo">
+        {/* Logo with button to go back to home page */}
+        <Link to="/">
+          <img src="/Logo.png" alt="Logo" />
+        </Link>
+      </div>
+      <div className="header-buttons">
+        {/* profil button */}
         <button id="header-profil">Profile</button>
-        <button id="header-signout">Sign Out</button>
-      </header>
-    </div>
+        {/* Logout button */}
+        <button onClick={handleLogout} id="header-logout">
+          Log Out
+        </button>
+      </div>
+    </header>
   );
 }
 
