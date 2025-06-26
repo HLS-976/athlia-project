@@ -23,7 +23,7 @@ function LoginPage() {
 
   // Extract the redirect query parameter or default to /dashboard
   const queryParams = new URLSearchParams(location.search);
-  const redirectTo = queryParams.get("redirect") || "/exercices";
+  const redirectTo = queryParams.get("redirect") || "/exercises";
 
   // State for error messages and submission status
   const [errorMsg, setErrorMsg] = useState([]);
