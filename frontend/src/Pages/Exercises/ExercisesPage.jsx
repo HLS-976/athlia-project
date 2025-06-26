@@ -1,29 +1,42 @@
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import { useEffect, useState } from "react";
-
-import "./ExercisesPage.css";
 import ExercicesCards from "./ExercisesCards";
+import "./ExercisesPage.css";
 
-function ExercisesPage({ user }) {
+function ExercisesPage({
+  user,
+  selectedZones = [],
+  onExerciseSelect = null,
+  isExerciseSelected = null,
+  showHeader = true,
+}) {
   const [showAlert, setShowAlert] = useState(false);
 
-  useEffect(() => {
-    const alreadyShown = sessionStorage.getItem("alertSportProfile");
+  // --- 1. Helper function to check sessionStorage ---
+  function alreadyShown() {
+    return sessionStorage.getItem("alertSportProfile") === "true";
+  }
 
-    if (user && !user.hasCompletedSportProfile && !alreadyShown) {
+  // --- 2. Check whether to show alert ---
+  useEffect(() => {
+    if (user && !user.hasCompletedSportProfile && !alreadyShown()) {
       setShowAlert(true);
       sessionStorage.setItem("alertSportProfile", "true");
     }
   }, [user]);
 
+  // --- 3. Render component ---
   return (
     <main>
-      <header>
-        <Header />
-      </header>
+      {showHeader && (
+        <header>
+          <Header />
+        </header>
+      )}
+
       {showAlert && (
         <div id="alert-popup">
-          <div id="popup-icon alert-icon">
+          <div id="popup-icon" className="alert-icon">
             <svg viewBox="0 0 24 24">
               <path d="M12 0a12 12 0 100 24A12 12 0 0012 0zm1 17h-2v-2h2v2zm0-4h-2V7h2v6z" />
             </svg>
@@ -46,7 +59,11 @@ function ExercisesPage({ user }) {
       )}
 
       <div id="Exercises">
-        <ExercicesCards />
+        <ExercicesCards
+          selectedZones={selectedZones}
+          onExerciseSelect={onExerciseSelect}
+          isExerciseSelected={isExerciseSelected}
+        />
       </div>
     </main>
   );
