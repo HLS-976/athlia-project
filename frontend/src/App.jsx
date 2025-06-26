@@ -44,6 +44,8 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
             <Route
               path="/combined"
               element={
