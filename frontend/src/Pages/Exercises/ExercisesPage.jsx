@@ -1,15 +1,27 @@
+import React from 'react';
 import Header from "./Header";
 import "./ExercisesPage.css";
 import ExercicsesCards from "./ExercicesCards";
 
-const ExercisesPage = () => {
+const ExercisesPage = ({ 
+  selectedZones = [], 
+  onExerciseSelect = null, 
+  isExerciseSelected = null,
+  showHeader = true
+}) => {
   return (
     <main>
-      <header>
-        <Header />
-      </header>
+      {showHeader && (
+        <header>
+          <Header />
+        </header>
+      )}
       <div id="Exercises">
-        <ExercicsesCards />
+        <ExercicsesCards 
+          selectedZones={selectedZones}
+          onExerciseSelect={onExerciseSelect}
+          isExerciseSelected={isExerciseSelected}
+        />
       </div>
     </main>
   );
