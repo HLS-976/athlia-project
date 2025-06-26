@@ -5,8 +5,9 @@ import SignUpPage from "./Pages/Sign_Up/SignUpPage";
 import Footer from "./components/Footer";
 import Dashboard from "./Pages/Dashboard/DashBoard";
 import ExercisesPage from "./Pages/Exercises/ExercisesPage";
-import PrivateRoute from "./components/PrivateRoute";
 import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
+import CombinedPage from "./Pages/CombinedPage/CombinedPage";
+import PrivateRoute from "./components/PrivateRoute";
 import NotFound from "./Pages/NotFound/NotFoundPage";
 import "./App.css";
 
@@ -36,7 +37,7 @@ function App() {
               }
             />
             <Route
-              path="/SkeletonModel"
+              path="/skeleton"
               element={
                 <PrivateRoute>
                   <SkeletonPage />
@@ -44,6 +45,23 @@ function App() {
               }
             />
             <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
+            <Route
+              path="/combined"
+              element={
+                <PrivateRoute>
+                  <CombinedPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/CombinedPage"
+              element={
+                <PrivateRoute>
+                  <CombinedPage />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />
