@@ -7,16 +7,23 @@ import "./Header.css";
  * This component displays the header for the home page.
  *
  * - The returned JSX contains:
- *   - A right-aligned header bar.
- *   - A "Login" button linking to the login page.
- *   - A "Sign Up" button linking to the signup page.
+ *   - A header bar with the logo on the left (clickable, links to home).
+ *   - A "Login" button linking to the login page, on the right.
+ *   - A "Sign Up" button linking to the signup page, on the right.
+ *   - Both buttons are spaced using the "header-buttons" CSS class.
  */
 function Header() {
   return (
-    <div style={{ textAlign: "right", padding: "20px" }}>
-      {/* Header bar with login and signup buttons */}
-      <header id="header">
-        {/* Login button */}
+    <header id="header">
+      {/* Header bar with logo, login and signup buttons */}
+      <div id="logo">
+        {/* Logo with button to go back to home page */}
+        <Link to="/">
+          <img src="/Logo.png" alt="Logo" />
+        </Link>
+      </div>
+      {/* login button */}
+      <div className="header-buttons">
         <Link to="/login">
           <button id="header-login">Login</button>
         </Link>
@@ -24,8 +31,8 @@ function Header() {
         <Link to="/signup">
           <button id="header-signup">Sign Up</button>
         </Link>
-      </header>
-    </div>
+      </div>
+    </header>
   );
 }
 
