@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from user_account.models import CustomUser
 
-# Modèle pour les contraintes physiques
+
 class ConstraintField(models.Model):
     name = models.CharField(max_length=300, unique=True)
     slug = models.SlugField(unique=True, blank=True)
@@ -20,7 +20,7 @@ class ConstraintField(models.Model):
     def __str__(self):
         return self.name
 
-# Profil sportif lié à un utilisateur
+
 class SportProfile(models.Model):
     LEVEL_USER_CHOICE = [
         ('beginner', 'Beginner'),

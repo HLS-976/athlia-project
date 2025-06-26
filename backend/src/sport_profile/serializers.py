@@ -6,7 +6,7 @@ from user_account.models import CustomUser
 class ConstraintFieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConstraintField
-        fields = ['id', 'name', 'slug']
+        fields = ['id', 'name']
         read_only_fields = ['slug']
 
 
