@@ -46,10 +46,10 @@ const iconByExerciseName = (name) => {
   return GiWeightLiftingUp; // fallback
 };
 
-const ExercicesCards = ({ 
-  selectedZones = [], 
-  onExerciseSelect = null, 
-  isExerciseSelected = null 
+const ExercicesCards = ({
+  selectedZones = [],
+  onExerciseSelect = null,
+  isExerciseSelected = null,
 }) => {
   const [exercises, setExercises] = useState([]);
 
@@ -77,37 +77,45 @@ const ExercicesCards = ({
   }, []);
 
   // Filtre exo par zone
-  const filteredExercises = selectedZones.length > 0 
-    ? exercises.filter(exercise => {
-        // Utilise zone base de données
-        const exerciseCategory = exercise.category?.name?.toLowerCase() || '';
-        return selectedZones.some(zone => {
-          const zoneName = zone.toLowerCase();
-          
-          // correspondance entre les deux
-          if (zoneName === 'pectoraux' && exerciseCategory === 'pectoraux') return true;
-          if (zoneName === 'bras' && exerciseCategory === 'bras') return true;
-          if (zoneName === 'epaules' && exerciseCategory === 'epaules') return true;
-          if (zoneName === 'abdos' && exerciseCategory === 'abdos') return true;
-          if (zoneName === 'dos' && exerciseCategory === 'dos') return true;
-          if (zoneName === 'jambes' && exerciseCategory === 'jambes') return true;
-          if (zoneName === 'fessiers' && exerciseCategory === 'fessiers') return true;
-          
-          return false;
-        });
-      })
-    : exercises;
+  const filteredExercises =
+    selectedZones.length > 0
+      ? exercises.filter((exercise) => {
+          // Utilise zone base de données
+          const exerciseCategory = exercise.category?.name?.toLowerCase() || "";
+          return selectedZones.some((zone) => {
+            const zoneName = zone.toLowerCase();
+
+            // correspondance entre les deux
+            if (zoneName === "pectoraux" && exerciseCategory === "pectoraux")
+              return true;
+            if (zoneName === "bras" && exerciseCategory === "bras") return true;
+            if (zoneName === "epaules" && exerciseCategory === "epaules")
+              return true;
+            if (zoneName === "abdos" && exerciseCategory === "abdos")
+              return true;
+            if (zoneName === "dos" && exerciseCategory === "dos") return true;
+            if (zoneName === "jambes" && exerciseCategory === "jambes")
+              return true;
+            if (zoneName === "fessiers" && exerciseCategory === "fessiers")
+              return true;
+
+            return false;
+          });
+        })
+      : exercises;
 
   return (
     <section id="cards-features">
       <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
         {filteredExercises.map((ex, idx) => {
           const Icon = iconByExerciseName(ex.name);
-          const selected = isExerciseSelected ? isExerciseSelected(ex.name) : false;
+          const selected = isExerciseSelected
+            ? isExerciseSelected(ex.name)
+            : false;
           return (
-            <div 
-              key={idx} 
-              className={`card ${selected ? 'exercise-card-selected' : ''}`} 
+            <div
+              key={idx}
+              className={`card ${selected ? "exercise-card-selected" : ""}`}
               style={{ minWidth: "220px" }}
               onClick={() => onExerciseSelect && onExerciseSelect(ex)}
             >
