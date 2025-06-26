@@ -18,7 +18,7 @@ import {
 const iconByExerciseName = (name) => {
   const lower = name.toLowerCase();
 
-  if (lower.includes("épaule") || lower.includes("cercles d’épaule"))
+  if (lower.includes("épaule") || lower.includes("cercles d'épaule"))
     return GiShoulderArmor;
   if (lower.includes("crunch")) return GiAbdominalArmor;
   if (lower.includes("gainage")) return GiBodyBalance;
@@ -46,7 +46,11 @@ const iconByExerciseName = (name) => {
   return GiWeightLiftingUp; // fallback
 };
 
-const ExercicesCards = () => {
+const ExercicesCards = ({ 
+  selectedZones = [], 
+  onExerciseSelect = null, 
+  isExerciseSelected = null 
+}) => {
   const [exercises, setExercises] = useState([]);
 
   useEffect(() => {
@@ -72,16 +76,49 @@ const ExercicesCards = () => {
     fetchExercises();
   }, []);
 
+  // Filtre exo par zone
+  const filteredExercises = selectedZones.length > 0 
+    ? exercises.filter(exercise => {
+        // Utilise zone base de données
+        const exerciseCategory = exercise.category?.name?.toLowerCase() || '';
+        return selectedZones.some(zone => {
+          const zoneName = zone.toLowerCase();
+          
+          // correspondance entre les deux
+          if (zoneName === 'pectoraux' && exerciseCategory === 'pectoraux') return true;
+          if (zoneName === 'bras' && exerciseCategory === 'bras') return true;
+          if (zoneName === 'epaules' && exerciseCategory === 'epaules') return true;
+          if (zoneName === 'abdos' && exerciseCategory === 'abdos') return true;
+          if (zoneName === 'dos' && exerciseCategory === 'dos') return true;
+          if (zoneName === 'jambes' && exerciseCategory === 'jambes') return true;
+          if (zoneName === 'fessiers' && exerciseCategory === 'fessiers') return true;
+          
+          return false;
+        });
+      })
+    : exercises;
+
   return (
     <section id="cards-features">
       <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
-        {exercises.map((ex, idx) => {
+        {filteredExercises.map((ex, idx) => {
           const Icon = iconByExerciseName(ex.name);
+          const selected = isExerciseSelected ? isExerciseSelected(ex.name) : false;
           return (
-            <div key={idx} className="card" style={{ minWidth: "220px" }}>
+            <div 
+              key={idx} 
+              className={`card ${selected ? 'exercise-card-selected' : ''}`} 
+              style={{ minWidth: "220px" }}
+              onClick={() => onExerciseSelect && onExerciseSelect(ex)}
+            >
               <Icon size={32} style={{ color: "#007bff" }} />
               <h3>{ex.name}</h3>
               <p>{ex.description}</p>
+              {selected && (
+                <div className="exercise-status">
+                  <span className="status-text">Ajouté à l'historique</span>
+                </div>
+              )}
             </div>
           );
         })}
