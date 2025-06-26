@@ -5,8 +5,9 @@ import SignUpPage from "./Pages/Sign_Up/SignUpPage";
 import Footer from "./components/Footer";
 import Dashboard from "./Pages/Dashboard/DashBoard";
 import ExercisesPage from "./Pages/Exercises/ExercisesPage";
-import PrivateRoute from "./Pages/Dashboard/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
+import NotFound from "./Pages/NotFound/NotFoundPage";
 import "./App.css";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />
