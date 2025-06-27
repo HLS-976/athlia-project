@@ -33,9 +33,9 @@ function Header() {
       </div>
       <div className="header-buttons">
         {/* profil button */}
-        <button id="header-profil">Profile</button>
+        <button id="header-profil" onClick={() => navigate("/profile")}>Profile</button>
         {/* Logout button */}
-        <button onClick={handleLogout} id="header-logout">
+        <button id="header-profil" onClick={handleLogout} >
           Log Out
         </button>
       </div>
