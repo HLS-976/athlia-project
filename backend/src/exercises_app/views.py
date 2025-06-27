@@ -5,7 +5,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from user_account.models import CustomUser
 from .models import Exercise, CategoryExercise, ExerciseEntry, WorkoutSession
-from .serializers import ExerciseSerializer, CategoryExerciseSerializer, CategoryExerciseDetailSerializer, WorkoutSessionSerializer, ExerciseEntrySerializer
+from .serializers import (
+    ExerciseSerializer,
+    CategoryExerciseSerializer,
+    CategoryExerciseDetailSerializer,
+    WorkoutSessionSerializer,
+    ExerciseEntrySerializer
+)
 from django.shortcuts import get_list_or_404, get_object_or_404
 # Create your views here.
 

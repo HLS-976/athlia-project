@@ -35,7 +35,7 @@ class ExerciseEntrySerializer(serializers.ModelSerializer):
 
 class WorkoutSessionSerializer(serializers.ModelSerializer):
     exercise_entries = ExerciseEntrySerializer(many=True, read_only=True)
-    user_username = serializers.CharField(source='user.username', read_only=True)
+    user_username = serializers.CharField(source='user.user_name', read_only=True)
 
     class Meta:
         model = WorkoutSession
