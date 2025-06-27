@@ -1,27 +1,40 @@
+import { Link, useNavigate } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+import { TbLogout } from "react-icons/tb";
 import "./Header.css";
 
-/**
- * Header component
- *
- * This component displays the dashboard header.
- *
- * - Shows a welcome message and a subtitle on the left.
- * - On the right, displays a notification bell icon and a user profile avatar.
- *
- * All elements are organized inside the header for a clean dashboard top bar.
- */
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
-    <header className="dashboard-header">
-      {/* Welcome message and subtitle */}
-      <div>
-        <h1>Welcome, User</h1>
-        <p>Your personalized exercise dashboard</p>
+    <header id="dashboard-header">
+      {/* Logo à gauche */}
+      <div id="logo">
+        <Link to="/">
+          <img src="/Logo.png" alt="Logo" />
+        </Link>
       </div>
-      {/* Notification bell and user avatar */}
-      <div className="header-profile">
-        <span className="notification-bell">🔔</span>
-        <img src="https://i.pravatar.cc/36" alt="Profile" />
+
+      {/* Icônes à droite */}
+      <div id="header-icons">
+        <div id="user-icon">
+          <FaUser />
+          <div className="dropdown-menu">
+            <Link to="/profile">Mon Profil</Link>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/combinedpage">Exercices</Link>
+          </div>
+        </div>
+
+        <div id="logout-icon" onClick={handleLogout}>
+          <TbLogout />
+        </div>
       </div>
     </header>
   );
