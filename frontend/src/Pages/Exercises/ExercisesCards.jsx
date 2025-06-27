@@ -14,6 +14,7 @@ import {
   GiJumpingRope,
   GiStrong,
 } from "react-icons/gi";
+import "./ExercisesCards.css";
 
 const iconByExerciseName = (name) => {
   const lower = name.toLowerCase();
@@ -110,7 +111,16 @@ const ExercicesCards = ({
           const data = await response.json();
           setExercises(data);
         } else {
-          console.error("Failed to fetch exercises");
+          if (response.status === 401) {
+            // Token invalide ou expiré : on déconnecte l'utilisateur
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            window.location.href = "/login";
+          } else {
+            const errorText = await response.text();
+            console.error("Failed to fetch exercises", response.status, errorText);
+          }
         }
       } catch (error) {
         console.error("Error fetching exercises:", error);
@@ -150,7 +160,7 @@ const ExercicesCards = ({
 
   return (
     <section id="cards-features">
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center" }}>
         {filteredExercises.map((ex, idx) => {
           const Icon = iconByExerciseName(ex.name);
           const selected = isExerciseSelected
@@ -160,10 +170,11 @@ const ExercicesCards = ({
             <div
               key={idx}
               className={`card ${selected ? "exercise-card-selected" : ""}`}
-              style={{ minWidth: "220px" }}
               onClick={() => onExerciseSelect && onExerciseSelect(ex)}
             >
-              <Icon size={32} style={{ color: "#007bff" }} />
+              <div className="card-icon">
+                <Icon size={32} style={{ color: "#2460f2" }} />
+              </div>
               <h3>{ex.name}</h3>
               <p>{ex.description}</p>
               {selected && (
