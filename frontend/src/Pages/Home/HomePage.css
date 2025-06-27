@@ -49,9 +49,9 @@
 }
 
 .content-section {
-  flex: 0 0 380px;
-  max-width: 380px;
-  margin-right: 300px;
+  flex: 0 0 480px;
+  max-width: 600px;
+  margin-right: 40px;
   position: relative;
 }
 
@@ -70,7 +70,7 @@
   font-size: 3.2rem;
   font-weight: 800;
   line-height: 1.1;
-  margin: 0 -650px 25px 0;
+  margin: 0 0 25px 0;
   position: relative;
   text-shadow: 0 4px 20px var(--shadow);
   background: var(--gradient-text);
@@ -93,7 +93,7 @@
 #presentation {
   font-size: 1.2rem;
   color: var(--gray);
-  margin: 0 -150px 35px 0;
+  margin: 0 0 35px 0;
   padding: 20px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 15px;
@@ -112,8 +112,14 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  border: none;
+  border: 2px solid var(--blue);
   transition: var(--transition);
+  min-width: 160px;
+  min-height: 48px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #Get-Started::before, #Explore-Features::before {
@@ -141,7 +147,6 @@
 #Explore-Features {
   background: rgba(255, 255, 255, 0.8);
   color: var(--blue);
-  border: 2px solid var(--blue);
   backdrop-filter: blur(10px);
 }
 
@@ -160,8 +165,8 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  padding: 0 -50px 20px 0;
-  margin: 0 -50px 0 0;
+  padding: 0 0 20px 0;
+  margin: 0;
   position: relative;
 }
 
@@ -185,7 +190,8 @@
 }
 
 .video-container {
-  max-width: 2200px;
+  margin: 0;
+  max-width: 600px;
   width: 100%;
   position: relative;
   border-radius: var(--radius);
@@ -193,7 +199,6 @@
   padding: 20px;
   box-shadow: 0 20px 60px var(--shadow), 0 0 0 1px var(--white-trans), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: var(--transition);
-  margin-right: -550px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -310,6 +315,9 @@
   filter: brightness(1.05) contrast(1.05);
   position: relative;
   z-index: 1;
+  object-fit: cover;
+  object-position: center center;
+  max-height: 400px;
 }
 
 @media (max-width: 1400px) {
@@ -342,4 +350,19 @@
   #tittle { font-size: 2rem; }
   .video-container { max-width: 600px; border-radius: 12px; }
   .video-container video { border-radius: 12px; }
+}
+
+@media (min-width: 1400px) {
+  #home {
+    gap: 100px;
+    max-width: 1800px;
+    margin: 0 auto;
+  }
+  .video-container {
+    max-width: 900px;
+    padding: 30px;
+  }
+  .content-section {
+    max-width: 700px;
+  }
 }
