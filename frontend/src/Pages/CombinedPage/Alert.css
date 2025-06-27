@@ -1,0 +1,47 @@
+.alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); /* fond assombri */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.alert-modal {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  z-index: 1001;
+}
+
+.alert-modal h2 {
+  margin-bottom: 16px;
+}
+
+.alert-modal p {
+  margin-bottom: 24px;
+}
+
+.alert-button {
+  background-color: #2460f2;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.alert-button:hover {
+  background-color: #1d4ed8;
+}

@@ -77,7 +77,7 @@ function LoginPage() {
       // If login failed, show error message
       if (!response.ok) {
         setErrorMsg(
-          data.detail || "Login failed. Please check your email or password.",
+          data.detail || "Login failed. Please check your email or password."
         );
         console.error("Server responded with error:", data);
         return;
@@ -88,6 +88,7 @@ function LoginPage() {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("accessToken", data.access);
         localStorage.setItem("refreshToken", data.refresh);
+        localStorage.setItem("justAuthenticated", "true");
 
         // Optional: log token for debugging
         console.log("Tokens correctly saved:", data);
