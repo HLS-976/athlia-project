@@ -8,7 +8,7 @@ import React, {
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 
-const DEFAULT_COLOR = new THREE.Color(0xd4a574);
+const DEFAULT_COLOR = new THREE.Color(0xd2b48c);
 const HOVER_COLOR = new THREE.Color(0x00bcd4);
 const selectedMeshes = new Map();
 
