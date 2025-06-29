@@ -31,25 +31,31 @@ const ExercisesFrequency = () => {
       });
   }, [range]);
 
+  const getCountClass = (count) => {
+    if (count >= 3) return "high";
+    if (count >= 1) return "medium";
+    return "low";
+  };
+
   return (
-    <div className="workout-frequency">
-      <h3>Fréquence des séances</h3>
-      <div className="range-buttons">
-        <button onClick={() => setRange("day")}>Jour</button>
-        <button onClick={() => setRange("week")}>Semaine</button>
-        <button onClick={() => setRange("month")}>Mois</button>
+    <div className="exercise-frequency">
+      <h3>Fréquence des Séances</h3>
+      <div className="frequency-chart">
+        {loading ? (
+          <p>Chargement…</p>
+        ) : (
+          <>
+            {frequency.map((item, index) => (
+              <div key={index} className="frequency-item">
+                <span className="frequency-day">{item.label}</span>
+                <span className={`frequency-count ${getCountClass(item.count)}`}>
+                  {item.count}
+                </span>
+              </div>
+            ))}
+          </>
+        )}
       </div>
-      {loading ? (
-        <p>Chargement…</p>
-      ) : (
-        <ul>
-          {frequency.map((item, index) => (
-            <li key={index}>
-              {item.label} : {item.count} séance(s)
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 };
