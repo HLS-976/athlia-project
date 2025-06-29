@@ -17,29 +17,50 @@ const MuscleUsageChart = () => {
       })
       .catch(() => {
         const fakeData = [
-          { name: "Pectoraux", count: 12 },
-          { name: "Dorsaux", count: 9 },
-          { name: "Biceps", count: 7 },
-          { name: "Abdominaux", count: 6 },
+          { name: "Pectoraux", count: 15, icon: "💪" },
+          { name: "Abdominaux", count: 12, icon: "🔥" },
+          { name: "Biceps", count: 10, icon: "💪" },
+          { name: "Dorsaux", count: 8, icon: "🏋️" },
+          { name: "Jambes", count: 6, icon: "🦵" },
+          { name: "Épaules", count: 5, icon: "💪" },
+          { name: "Fessiers", count: 4, icon: "🍑" },
         ];
         setMuscleData(fakeData);
         setLoading(false);
       });
   }, []);
 
+  const getMaxCount = () => {
+    return Math.max(...muscleData.map(item => item.count));
+  };
+
   if (loading) return <p>Chargement des muscles…</p>;
   if (muscleData.length === 0) return <p>Aucune donnée musculaire.</p>;
 
+  const maxCount = getMaxCount();
+
   return (
-    <div className="muscle-usage">
-      <h3>Muscles les plus sollicités</h3>
-      <ul>
+    <div className="muscles-usage">
+      <h3>Muscles les Plus Sollicités</h3>
+      <div className="muscles-grid">
         {muscleData.map((item, index) => (
-          <li key={index}>
-            {item.name} : {item.count} fois
-          </li>
+          <div key={index} className="muscle-item">
+            <div className="muscle-name">
+              <span className="muscle-icon">{item.icon}</span>
+              {item.name}
+            </div>
+            <div className="muscle-usage-bar">
+              <div 
+                className="muscle-usage-fill"
+                style={{ width: `${(item.count / maxCount) * 100}%` }}
+              ></div>
+            </div>
+            <div className="muscle-percentage">
+              {item.count}
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
