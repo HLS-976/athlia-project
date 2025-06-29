@@ -1,1 +1,43 @@
+:root {
+  --blue: #2460f2;
+  --green: #4ade80;
+  --dark: #1f1f1f;
+  --gray: #555;
+  --white: rgba(255, 255, 255, 0.9);
+  --white-light: rgba(255, 255, 255, 0.7);
+  --white-trans: rgba(255, 255, 255, 0.3);
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-blue: rgba(36, 96, 242, 0.3);
+  --radius: 30px;
+  --transition: all 0.3s ease;
+  --gradient: linear-gradient(135deg, var(--blue) 0%, var(--green) 100%);
+  --gradient-text: linear-gradient(135deg, var(--dark) 0%, var(--blue) 50%, var(--green) 100%);
+  --gradient-bg: linear-gradient(135deg, var(--white) 0%, var(--white-light) 100%);
+}
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root,
+#App {
+  height: 100%;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #d6d6d6;
+  color: #333;
+  height: 100%;
+}
+
+#App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
