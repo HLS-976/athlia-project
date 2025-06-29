@@ -1,49 +1,182 @@
-.workout-frequency {
-  background: #ffffff;
-  padding: 1.5rem;
-  border-radius: 12px;
-  max-width: 500px;
-  margin-bottom: 2rem;
-}
-
-.workout-frequency h3 {
-  font-size: 1.3rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
-}
-
-.workout-frequency ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.workout-frequency li {
-  padding: 10px 14px;
-  margin-bottom: 8px;
-  background-color: #f4f7fb;
-  border-radius: 6px;
-  font-weight: 500;
-  color: #34495e;
-}
-
-.range-buttons {
+.exercise-frequency {
+  width: 100%;
+  height: 100%;
   display: flex;
-  gap: 10px;
-  margin-bottom: 1.2rem;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.range-buttons button {
-  padding: 8px 16px;
-  background-color: #e5edfa;
-  color: #1d3557;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+.exercise-frequency::before {
+  content: '📈';
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 0.3rem;
+  filter: drop-shadow(0 2px 4px var(--shadow));
 }
 
-.range-buttons button:hover {
-  background-color: #d0dff4;
+.exercise-frequency h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+  align-self: center;
+}
+
+.exercise-frequency h3::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 2px;
+  background: var(--gradient);
+  border-radius: 1px;
+}
+
+.frequency-chart {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(36, 96, 242, 0.05) 100%);
+  border-radius: 12px;
+  padding: 1.2rem;
+  border: 1px solid var(--white-trans);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px var(--shadow);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+.frequency-chart::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient);
+  border-radius: 12px 12px 0 0;
+}
+
+.frequency-chart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(36, 96, 242, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(36, 96, 242, 0.08) 100%);
+}
+
+.frequency-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  border: 1px solid var(--white-trans);
+  backdrop-filter: blur(5px);
+  transition: var(--transition);
+}
+
+.frequency-item:last-child {
+  margin-bottom: 0;
+}
+
+.frequency-item:hover {
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 3px 10px rgba(36, 96, 242, 0.1);
+}
+
+.frequency-day {
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 0.9rem;
+}
+
+.frequency-count {
+  background: var(--gradient);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  box-shadow: 0 3px 8px var(--shadow-blue);
+  min-width: 40px;
+  text-align: center;
+}
+
+.frequency-count.high {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.3);
+}
+
+.frequency-count.medium {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 3px 8px rgba(245, 158, 11, 0.3);
+}
+
+.frequency-count.low {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exercise-frequency {
+    gap: 0.8rem;
+  }
+  
+  .exercise-frequency h3 {
+    font-size: 1.1rem;
+  }
+  
+  .frequency-chart {
+    padding: 1rem;
+  }
+  
+  .frequency-item {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .frequency-day {
+    font-size: 0.8rem;
+  }
+  
+  .frequency-count {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    min-width: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .exercise-frequency h3 {
+    font-size: 1rem;
+  }
+  
+  .frequency-chart {
+    padding: 0.8rem;
+  }
+  
+  .frequency-item {
+    padding: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .frequency-day {
+    font-size: 0.75rem;
+  }
+  
+  .frequency-count {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+    min-width: 30px;
+  }
 }
