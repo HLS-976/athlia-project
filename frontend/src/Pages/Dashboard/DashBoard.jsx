@@ -1,8 +1,10 @@
+import React from 'react';
 import Header from "./Header";
 import ExercisesHistory from "./ExercisesHistory";
 import ExercisesFrequency from "./ExercisesFrequency";
 import ProgressTracker from "./ProgressTracker";
 import MusclesUsage from "./MusclesUsage";
+import AdviceContainer from "./AdviceContainer";
 import "./DashBoard.css";
 
 const DashBoard = () => (
@@ -11,8 +13,8 @@ const DashBoard = () => (
     <div id="Dashboard-Container">
       <div id="Dashboard-Content">
         <div id="welcome-message">
-          <h1>Welcome to your Dashboard</h1>
-          <p>Your personalized exercise dashboard</p>
+          <h1>Bienvenue sur votre Tableau de Bord</h1>
+          <p>Votre espace personnel pour suivre vos progrès sportifs</p>
         </div>
         <div id="history">
           <ExercisesHistory />
@@ -25,6 +27,9 @@ const DashBoard = () => (
         </div>
         <div id="progress">
           <ProgressTracker />
+        </div>
+        <div id="advice">
+          <AdviceContainer />
         </div>
       </div>
     </div>
