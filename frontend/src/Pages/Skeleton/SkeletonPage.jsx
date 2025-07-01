@@ -98,7 +98,7 @@ function SkeletonPage({
           enablePan={false}
           target={[0, 0, 0]}
           autoRotate={autoRotate}
-          autoRotateSpeed={2.0}
+          autoRotateSpeed={7.0}
         />
 
         <SkeletonModel
