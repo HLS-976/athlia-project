@@ -93,13 +93,31 @@ function LoginPage() {
         // Optional: log token for debugging
         console.log("Tokens correctly saved:", data);
 
-        // Redirect to the intended page after login
+        try {
+          const userRes = await fetch("http://localhost:8000/api/user/", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${data.access}`,
+            },
+          });
+
+          if (userRes.ok) {
+            const userData = await userRes.json();
+            localStorage.setItem("user", JSON.stringify(userData));
+            console.log("User info:", userData);
+          } else {
+            console.error("Failed to fetch user info");
+          }
+        } catch (fetchError) {
+          console.error("Error fetching user info:", fetchError);
+        }
+
+        // ✅ Redirection après login + récupération infos
         navigate(redirectTo, { replace: true });
       } else {
         setErrorMsg("Login failed. No tokens received.");
       }
     } catch (error) {
-      // Handle network or unexpected errors
       console.error("Login error:", error);
       setErrorMsg("Login failed. Please check your email or password.");
     }

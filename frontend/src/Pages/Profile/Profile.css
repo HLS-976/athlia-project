@@ -1,0 +1,126 @@
+:root {
+  --radius: 20px;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --white-trans: rgba(255, 255, 255, 0.5);
+}
+
+#profile-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+  position: relative;
+}
+
+#profile-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(36, 96, 242, 0.05),
+    rgba(74, 222, 128, 0.05)
+  );
+  z-index: 0;
+}
+
+#profile-title,
+#sport-profile-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  z-index: 1;
+}
+
+#profile-user,
+#password-change,
+#sport-profile {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8),
+    rgba(36, 96, 242, 0.1)
+  );
+  padding: 2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--white-trans);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 10px 30px var(--shadow);
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 700px;
+  z-index: 1;
+  position: relative;
+}
+
+#profile-user div {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+button {
+  background-color: #2460f2;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+#submit-password,
+#update-sport-profile {
+  margin-top: 1rem;
+}
+
+#constraints {
+  background-color: transparent;
+  color: #2460f2;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+#constraints:hover {
+  text-decoration: underline;
+}
+
+#sport-profile > div {
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+#sport-profile input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+#password-change p {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #15803d;
+}
