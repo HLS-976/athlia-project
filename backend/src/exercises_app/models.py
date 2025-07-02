@@ -83,8 +83,8 @@ class WorkoutSession(models.Model):
 
     class Meta:
         ordering = ['-date']
-        verbose_name = "Séance d'entraînement"
-        verbose_name_plural = "Séances d'entraînement"
+        verbose_name = "Training session"
+        verbose_name_plural = "Trainings sessions"
 
     def __str__(self):
         return f"Séance du {self.date} par {self.user.user_name}"
@@ -108,8 +108,8 @@ class ExerciseEntry(models.Model):
     notes = models.TextField(blank=True, null=True, verbose_name="Notes spécifiques à l'exercice")
 
     class Meta:
-        verbose_name = "Entrée d'exercice"
-        verbose_name_plural = "Entrées d'exercices"
+        verbose_name = "Exercice entry"
+        verbose_name_plural = "Exercises entries"
 
     def __str__(self):
         performance_details = []

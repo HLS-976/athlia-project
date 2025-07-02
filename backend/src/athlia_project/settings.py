@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'user_account',
     'exercises_app',
-    'sport_profile'
+    'sport_profile',
+    'advices_app'
 ]
 
 MIDDLEWARE = [
