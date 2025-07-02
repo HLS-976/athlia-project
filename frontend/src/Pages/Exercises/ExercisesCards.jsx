@@ -90,6 +90,7 @@ const ExercicesCards = ({
   selectedZones = [],
   onExerciseSelect = null,
   isExerciseSelected = null,
+  selectedConstraint = "", // <-- ajouter cette prop
 }) => {
   const [exercises, setExercises] = useState([]);
 
@@ -98,15 +99,15 @@ const ExercicesCards = ({
       try {
         // Obtenir le token d'accès
         const accessToken = await getAccessToken();
-        
+
         const response = await fetch("http://localhost:8000/api/exercises/", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           setExercises(data);
@@ -119,7 +120,11 @@ const ExercicesCards = ({
             window.location.href = "/login";
           } else {
             const errorText = await response.text();
-            console.error("Failed to fetch exercises", response.status, errorText);
+            console.error(
+              "Failed to fetch exercises",
+              response.status,
+              errorText
+            );
           }
         }
       } catch (error) {
@@ -131,7 +136,7 @@ const ExercicesCards = ({
   }, []);
 
   // Filtre exo par zone
-  const filteredExercises =
+  let filteredExercises =
     selectedZones.length > 0
       ? exercises.filter((exercise) => {
           // Utilise zone base de données
@@ -158,9 +163,26 @@ const ExercicesCards = ({
         })
       : exercises;
 
+  // Filtrer par contrainte sélectionnée
+  if (selectedConstraint) {
+    filteredExercises = filteredExercises.filter((exercise) =>
+      exercise.constraints?.some(
+        (constraint) =>
+          constraint.id?.toString() === selectedConstraint.toString()
+      )
+    );
+  }
+
   return (
     <section id="cards-features">
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "16px",
+          justifyContent: "center",
+        }}
+      >
         {filteredExercises.map((ex, idx) => {
           const Icon = iconByExerciseName(ex.name);
           const selected = isExerciseSelected

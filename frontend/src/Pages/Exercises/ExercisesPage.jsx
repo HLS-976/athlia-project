@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import ExercicesCards from "./ExercisesCards";
 import "./ExercisesPage.css";
@@ -16,10 +16,25 @@ const ExercisesPage = ({
   showHeader = true,
   user = null,
 }) => {
-  // --- 2. Fetch sport profile on mount (plus d'alerte ici) ---
+  // État pour les contraintes et la contrainte sélectionnée
+  const [constraints, setConstraints] = useState([]);
+  const [selectedConstraint, setSelectedConstraint] = useState("");
+
+  // Récupérer les contraintes depuis le backend au montage
   useEffect(() => {
-    // Tu peux garder ici une logique de fetch si besoin, mais sans setShowAlert
-    // Exemple : charger des données utilisateur ou autre
+    const fetchConstraints = async () => {
+      try {
+        const accessToken = localStorage.getItem("accessToken");
+        const res = await fetch("http://localhost:8000/api/constraints/", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const data = await res.json();
+        setConstraints(Array.isArray(data) ? data : data.results || []);
+      } catch (err) {
+        console.error("Erreur lors du chargement des contraintes :", err);
+      }
+    };
+    fetchConstraints();
   }, [user]);
 
   // --- 3. Render ---
@@ -31,11 +46,31 @@ const ExercisesPage = ({
         </header>
       )}
 
+      {/* Filtre déroulant des contraintes */}
+      <div style={{ margin: "1rem 0", textAlign: "center" }}>
+        <label>
+          Filtrer par contrainte&nbsp;
+          <select
+            value={selectedConstraint}
+            onChange={(e) => setSelectedConstraint(e.target.value)}
+            style={{ padding: "0.4rem", borderRadius: "6px" }}
+          >
+            <option value="">Aucune</option>
+            {constraints.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
       <div className="Exercises">
         <ExercicesCards
           selectedZones={selectedZones}
           onExerciseSelect={onExerciseSelect}
           isExerciseSelected={isExerciseSelected}
+          selectedConstraint={selectedConstraint}
         />
       </div>
     </main>
