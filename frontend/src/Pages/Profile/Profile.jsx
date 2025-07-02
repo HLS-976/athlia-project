@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Profile.css";
+import Header from "../Dashboard/Header";
 
 function ProfilePage() {
   const [sportProfile, setSportProfile] = useState({
@@ -189,6 +190,7 @@ function ProfilePage() {
 
   return (
     <div id="profile-page">
+      <Header />
       <div id="profile-title">
         <h1>Mon Profil</h1>
       </div>
