@@ -189,131 +189,133 @@ function ProfilePage() {
   };
 
   return (
-    <div id="profile-page">
+    <>
       <Header />
-      <div id="profile-title">
-        <h1>Mon Profil</h1>
-      </div>
-      <div id="profile-user">
-        <div id="firstname">
-          <strong>Prénom:</strong> {user.first_name || ""}
+      <div id="profile-page">
+        <div id="profile-title">
+          <h1>Mon Profil</h1>
         </div>
-        <div id="lastname">
-          <strong>Nom:</strong> {user.last_name || ""}
+        <div id="profile-user">
+          <div id="firstname">
+            <strong>Prénom:</strong> {user.first_name || ""}
+          </div>
+          <div id="lastname">
+            <strong>Nom:</strong> {user.last_name || ""}
+          </div>
+          <div id="username">
+            <strong>Nom d'utilisateur:</strong>{" "}
+            {user.user_name || user.username || ""}
+          </div>
+          <div id="email">
+            <strong>Email:</strong> {user.email || ""}
+          </div>
         </div>
-        <div id="username">
-          <strong>Nom d'utilisateur:</strong>{" "}
-          {user.user_name || user.username || ""}
-        </div>
-        <div id="email">
-          <strong>Email:</strong> {user.email || ""}
-        </div>
-      </div>
-      <form id="password-change" onSubmit={handlePasswordChange}>
-        <label id="old-password">
-          Ancien mot de passe:
-          <input
-            type="password"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label id="new-password">
-          Nouveau mot de passe:
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <button id="submit-password" type="submit">
-          Modifier le mot de passe
-        </button>
-        {passwordMsg && <p>{passwordMsg}</p>}
-      </form>
-      <div id="sport-profile">
-        <div id="sport-profile-title">
-          <h1>Mon Profil Sportif</h1>
-        </div>
-        <label id="age">
-          Âge :
-          <input
-            type="number"
-            value={sportProfile.age}
-            onChange={(e) =>
-              setSportProfile({ ...sportProfile, age: e.target.value })
-            }
-          />
-        </label>
-        <br />
-        <label id="goals">
-          Objectifs :
-          <input
-            type="text"
-            value={sportProfile.goals}
-            onChange={(e) =>
-              setSportProfile({ ...sportProfile, goals: e.target.value })
-            }
-          />
-        </label>
-        <br />
-        <label id="level_user">
-          Niveau :
-          <select
-            value={sportProfile.level_user}
-            onChange={(e) =>
-              setSportProfile({ ...sportProfile, level_user: e.target.value })
-            }
-          >
-            <option value="">-- Choisir un niveau --</option>
-            <option value="beginner">Débutant</option>
-            <option value="intermediate">Intermédiaire</option>
-            <option value="advanced">Avancé</option>
-          </select>
-        </label>
-        <br />
-        <br />
-        <div style={{ border: "1px solid #ccc", borderRadius: "5px" }}>
-          <button
-            id="constraints"
-            type="button"
-            onClick={() => setShowConstraints(!showConstraints)}
-          >
-            Contraintes physiques {showConstraints ? "▲" : "▼"}
+        <form id="password-change" onSubmit={handlePasswordChange}>
+          <label id="old-password">
+            Ancien mot de passe:
+            <input
+              type="password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              required
+            />
+          </label>
+          <br />
+          <label id="new-password">
+            Nouveau mot de passe:
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </label>
+          <br />
+          <button id="submit-password" type="submit">
+            Modifier le mot de passe
           </button>
+          {passwordMsg && <p>{passwordMsg}</p>}
+        </form>
+        <div id="sport-profile">
+          <div id="sport-profile-title">
+            <h1>Mon Profil Sportif</h1>
+          </div>
+          <label id="age">
+            Âge :
+            <input
+              type="number"
+              value={sportProfile.age}
+              onChange={(e) =>
+                setSportProfile({ ...sportProfile, age: e.target.value })
+              }
+            />
+          </label>
+          <br />
+          <label id="goals">
+            Objectifs :
+            <input
+              type="text"
+              value={sportProfile.goals}
+              onChange={(e) =>
+                setSportProfile({ ...sportProfile, goals: e.target.value })
+              }
+            />
+          </label>
+          <br />
+          <label id="level_user">
+            Niveau :
+            <select
+              value={sportProfile.level_user}
+              onChange={(e) =>
+                setSportProfile({ ...sportProfile, level_user: e.target.value })
+              }
+            >
+              <option value="">-- Choisir un niveau --</option>
+              <option value="beginner">Débutant</option>
+              <option value="intermediate">Intermédiaire</option>
+              <option value="advanced">Avancé</option>
+            </select>
+          </label>
+          <br />
+          <br />
+          <div style={{ border: "1px solid #ccc", borderRadius: "5px" }}>
+            <button
+              id="constraints"
+              type="button"
+              onClick={() => setShowConstraints(!showConstraints)}
+            >
+              Contraintes physiques {showConstraints ? "▲" : "▼"}
+            </button>
 
-          {showConstraints && (
-            <div style={{ padding: "10px" }}>
-              {constraints.map((c) => (
-                <label
-                  key={c.id}
-                  style={{ display: "block", marginBottom: "5px" }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={sportProfile.constraints.includes(c.id)}
-                    onChange={() => handleConstraintToggle(c.id)}
-                  />
-                  {c.name}
-                </label>
-              ))}
-            </div>
-          )}
+            {showConstraints && (
+              <div style={{ padding: "10px" }}>
+                {constraints.map((c) => (
+                  <label
+                    key={c.id}
+                    style={{ display: "block", marginBottom: "5px" }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={sportProfile.constraints.includes(c.id)}
+                      onChange={() => handleConstraintToggle(c.id)}
+                    />
+                    {c.name}
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+          <br />
+          <button
+            id="update-sport-profile"
+            type="button"
+            onClick={handleSportSubmit}
+          >
+            Mettre à jour le profil sportif
+          </button>
         </div>
-        <br />
-        <button
-          id="update-sport-profile"
-          type="button"
-          onClick={handleSportSubmit}
-        >
-          Mettre à jour le profil sportif
-        </button>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -11,8 +11,17 @@
   --radius: 30px;
   --transition: all 0.3s ease;
   --gradient: linear-gradient(135deg, var(--blue) 0%, var(--green) 100%);
-  --gradient-text: linear-gradient(135deg, var(--dark) 0%, var(--blue) 50%, var(--green) 100%);
-  --gradient-bg: linear-gradient(135deg, var(--white) 0%, var(--white-light) 100%);
+  --gradient-text: linear-gradient(
+    135deg,
+    var(--dark) 0%,
+    var(--blue) 50%,
+    var(--green) 100%
+  );
+  --gradient-bg: linear-gradient(
+    135deg,
+    var(--white) 0%,
+    var(--white-light) 100%
+  );
 }
 
 * {
@@ -27,7 +36,6 @@ body,
 #App {
   height: 100%;
   font-family: "Segoe UI", sans-serif;
-  background-color: #d6d6d6;
   color: #333;
   height: 100%;
 }
