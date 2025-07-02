@@ -31,7 +31,7 @@ class CategoryDetailAPIView(APIView):
 
 class ExerciseAPIView(APIView):
     def get(self, request):
-        exercise = Exercise.objects.all()
+        exercise = Exercise.objects.filter(is_adaptive=False)
         serializer = ExerciseSerializer(exercise, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.postgres.fields import ArrayField
 from user_account.models import CustomUser
+from sport_profile.models import ConstraintField
 # Create your models here.
 class CategoryExercise(models.Model):
     name = models.CharField(max_length=150, blank=True, null=True, unique=True)
@@ -50,11 +51,10 @@ class Exercise(models.Model):
         related_name='exercises'
     )
     is_adaptive = models.BooleanField(default=False)
-    adaptative_for = ArrayField(
-        models.CharField(max_length=100),
+    adaptative_for = models.ManyToManyField(
+        ConstraintField,
         blank=True,
-        null=True,
-        default=list
+        related_name='exercises_adaptive_for'
     )
 
     class Meta:
