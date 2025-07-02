@@ -71,32 +71,33 @@ class Exercise(models.Model):
         return self.name
 
 
-class WorkoutSession(models.Model):
-    user = models.ForeignKey(
-        CustomUser,
-        on_delete=models.CASCADE,
-        related_name='workout_sessions',
-        verbose_name="Utilisateur"
-    )
-    date = models.DateField(auto_now_add=True, verbose_name="Date de la séance")
-    notes = models.TextField(blank=True, null=True, verbose_name="Notes de la séance")
+# class WorkoutSession(models.Model):
+#     user = models.ForeignKey(
+#         CustomUser,
+#         on_delete=models.CASCADE,
+#         related_name='workout_sessions',
+#         verbose_name="Utilisateur"
+#     )
+#     date = models.DateField(auto_now_add=True, verbose_name="Date de la séance")
+#     notes = models.TextField(blank=True, null=True, verbose_name="Notes de la séance")
 
-    class Meta:
-        ordering = ['-date']
-        verbose_name = "Training session"
-        verbose_name_plural = "Trainings sessions"
+#     class Meta:
+#         ordering = ['-date']
+#         verbose_name = "Training session"
+#         verbose_name_plural = "Trainings sessions"
 
-    def __str__(self):
-        return f"Séance du {self.date} par {self.user.user_name}"
+#     def __str__(self):
+#         return f"Séance du {self.date} par {self.user.user_name}"
 
 
 class ExerciseEntry(models.Model):
-    session = models.ForeignKey(
-        WorkoutSession,
-        on_delete=models.CASCADE,
-        related_name='exercise_entries',
-        verbose_name="Séance d'entraînement"
-    )
+    # session = models.ForeignKey(
+    #    WorkoutSession,
+    #   on_delete=models.CASCADE,
+    #   related_name='exercise_entries',
+    #    verbose_name="Séance d'entraînement"
+    # )
+
     exercise = models.ForeignKey(
         Exercise,
         on_delete=models.CASCADE,
