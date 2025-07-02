@@ -3,51 +3,62 @@ import SkeletonPage from "../Skeleton/SkeletonPage";
 import ExercisesPage from "../Exercises/ExercisesPage";
 import Header from "../Exercises/Header";
 import SportProfileAlert from "../Login/Alert";
+import { fetchWithAuth } from "../../components/AccessToken"; // <-- Corrige ici
 import "./CombinedPage.css";
 
 const CombinedPage = () => {
   const [selectedZones, setSelectedZones] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState([]);
-  const [exerciseHistory, setExerciseHistory] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
 
   const user = { id: 1 };
 
   const handleZoneClick = (zoneName) => {
-    setSelectedZones((prevZones) => {
-      const newZones = [...prevZones, zoneName];
-      return newZones;
-    });
+    setSelectedZones((prevZones) => [...prevZones, zoneName]);
   };
 
   const handleZoneDeselect = (zoneName) => {
-    setSelectedZones((prevZones) => {
-      const newZones = prevZones.filter((zone) => zone !== zoneName);
-      return newZones;
-    });
+    setSelectedZones((prevZones) =>
+      prevZones.filter((zone) => zone !== zoneName)
+    );
   };
 
-  const handleExerciseSelect = (exercise) => {
-    console.log("Exercice sélectionné:", exercise);
-
-    // Ajouter l'exercice dashboard
+  const handleExerciseSelect = async (exercise) => {
     const exerciseWithTimestamp = {
       ...exercise,
       selectedAt: new Date().toISOString(),
       zones: selectedZones,
     };
 
-    setExerciseHistory((prev) => [...prev, exerciseWithTimestamp]);
+    console.log("Envoi au backend de l'exercice :", exerciseWithTimestamp);
 
-    // Ajouter exo selectionné
-    setSelectedExercises((prev) => {
-      const isAlreadySelected = prev.find((ex) => ex.name === exercise.name);
-      if (isAlreadySelected) {
-        return prev.filter((ex) => ex.name !== exercise.name);
+    // Envoi au backend avec fetchWithAuth (refresh automatique si besoin)
+    try {
+      const response = await fetchWithAuth(
+        "http://localhost:8000/api/entries/",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            exercises: exercise.id,
+            set: exerciseWithTimestamp.selectedAt,
+            user_id: user.id,
+            duration: exercise.duration,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      let data = await response.json();
+      if (response.ok) {
+        console.log("Exercice envoyé avec succès :", data);
       } else {
-        return [...prev, exerciseWithTimestamp];
+        throw new Error(data.detail || "Erreur lors de l'envoi de l'exercice");
       }
-    });
+    } catch (error) {
+      console.error("Erreur API POST:", error);
+    }
   };
 
   const handleShowAllExercises = () => {

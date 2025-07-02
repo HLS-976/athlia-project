@@ -15,6 +15,7 @@ import {
   GiStrong,
 } from "react-icons/gi";
 import "./ExercisesCards.css";
+import { fetchWithAuth } from "../../components/AccessToken.jsx";
 
 const iconByExerciseName = (name) => {
   const lower = name.toLowerCase();
@@ -47,46 +48,7 @@ const iconByExerciseName = (name) => {
   return GiWeightLiftingUp; // fallback
 };
 
-// Fonction pour obtenir un token d'accès valide
-const getAccessToken = async () => {
-  // D'abord, essayer d'utiliser l'access token stocké
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    return accessToken;
-  }
-
-  // Si pas d'access token, utiliser le refresh token
-  const refreshToken = localStorage.getItem("refreshToken");
-  if (!refreshToken) {
-    throw new Error("No refresh token available");
-  }
-
-  try {
-    const response = await fetch("http://localhost:8000/api/token/refresh/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        refresh: refreshToken,
-      }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      // Stocker le nouveau access token
-      localStorage.setItem("accessToken", data.access);
-      return data.access;
-    } else {
-      throw new Error("Failed to refresh token");
-    }
-  } catch (error) {
-    console.error("Error refreshing token:", error);
-    throw error;
-  }
-};
-
-const ExercicesCards = ({
+const ExercisesCards = ({
   selectedZones = [],
   onExerciseSelect = null,
   isExerciseSelected = null,
@@ -97,35 +59,27 @@ const ExercicesCards = ({
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        // Obtenir le token d'accès
-        const accessToken = await getAccessToken();
-
-        const response = await fetch("http://localhost:8000/api/exercises/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await fetchWithAuth(
+          "http://localhost:8000/api/exercises/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
+          console.log("Exercises fetched successfully");
           setExercises(data);
         } else {
-          if (response.status === 401) {
-            // Token invalide ou expiré : on déconnecte l'utilisateur
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            window.location.href = "/login";
-          } else {
-            const errorText = await response.text();
-            console.error(
-              "Failed to fetch exercises",
-              response.status,
-              errorText
-            );
-          }
+          const errorText = await response.text();
+          console.error(
+            "Failed to fetch exercises",
+            response.status,
+            errorText
+          );
         }
       } catch (error) {
         console.error("Error fetching exercises:", error);
@@ -212,4 +166,4 @@ const ExercicesCards = ({
   );
 };
 
-export default ExercicesCards;
+export default ExercisesCards;

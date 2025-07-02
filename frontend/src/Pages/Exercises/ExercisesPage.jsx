@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./Header";
 import ExercicesCards from "./ExercisesCards";
 import "./ExercisesPage.css";
+import { fetchWithAuth } from "../../components/AccessToken";
 
 /**
  * ExercisesPage component
@@ -24,10 +25,15 @@ const ExercisesPage = ({
   useEffect(() => {
     const fetchConstraints = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
-        const res = await fetch("http://localhost:8000/api/constraints/", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const res = await fetchWithAuth(
+          "http://localhost:8000/api/constraints/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         const data = await res.json();
         setConstraints(Array.isArray(data) ? data : data.results || []);
       } catch (err) {

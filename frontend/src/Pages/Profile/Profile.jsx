@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Profile.css";
 import Header from "../Dashboard/Header";
+import { fetchWithAuth } from "../../components/AccessToken";
 
 function ProfilePage() {
   const [sportProfile, setSportProfile] = useState({
@@ -26,13 +27,12 @@ function ProfilePage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const accessToken = localStorage.getItem("accessToken");
-
         // 1. Charger les contraintes physiques d'abord
-        const constraintsRes = await fetch(
+        const constraintsRes = await fetchWithAuth(
           "http://localhost:8000/api/constraints/",
           {
-            headers: { Authorization: `Bearer ${accessToken}` },
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
           }
         );
         const constraintsData = await constraintsRes.json();
@@ -52,10 +52,11 @@ function ProfilePage() {
         setConstraints(constraintsArray);
 
         // 2. Charger le profil sportif ensuite (optionnel)
-        const profileRes = await fetch(
+        const profileRes = await fetchWithAuth(
           "http://localhost:8000/api/sport-profiles/",
           {
-            headers: { Authorization: `Bearer ${accessToken}` },
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
           }
         );
         const profiles = await profileRes.json();
@@ -70,7 +71,6 @@ function ProfilePage() {
 
         if (!myProfile || !myProfile.id) {
           console.warn("Aucun profil sportif trouvé !");
-          // On ne retourne pas ici, pour que les contraintes restent affichées
           setSportProfile({
             id: null,
             age: "",
@@ -112,7 +112,6 @@ function ProfilePage() {
 
   const handleSportSubmit = async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
       const method = sportProfile.id ? "PUT" : "POST";
       const url = sportProfile.id
         ? `http://localhost:8000/api/sport-profiles/${sportProfile.id}/`
@@ -123,15 +122,13 @@ function ProfilePage() {
         goals: sportProfile.goals,
         level_user: sportProfile.level_user,
         constraints: sportProfile.constraints,
-        // Ajoute l'utilisateur seulement pour la création (POST)
         ...(method === "POST" && { user: user.id }),
       };
 
-      const response = await fetch(url, {
+      const response = await fetchWithAuth(url, {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(body),
       });
@@ -142,7 +139,6 @@ function ProfilePage() {
             ? "Profil sportif créé !"
             : "Profil sportif mis à jour !"
         );
-        // Recharge le profil sportif après création/mise à jour
         // (optionnel) : tu peux rappeler fetchData() ici si tu veux rafraîchir l'affichage
       } else {
         alert("Erreur lors de la sauvegarde du profil sportif.");
@@ -157,14 +153,12 @@ function ProfilePage() {
     e.preventDefault();
     setPasswordMsg("");
     try {
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await fetch(
+      const response = await fetchWithAuth(
         "http://localhost:8000/api/change-password/",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             old_password: oldPassword,
