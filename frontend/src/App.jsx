@@ -9,6 +9,7 @@ import SkeletonPage from "./Pages/Skeleton/SkeletonPage";
 import CombinedPage from "./Pages/CombinedPage/CombinedPage";
 import PrivateRoute from "./components/PrivateRoute";
 import "./App.css";
+import ProfilePage from "./Pages/Profile/Profile";
 
 function App() {
   return (
@@ -19,6 +20,14 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUpPage />} />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <ProfilePage />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/dashboard"
               element={

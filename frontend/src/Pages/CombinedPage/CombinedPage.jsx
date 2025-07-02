@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SkeletonPage from "../Skeleton/SkeletonPage";
 import ExercisesPage from "../Exercises/ExercisesPage";
 import Header from "../Exercises/Header";
-import SportProfileAlert from "./Alert";
+import SportProfileAlert from "../Login/Alert";
 import "./CombinedPage.css";
 
 const CombinedPage = () => {

@@ -18,31 +18,33 @@ const SportProfileAlert = ({ user, show, setShow }) => {
     const justLoggedIn = localStorage.getItem("justAuthenticated") === "true";
     if (!justLoggedIn) return;
 
-    const fetchSportProfile = async () => {
+    async function fetchSportProfile() {
       try {
-        const response = await fetch(
-          `http://localhost:8000/api/sport-profiles/${user.id}/`
+        const accessToken = localStorage.getItem("accessToken");
+        const profileRes = await fetch(
+          "http://localhost:8000/api/sport-profiles/",
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
         );
+        const profiles = await profileRes.json();
+        console.log("Fetched sport profiles:", profiles);
 
-        if (!response.ok) {
+        if (!profiles || !Array.isArray(profiles) || profiles.length === 0) {
           console.log("No sport profile found for user:", user.id);
-          throw new Error("No profile found");
-        }
-
-        const profile = await response.json();
-
-        if (!profile || Object.keys(profile).length === 0) {
           setShow(true);
         } else {
-          console.log("Sport profile found:", profile);
+          console.log("User data:", user);
+          console.log("Profil sportif :", profiles);
+          setShow(false);
         }
       } catch (error) {
         console.error(error);
         setShow(true);
       } finally {
-        localStorage.removeItem("justAuthenticated"); // Prevents being stuck
+        localStorage.removeItem("justAuthenticated");
       }
-    };
+    }
 
     fetchSportProfile();
   }, [user, setShow]);
@@ -60,7 +62,7 @@ const SportProfileAlert = ({ user, show, setShow }) => {
         <button
           onClick={() => {
             setShow(false);
-            localStorage.removeItem("justAuthenticated"); // IMPORTANT !
+            localStorage.removeItem("justAuthenticated");
           }}
           className="alert-button"
         >
