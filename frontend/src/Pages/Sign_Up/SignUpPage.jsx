@@ -65,16 +65,13 @@ function SignUpPage() {
 
     // Send registration request to backend
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/users/register/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("http://localhost:8000/api/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       console.log("Data fetched successfully");
       const data = await response.json();
