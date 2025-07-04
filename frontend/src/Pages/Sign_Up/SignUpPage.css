@@ -1,5 +1,5 @@
 #signup-container {
-  max-width: 400px;
+  max-width: 500px; /* Augmenter la largeur pour accommoder deux colonnes */
   margin: 100px auto;
   padding: 40px;
   background-color: white;
@@ -17,14 +17,83 @@
 #signup {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 15px; /* Augmenter de 15px à 20px pour plus d'espace */
 }
 
-#signup input {
+/* Style pour tous les éléments directs du formulaire */
+#signup > * {
+  margin: 0 !important;
+}
+
+/* Wrapper pour les noms - deux colonnes */
+#names {
+  display: flex;
+  gap: 15px; /* Garder 15px entre les champs côte à côte */
+  margin: 0 !important;
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 !important;
+}
+
+/* Wrapper pour les mots de passe - deux colonnes */
+#passwords {
+  display: flex;
+  gap: 15px; /* Garder 15px entre les champs côte à côte */
+  margin: 0 !important;
+}
+
+.password-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 !important;
+}
+
+/* Ajuster la taille de police pour les labels longs */
+.password-field label {
+  font-size: 0.9rem !important; /* Réduire légèrement la taille */
+  line-height: 1.2 !important;
+}
+
+/* Ou forcer le retour à la ligne */
+.password-field label {
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Tous les groupes de champs */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+}
+
+/* TOUS les labels - espacement uniforme */
+#signup label,
+.name label,
+.password-field label,
+.field-group label {
+  margin: 0 !important;
+  margin-bottom: 5px !important;
+  font-weight: 500;
+  color: #333;
+  display: block;
+}
+
+/* TOUS les inputs - espacement uniforme */
+#signup input,
+.name input,
+.password-field input,
+.field-group input {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
+  margin: 0 !important;
 }
 
 #signup button {
@@ -36,35 +105,84 @@
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s;
+  margin-top: 10px !important;
 }
 
 #signup button:hover {
-  background-color: #1e4ed8;
+  background-color: #1e4fc7;
 }
 
-#names {
+/* Conteneur des termes et conditions */
+#terms-container {
   display: flex;
-  font-size: 1rem;
-  flex-wrap: wrap;
-  gap: 15px;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.9rem;
+  margin: 0 !important;
 }
 
-.name {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
+#terms-container input[type="checkbox"] {
+  margin-top: 3px !important;
+  cursor: pointer;
 }
 
+#terms-container label {
+  line-height: 1.4;
+  cursor: pointer;
+  margin: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+#terms-container a {
+  color: #2460f2;
+  text-decoration: none;
+}
+
+#terms-container a:hover {
+  text-decoration: underline;
+}
+
+/* Messages d'erreur */
+#error {
+  color: red;
+  font-size: 0.85rem;
+  margin: 0 !important;
+}
+
+/* Message de succès */
 #success-msg {
   text-align: center;
   color: green;
   font-weight: bold;
+  margin: 0 !important;
 }
 
-#error {
-  color: red;
-  font-size: 0.85rem;
-  margin-top: 6px;
-  margin-bottom: 12px;
+/* Lien vers la page de connexion */
+#signup-link {
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 0 !important;
+}
+
+#signup-link a {
+  color: #2460f2;
+  text-decoration: none;
+}
+
+#signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design pour mobiles */
+@media (max-width: 600px) {
+  #signup-container {
+    max-width: 400px; /* Revenir à une colonne sur mobile */
+    padding: 20px;
+  }
+
+  #names,
+  #passwords {
+    flex-direction: column; /* Passer en colonne sur mobile */
+    gap: 15px;
+  }
 }

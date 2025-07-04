@@ -10,7 +10,7 @@ import "./SignUpPage.css";
  *
  * - The returned JSX contains:
  *   - The header bar at the top.
- *   - A signup form with fields for first name, last name, username, email, and password.
+ *   - A signup form with fields for first name, last name, username, email, password, password confirmation, and terms acceptance.
  *   - Error messages if registration fails or fields are invalid.
  *   - A submit button for creating an account.
  *   - A link to the login page for existing users.
@@ -23,7 +23,11 @@ function SignUpPage() {
     user_name: "",
     email: "",
     password: "",
+    confirmPassword: "", // Nouveau champ
   });
+
+  // State for checkbox
+  const [acceptTerms, setAcceptTerms] = useState(false); // Nouveau state
 
   // State for error messages and submission status
   const [errorMsg, setErrorMsg] = useState([]);
@@ -35,6 +39,11 @@ function SignUpPage() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  // Handles the checkbox change
+  const handleTermsChange = (e) => {
+    setAcceptTerms(e.target.checked);
   };
 
   // Handles the signup form submission.
@@ -63,14 +72,28 @@ function SignUpPage() {
       return;
     }
 
-    // Send registration request to backend
+    // Validate password confirmation
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMsg(["Passwords do not match"]);
+      return;
+    }
+
+    // Validate terms acceptance
+    if (!acceptTerms) {
+      setErrorMsg(["You must accept the terms and conditions"]);
+      return;
+    }
+
+    // Send registration request to backend (exclude confirmPassword)
     try {
+      const { confirmPassword: _, ...dataToSend } = formData;
+
       const response = await fetch("http://localhost:8000/api/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
       console.log("Data fetched successfully");
@@ -105,69 +128,109 @@ function SignUpPage() {
         <Header />
       </header>
       <div id="signup-container">
-        <h2>Sign up</h2>
+        <h2>Inscription</h2>
         {/* Success message after registration */}
         {submitted ? (
-          <p id="success-msg">Welcome to Athlia ! 🎉</p>
+          <p id="success-msg">Bienvenue chez Athlia ! 🎉</p>
         ) : (
           // Signup form
           <form id="signup" onSubmit={handleSubmit}>
+            {/* First name and Last name in two columns */}
             <div id="names">
-              {/* First name input */}
               <div className="name">
-                <label>First name : </label>
+                <label>Prénom : </label>
                 <input
                   type="text"
                   name="first_name"
                   value={formData.first_name}
                   onChange={handleChange}
-                  placeholder="Enter your first name"
                   required
                 />
               </div>
-              {/* Last name input */}
+
               <div className="name">
-                <label>Last name : </label>
+                <label>Nom : </label>
                 <input
                   type="text"
                   name="last_name"
                   value={formData.last_name}
                   onChange={handleChange}
-                  placeholder="Enter your last name"
                   required
                 />
               </div>
             </div>
+
             {/* Username input */}
-            <label>Username* : </label>
-            <input
-              type="text"
-              name="user_name"
-              value={formData.user_name}
-              onChange={handleChange}
-              placeholder="Enter your user_name"
-              required
-            />
+            <div className="field-group">
+              <label>Nom d'utilisateur* : </label>
+              <input
+                type="text"
+                name="user_name"
+                value={formData.user_name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
             {/* Email input */}
-            <label>Email* : </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              required
-            />
-            {/* Password input */}
-            <label>Password* : </label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              required
-            />
+            <div className="field-group">
+              <label>Email* : </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Password and Confirm Password in two columns */}
+            <div id="passwords">
+              <div className="password-field">
+                <label>Mot de passe* : </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="password-field">
+                <label>Confirmer le mot de passe* : </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Terms and Conditions */}
+            <div id="terms-container">
+              <input
+                type="checkbox"
+                id="accept-terms"
+                checked={acceptTerms}
+                onChange={handleTermsChange}
+                required
+              />
+              <label htmlFor="accept-terms">
+                J'accepte les{" "}
+                <Link to="/terms" target="_blank" rel="noopener noreferrer">
+                  Conditions Générales
+                </Link>{" "}
+                et la{" "}
+                <Link to="/privacy" target="_blank" rel="noopener noreferrer">
+                  Politique de Confidentialité
+                </Link>
+                *
+              </label>
+            </div>
+
             {/* Error messages */}
             {errorMsg.length > 0 &&
               errorMsg.map((msg, i) => (
@@ -175,11 +238,13 @@ function SignUpPage() {
                   {msg}
                 </p>
               ))}
+
             {/* Submit button */}
-            <button type="submit">Sign Up</button>
+            <button type="submit">S'inscrire</button>
+
             {/* Link to login page */}
             <p id="signup-link">
-              Have an account? <Link to="/login">login</Link>
+              Vous avez un compte ? <Link to="/login">Se connecter</Link>
             </p>
           </form>
         )}

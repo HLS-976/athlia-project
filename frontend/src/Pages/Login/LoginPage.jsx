@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./Header";
 import "./LoginPage.css";
 
@@ -28,11 +28,18 @@ function LoginPage() {
   // State for error messages and submission status
   const [errorMsg, setErrorMsg] = useState([]);
 
-  // State for form fields and error message
+  // State for form fields - récupérer l'email sauvegardé
   const [formData, setFormData] = useState({
-    email: "",
+    email: localStorage.getItem("rememberedEmail") || "",
     password: "",
   });
+
+  // Sauvegarder l'email dans localStorage quand il change
+  useEffect(() => {
+    if (formData.email.trim() !== "") {
+      localStorage.setItem("rememberedEmail", formData.email);
+    }
+  }, [formData.email]);
 
   //Handles the signup form submission.
   const handleChange = (e) => {
@@ -90,6 +97,9 @@ function LoginPage() {
         localStorage.setItem("refreshToken", data.refresh);
         localStorage.setItem("justAuthenticated", "true");
 
+        // Sauvegarder l'email pour la prochaine connexion
+        localStorage.setItem("rememberedEmail", formData.email);
+
         // Optional: log token for debugging
         console.log("Tokens correctly saved:", data);
 
@@ -125,41 +135,50 @@ function LoginPage() {
 
   return (
     <main>
-      {/* Top header bar */}
       <header>
         <Header />
       </header>
       <div id="login-container">
-        <h2>Welcome Back</h2>
-        {/* Login form */}
+        <h2>Connexion</h2>
         <form id="login" onSubmit={handleLogin}>
-          {/* Email input */}
-          <label>Email</label>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          {/* Password input */}
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          {/* Error message */}
-          {errorMsg && <p id="error">{errorMsg}</p>}
+          {/* Username or Email field */}
+          <div className="field-group">
+            <label>Email* : </label>
+            <input
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Password field */}
+          <div className="field-group">
+            <label>Mot de passe* : </label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Error messages */}
+          {errorMsg.length > 0 &&
+            errorMsg.map((msg, i) => (
+              <p key={i} id="error">
+                {msg}
+              </p>
+            ))}
+
           {/* Submit button */}
-          <button type="submit">Log In</button>
-          {/* Signup link */}
+          <button type="submit">Se connecter</button>
+
+          {/* Link to signup page */}
           <p id="signup-link">
-            Don't have an account? <Link to="/signup">Sign up</Link>
+            Pas encore de compte ? <Link to="/signup">S'inscrire</Link>
           </p>
         </form>
       </div>

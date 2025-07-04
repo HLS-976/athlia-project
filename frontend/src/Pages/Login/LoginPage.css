@@ -1,7 +1,7 @@
 #login-container {
-  max-width: 400px;
+  max-width: 500px; /* Augmenter de 400px à 500px comme signup */
   margin: 100px auto;
-  padding: 40px;
+  padding: 50px; /* Augmenter de 40px à 50px pour plus d'espace */
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.05);
@@ -9,7 +9,7 @@
 }
 
 #login-container h2 {
-  margin-bottom: 30px;
+  margin-bottom: 40px; /* Augmenter de 30px à 40px */
   color: #1f1f1f;
   text-align: center;
 }
@@ -17,18 +17,43 @@
 #login {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px; /* Espacement entre les champs */
 }
 
-#login input {
-  padding: 12px;
+/* Style pour tous les éléments directs du formulaire */
+#login > * {
+  margin: 0 !important;
+}
+
+/* Tous les groupes de champs */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+}
+
+/* TOUS les labels - espacement uniforme */
+#login label,
+.field-group label {
+  margin: 0 !important;
+  margin-bottom: 8px !important;
+  font-weight: 500;
+  color: #333;
+  display: block;
+}
+
+/* TOUS les inputs - espacement uniforme */
+#login input,
+.field-group input {
+  padding: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
+  margin: 0 !important;
 }
 
 #login button {
-  padding: 12px;
+  padding: 15px;
   background-color: #2460f2;
   color: white;
   border: none;
@@ -39,18 +64,57 @@
 }
 
 #login button:hover {
-  background-color: #1e4ed8;
+  background-color: #1e4fc7;
 }
 
-#signup-link {
-  font-size: 0.9rem;
-  color: #777;
-  margin-top: 10px;
-}
-
+/* Messages d'erreur */
 #error {
   color: red;
   font-size: 0.85rem;
-  margin-top: 6px;
-  margin-bottom: 12px;
+  margin: 0 !important;
+}
+
+/* Message de succès */
+#success-msg {
+  text-align: center;
+  color: green;
+  font-weight: bold;
+  margin: 0 !important;
+}
+
+/* Lien vers la page d'inscription */
+#signup-link {
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 0 !important;
+  margin-top: -15px !important; /* Augmenter de -10px à -15px pour encore moins d'espace */
+}
+
+#signup-link a {
+  color: #2460f2;
+  text-decoration: none;
+}
+
+#signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design pour mobiles */
+@media (max-width: 600px) {
+  #login-container {
+    max-width: 400px;
+    padding: 30px;
+  }
+
+  #login {
+    gap: 20px;
+  }
+
+  #login button {
+    margin-top: -10px !important;
+  }
+
+  #signup-link {
+    margin-top: -10px !important; /* Ajuster de -5px à -10px sur mobile aussi */
+  }
 }
