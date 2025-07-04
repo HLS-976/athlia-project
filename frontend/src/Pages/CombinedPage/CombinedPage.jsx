@@ -3,7 +3,6 @@ import SkeletonPage from "../Skeleton/SkeletonPage";
 import ExercisesPage from "../Exercises/ExercisesPage";
 import Header from "../Exercises/Header";
 import SportProfileAlert from "../Login/Alert";
-import { fetchWithAuth } from "../../components/AccessToken"; // <-- Corrige ici
 import "./CombinedPage.css";
 
 const CombinedPage = () => {
@@ -23,42 +22,17 @@ const CombinedPage = () => {
     );
   };
 
-  const handleExerciseSelect = async (exercise) => {
-    const exerciseWithTimestamp = {
-      ...exercise,
-      selectedAt: new Date().toISOString(),
-      zones: selectedZones,
-    };
-
-    console.log("Envoi au backend de l'exercice :", exerciseWithTimestamp);
-
-    // Envoi au backend avec fetchWithAuth (refresh automatique si besoin)
-    try {
-      const response = await fetchWithAuth(
-        "http://localhost:8000/api/entries/",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            exercises: exercise.id,
-            set: exerciseWithTimestamp.selectedAt,
-            user_id: user.id,
-            duration: exercise.duration,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      let data = await response.json();
-      if (response.ok) {
-        console.log("Exercice envoyé avec succès :", data);
+  const handleExerciseSelect = (exercise) => {
+    setSelectedExercises((prev) => {
+      const isAlreadySelected = prev.some((ex) => ex.id === exercise.id);
+      if (isAlreadySelected) {
+        // Désélectionner
+        return prev.filter((ex) => ex.id !== exercise.id);
       } else {
-        throw new Error(data.detail || "Erreur lors de l'envoi de l'exercice");
+        // Sélectionner
+        return [...prev, exercise];
       }
-    } catch (error) {
-      console.error("Erreur API POST:", error);
-    }
+    });
   };
 
   const handleShowAllExercises = () => {

@@ -16,6 +16,7 @@ import {
 } from "react-icons/gi";
 import "./ExercisesCards.css";
 import { fetchWithAuth } from "../../components/AccessToken.jsx";
+import ExercisesHistoryCard from "./ExercisesHistoryCard.jsx";
 
 const iconByExerciseName = (name) => {
   const lower = name.toLowerCase();
@@ -52,9 +53,10 @@ const ExercisesCards = ({
   selectedZones = [],
   onExerciseSelect = null,
   isExerciseSelected = null,
-  selectedConstraint = "", // <-- ajouter cette prop
+  selectedConstraint = "",
 }) => {
   const [exercises, setExercises] = useState([]);
+  const [selectedExercises, setSelectedExercises] = useState([]); // État local
 
   useEffect(() => {
     const fetchExercises = async () => {
@@ -127,6 +129,37 @@ const ExercisesCards = ({
     );
   }
 
+  // Fonction pour gérer la sélection d'un exercice
+  const handleExerciseClick = (exercise) => {
+    const isAlreadySelected = selectedExercises.some(
+      (ex) => ex.id === exercise.id
+    );
+
+    if (isAlreadySelected) {
+      // Désélectionner
+      setSelectedExercises((prev) =>
+        prev.filter((ex) => ex.id !== exercise.id)
+      );
+    } else {
+      // Sélectionner
+      setSelectedExercises((prev) => [...prev, exercise]);
+    }
+
+    // Appeler la fonction parent si elle existe
+    if (onExerciseSelect) {
+      onExerciseSelect(exercise);
+    }
+  };
+
+  // Fonction pour vérifier si un exercice est sélectionné
+  const isSelected = (exercise) => {
+    // Utilise la fonction parent si elle existe, sinon l'état local
+    if (isExerciseSelected) {
+      return isExerciseSelected(exercise.name);
+    }
+    return selectedExercises.some((ex) => ex.id === exercise.id);
+  };
+
   return (
     <section id="cards-features">
       <div
@@ -139,23 +172,24 @@ const ExercisesCards = ({
       >
         {filteredExercises.map((ex, idx) => {
           const Icon = iconByExerciseName(ex.name);
-          const selected = isExerciseSelected
-            ? isExerciseSelected(ex.name)
-            : false;
+          const selected = isSelected(ex);
+
           return (
             <div
               key={idx}
               className={`card ${selected ? "exercise-card-selected" : ""}`}
-              onClick={() => onExerciseSelect && onExerciseSelect(ex)}
+              onClick={() => handleExerciseClick(ex)}
             >
+              {/* Ajoute l'icône ici */}
               <div className="card-icon">
                 <Icon size={32} style={{ color: "#2460f2" }} />
               </div>
+
               <h3>{ex.name}</h3>
               <p>{ex.description}</p>
               {selected && (
-                <div className="exercise-status">
-                  <span className="status-text">Ajouté à l'historique</span>
+                <div className="exercise-history-card">
+                  <ExercisesHistoryCard exercise={ex} isSelected={selected} />
                 </div>
               )}
             </div>

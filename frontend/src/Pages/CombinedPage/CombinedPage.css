@@ -28,7 +28,8 @@
   flex-wrap: wrap;
 }
 
-.show-all-btn, .clear-all-btn {
+.show-all-btn,
+.clear-all-btn {
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -101,15 +102,24 @@
 #cards-features {
   display: flex;
   justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 10px 40px 10px;
+  box-sizing: border-box;
+  align-items: flex-start;
 }
 
-#cards-features > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-  max-width: 1200px;
+.card {
+  width: 240px;
+  height: 240px;
+  max-width: 340px;
+  min-width: 220px;
+  margin: 0;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  transition: all 0.4s ease;
 }
 
 .exercises-header {
@@ -136,9 +146,11 @@
 }
 
 .exercise-card {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.9) 0%, 
-    rgba(255, 255, 255, 0.7) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
   color: #1f1f1f;
   padding: 25px 20px;
   border-radius: 20px;
@@ -149,23 +161,23 @@
   border: 1px solid rgba(224, 224, 224, 0.3);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
   min-width: 220px;
 }
 
 .exercise-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, 
-    rgba(36, 96, 242, 0.05) 0%, 
-    rgba(74, 222, 128, 0.05) 100%);
+  background: linear-gradient(
+    45deg,
+    rgba(36, 96, 242, 0.05) 0%,
+    rgba(74, 222, 128, 0.05) 100%
+  );
   border-radius: 20px;
   z-index: 0;
   opacity: 0;
@@ -175,13 +187,13 @@
 
 .exercise-card:hover {
   transform: translateY(-8px) scale(1.02);
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.95) 0%, 
-    rgba(255, 255, 255, 0.8) 100%);
-  box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   border-color: rgba(36, 96, 242, 0.2);
 }
 
@@ -234,9 +246,11 @@
 }
 
 .zone-tag {
-  background: linear-gradient(135deg, 
-    rgba(36, 96, 242, 0.1) 0%, 
-    rgba(74, 222, 128, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(36, 96, 242, 0.1) 0%,
+    rgba(74, 222, 128, 0.1) 100%
+  );
   color: #2460f2;
   padding: 6px 12px;
   border-radius: 15px;
@@ -248,21 +262,23 @@
 }
 
 .zone-tag:hover {
-  background: linear-gradient(135deg, 
-    rgba(36, 96, 242, 0.2) 0%, 
-    rgba(74, 222, 128, 0.2) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(36, 96, 242, 0.2) 0%,
+    rgba(74, 222, 128, 0.2) 100%
+  );
   transform: translateY(-1px);
 }
 
 .exercise-card-selected {
-  background: linear-gradient(135deg, 
-    rgba(255, 215, 0, 0.95) 0%, 
-    rgba(255, 237, 78, 0.9) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.95) 0%,
+    rgba(255, 237, 78, 0.9) 100%
+  );
   border: 2px solid #ffd700;
-  box-shadow: 
-    0 20px 40px rgba(255, 215, 0, 0.3),
-    0 0 0 1px rgba(255, 215, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3),
+    0 0 0 1px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transform: translateY(-5px) scale(1.02);
 }
 
@@ -293,16 +309,16 @@
 }
 
 @keyframes pulse {
-  0% { 
-    transform: scale(1); 
+  0% {
+    transform: scale(1);
     box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
   }
-  50% { 
-    transform: scale(1.1); 
+  50% {
+    transform: scale(1.1);
     box-shadow: 0 6px 16px rgba(40, 167, 69, 0.6);
   }
-  100% { 
-    transform: scale(1); 
+  100% {
+    transform: scale(1);
     box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
   }
 }
@@ -315,9 +331,11 @@
 }
 
 .status-text {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.9) 0%, 
-    rgba(255, 255, 255, 0.7) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -328,19 +346,164 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Gardez seulement les styles spécifiques à la page combinée */
+.combined-page .exercise-history-card {
+  max-height: none !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+  transition: all 0.4s ease-out;
+}
+
+.combined-page .card.exercise-card-selected .exercise-history-card {
+  max-height: none !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+/* Ajustez la largeur des cartes pour accommoder le formulaire */
+.combined-page .card {
+  min-height: auto;
+  height: auto;
+}
+
+/* Styles spécifiques pour les cartes sélectionnées */
+.card.exercise-card-selected {
+  height: auto !important;
+  min-height: 400px !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding-bottom: 25px; /* Espace pour le formulaire */
+  align-self: flex-start !important; /* Force l'alignement en haut */
+  /* Ajouter une transformation pour éviter l'impact sur les autres cartes */
+  position: relative;
+  z-index: 10;
+}
+
+/* Importez les styles du formulaire directement */
+.combined-page .exercise-history-form {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.combined-page .exercise-history-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.combined-page .exercise-history-form input,
+.combined-page .exercise-history-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+}
+
+.combined-page .exercise-history-form input:focus,
+.combined-page .exercise-history-form textarea:focus {
+  outline: none;
+  border-color: #2460f2;
+  box-shadow: 0 0 0 2px rgba(36, 96, 242, 0.1);
+}
+
+.combined-page .exercise-history-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.combined-page .submit-button {
+  width: 100%;
+  padding: 10px;
+  background: #2460f2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.combined-page .submit-button:hover:not(:disabled) {
+  background: #1a4bc7;
+}
+
+.combined-page .submit-button.submitting {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.combined-page .submit-message {
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.combined-page .submit-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.combined-page .submit-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .combined-content {
     flex-direction: column;
   }
-  
+
   .skeleton-section {
     height: 50vh;
     border-right: none;
     border-bottom: 1px solid #e0e0e0;
   }
-  
+
   .exercises-grid {
     grid-template-columns: 1fr;
   }
-} 
+}
+
+@media (max-width: 1200px) {
+  .card {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+@media (max-width: 900px) {
+  .card {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 600px) {
+  #cards-features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 280px;
+    max-width: 90%;
+  }
+}
