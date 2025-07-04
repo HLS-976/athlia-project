@@ -122,4 +122,4 @@ class ExerciseEntry(models.Model):
 
         details_str = ", ".join(performance_details) if performance_details else "Détails non spécifiés"
 
-        return f"{self.exercise.name} ({details_str}) - Séance du {self.session.date}"
+        return f"{self.exercise.name} ({details_str})"
