@@ -1,6 +1,7 @@
-import Header from "./Header.jsx";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Header from "./Header";
 import "./SignUpPage.css";
 
 /**
@@ -32,6 +33,26 @@ function SignUpPage() {
   // State for error messages and submission status
   const [errorMsg, setErrorMsg] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+  const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(10);
+
+  // Décompte et redirection après inscription réussie
+  useEffect(() => {
+    if (submitted) {
+      const timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            navigate("/login");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [submitted, navigate]);
 
   //Handles the signup form submission.
   const handleChange = (e) => {
@@ -128,125 +149,135 @@ function SignUpPage() {
         <Header />
       </header>
       <div id="signup-container">
-        <h2>Inscription</h2>
         {/* Success message after registration */}
         {submitted ? (
-          <p id="success-msg">Bienvenue chez Athlia ! 🎉</p>
+          <div id="success-msg">
+            <div className="success-content">
+              <h1>Bienvenue chez Athlia ! 🎉</h1>
+              <p className="countdown-text">
+                Redirection vers la connexion dans {countdown} seconde
+                {countdown !== 1 ? "s" : ""}...
+              </p>
+            </div>
+          </div>
         ) : (
-          // Signup form
-          <form id="signup" onSubmit={handleSubmit}>
-            {/* First name and Last name in two columns */}
-            <div id="names">
-              <div className="name">
-                <label>Prénom : </label>
+          <>
+            <h2>Inscription</h2>
+            {/* Signup form */}
+            <form id="signup" onSubmit={handleSubmit}>
+              {/* First name and Last name in two columns */}
+              <div id="names">
+                <div className="name">
+                  <label>Prénom : </label>
+                  <input
+                    type="text"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="name">
+                  <label>Nom : </label>
+                  <input
+                    type="text"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Username input */}
+              <div className="field-group">
+                <label>Nom d'utilisateur* : </label>
                 <input
                   type="text"
-                  name="first_name"
-                  value={formData.first_name}
+                  name="user_name"
+                  value={formData.user_name}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              <div className="name">
-                <label>Nom : </label>
+              {/* Email input */}
+              <div className="field-group">
+                <label>Email* : </label>
                 <input
-                  type="text"
-                  name="last_name"
-                  value={formData.last_name}
+                  type="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleChange}
                   required
                 />
               </div>
-            </div>
 
-            {/* Username input */}
-            <div className="field-group">
-              <label>Nom d'utilisateur* : </label>
-              <input
-                type="text"
-                name="user_name"
-                value={formData.user_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+              {/* Password and Confirm Password in two columns */}
+              <div id="passwords">
+                <div className="password-field">
+                  <label>Mot de passe* : </label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-            {/* Email input */}
-            <div className="field-group">
-              <label>Email* : </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+                <div className="password-field">
+                  <label>Confirmer le mot de passe* : </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
 
-            {/* Password and Confirm Password in two columns */}
-            <div id="passwords">
-              <div className="password-field">
-                <label>Mot de passe* : </label>
+              {/* Terms and Conditions */}
+              <div id="terms-container">
                 <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
+                  type="checkbox"
+                  id="accept-terms"
+                  checked={acceptTerms}
+                  onChange={handleTermsChange}
                   required
                 />
+                <label htmlFor="accept-terms">
+                  J'accepte les{" "}
+                  <Link to="/terms" target="_blank" rel="noopener noreferrer">
+                    Conditions Générales
+                  </Link>{" "}
+                  et la{" "}
+                  <Link to="/privacy" target="_blank" rel="noopener noreferrer">
+                    Politique de Confidentialité
+                  </Link>
+                  *
+                </label>
               </div>
 
-              <div className="password-field">
-                <label>Confirmer le mot de passe* : </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
+              {/* Error messages */}
+              {errorMsg.length > 0 &&
+                errorMsg.map((msg, i) => (
+                  <p key={i} id="error">
+                    {msg}
+                  </p>
+                ))}
 
-            {/* Terms and Conditions */}
-            <div id="terms-container">
-              <input
-                type="checkbox"
-                id="accept-terms"
-                checked={acceptTerms}
-                onChange={handleTermsChange}
-                required
-              />
-              <label htmlFor="accept-terms">
-                J'accepte les{" "}
-                <Link to="/terms" target="_blank" rel="noopener noreferrer">
-                  Conditions Générales
-                </Link>{" "}
-                et la{" "}
-                <Link to="/privacy" target="_blank" rel="noopener noreferrer">
-                  Politique de Confidentialité
-                </Link>
-                *
-              </label>
-            </div>
+              {/* Submit button */}
+              <button type="submit">S'inscrire</button>
 
-            {/* Error messages */}
-            {errorMsg.length > 0 &&
-              errorMsg.map((msg, i) => (
-                <p key={i} id="error">
-                  {msg}
-                </p>
-              ))}
-
-            {/* Submit button */}
-            <button type="submit">S'inscrire</button>
-
-            {/* Link to login page */}
-            <p id="signup-link">
-              Vous avez un compte ? <Link to="/login">Se connecter</Link>
-            </p>
-          </form>
+              {/* Link to login page */}
+              <p id="signup-link">
+                Vous avez un compte ? <Link to="/login">Se connecter</Link>
+              </p>
+            </form>
+          </>
         )}
       </div>
     </main>

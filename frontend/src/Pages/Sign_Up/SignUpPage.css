@@ -152,9 +152,42 @@
 /* Message de succès */
 #success-msg {
   text-align: center;
-  color: green;
+  color: #000000;
   font-weight: bold;
-  margin: 0 !important;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 60px 40px;
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column; /* Empiler verticalement */
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  gap: 15px; /* Espace entre les deux lignes */
+}
+
+.success-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.success-content h1 {
+  margin: 0;
+  color: #000000;
+  font-size: 1.4rem;
+  white-space: nowrap; /* Empêcher le retour à la ligne */
+}
+
+.countdown-text {
+  margin: 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: normal;
+  font-style: italic;
+  white-space: nowrap; /* Empêcher le retour à la ligne */
 }
 
 /* Lien vers la page de connexion */
