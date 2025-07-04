@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from user_account.models import CustomUser
 from .models import Exercise, CategoryExercise, ExerciseEntry
+import datetime
 from .serializers import (
     ExerciseSerializer,
     CategoryExerciseSerializer,

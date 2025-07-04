@@ -4,6 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from user_account.models import CustomUser
 from sport_profile.models import ConstraintField
 from user_account.models import CustomUser
+from django.utils.timezone import now
 # Create your models here.
 class CategoryExercise(models.Model):
     name = models.CharField(max_length=150, blank=True, null=True, unique=True)
@@ -72,25 +73,6 @@ class Exercise(models.Model):
         return self.name
 
 
-# class WorkoutSession(models.Model):
-#     user = models.ForeignKey(
-#         CustomUser,
-#         on_delete=models.CASCADE,
-#         related_name='workout_sessions',
-#         verbose_name="Utilisateur"
-#     )
-#     date = models.DateField(auto_now_add=True, verbose_name="Date de la séance")
-#     notes = models.TextField(blank=True, null=True, verbose_name="Notes de la séance")
-
-#     class Meta:
-#         ordering = ['-date']
-#         verbose_name = "Training session"
-#         verbose_name_plural = "Trainings sessions"
-
-#     def __str__(self):
-#         return f"Séance du {self.date} par {self.user.user_name}"
-
-
 class ExerciseEntry(models.Model):
 
     user = models.ForeignKey(
@@ -108,6 +90,7 @@ class ExerciseEntry(models.Model):
     reps = models.IntegerField(blank=True, null=True, verbose_name="Répétitions")
     duration_minutes = models.IntegerField(blank=True, null=True, verbose_name="Durée (minutes)")
     notes = models.TextField(blank=True, null=True, verbose_name="Notes spécifiques à l'exercice")
+    created_at = models.DateField(default=now)
 
     class Meta:
         verbose_name = "Exercice entry"
