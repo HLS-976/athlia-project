@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.contrib.postgres.fields import ArrayField
 from user_account.models import CustomUser
 from sport_profile.models import ConstraintField
+from user_account.models import CustomUser
 # Create your models here.
 class CategoryExercise(models.Model):
     name = models.CharField(max_length=150, blank=True, null=True, unique=True)
@@ -91,13 +92,13 @@ class Exercise(models.Model):
 
 
 class ExerciseEntry(models.Model):
-    # session = models.ForeignKey(
-    #    WorkoutSession,
-    #   on_delete=models.CASCADE,
-    #   related_name='exercise_entries',
-    #    verbose_name="Séance d'entraînement"
-    # )
 
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='exercise_entries',
+        verbose_name="utilisateur"
+    )
     exercise = models.ForeignKey(
         Exercise,
         on_delete=models.CASCADE,
