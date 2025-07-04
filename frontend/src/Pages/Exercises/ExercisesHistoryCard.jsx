@@ -65,11 +65,12 @@ export default function ExercisesHistoryCard({ exercise, isSelected }) {
       // Envoyer sans session
       const formData = {
         exercise: exercise.id,
-        // session: null, // Pas de session
+        // session: null, // Pas de sessions
         sets: sets ? parseInt(sets) : null,
         reps: reps ? parseInt(reps) : null,
         duration_minutes: duration ? parseInt(duration) : null,
         notes: notes || "",
+        created_at: new Date().toISOString(),
       };
 
       await sendExerciseToBackend(formData);

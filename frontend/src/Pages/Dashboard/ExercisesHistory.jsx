@@ -24,15 +24,16 @@ const ExerciseHistory = () => {
           const data = await response.json();
           console.log("Exercise history fetched successfully:", data);
 
-          // Transformer les données pour correspondre au format attendu
           const formattedHistory = data.map((entry) => {
-            // Créer la date correctement - plus de vérifications
-            let formattedDate = "Date inconnue";
+            let formattedDate = "-";
 
-            if (entry.created_at) {
+            // Vérifier différents champs de date possibles
+            const dateField =
+              entry.created_at || entry.date_created || entry.timestamp;
+
+            if (dateField) {
               try {
-                const entryDate = new Date(entry.created_at);
-                // Vérifier que la date est valide
+                const entryDate = new Date(dateField);
                 if (!isNaN(entryDate.getTime())) {
                   formattedDate = entryDate.toLocaleDateString("fr-FR", {
                     year: "numeric",
@@ -43,28 +44,36 @@ const ExerciseHistory = () => {
               } catch (error) {
                 console.error("Erreur lors du formatage de la date:", error);
               }
+            } else {
+              // Si aucune date n'est disponible, utiliser la date actuelle comme fallback
+              formattedDate = new Date().toLocaleDateString("fr-FR", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              });
+              console.warn(
+                "Aucune date trouvée pour l'entrée:",
+                entry.id,
+                "- utilisation de la date actuelle"
+              );
             }
 
             console.log(
               "Entry created_at:",
-              entry.created_at,
+              dateField,
               "Formatted date:",
               formattedDate
             );
 
             return {
               id: entry.id,
-              exercise_name:
-                entry.exercise_name ||
-                entry.exercise_detail?.name ||
-                entry.exercise?.name ||
-                "Exercice inconnu",
+              exercise_name: entry.exercise_name || "Exercice inconnu",
               date: formattedDate,
               sets: entry.sets || "-",
               reps: entry.reps || "-",
               duration: entry.duration_minutes || "-",
               notes: entry.notes || "",
-              created_at: entry.created_at, // Garder pour le tri
+              created_at: dateField || new Date().toISOString(),
             };
           });
 
