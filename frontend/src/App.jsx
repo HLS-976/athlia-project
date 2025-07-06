@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "./Pages/Home/HomePage";
 import Login from "./Pages/Login/LoginPage";
 import SignUpPage from "./Pages/Sign_Up/SignUpPage";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Dashboard from "./Pages/Dashboard/DashBoard";
 import ExercisesPage from "./Pages/Exercises/ExercisesPage";
@@ -13,12 +14,18 @@ import ProfilePage from "./Pages/Profile/Profile";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import TermsOfService from "./Pages/TermsOfService/TermsOfService";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  
+  // pages avec propre header
+  const pagesWithoutGlobalHeader = ['/dashboard', '/combined', '/exercises', '/skeleton', '/profile'];
+  const shouldShowGlobalHeader = !pagesWithoutGlobalHeader.includes(location.pathname);
+
   return (
-    <Router>
-      <div id="App">
-        {/* <ScrollEffects /> */}
-        <div className="background-anim">
+    <div id="App">
+      {/* <ScrollEffects /> */}
+      {shouldShowGlobalHeader && <Header />}
+      <div className="background-anim">
           {/* Décorations globales */}
           <div className="parallax-layer"></div>
           <div className="parallax-layer"></div>
@@ -97,6 +104,13 @@ function App() {
         </div>
         <Footer />
       </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
