@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
-import "./Header.css";
+import "../../components/Header.css";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,16 +13,17 @@ const Header = () => {
   };
 
   return (
-    <header id="dashboard-header">
-      {/* Logo à gauche */}
+    <header id="header">
+      {/* Header bar with logo, user menu and logout */}
       <div id="logo">
+        {/* Logo with button to go back to home page */}
         <Link to="/">
           <img src="/Logo.png" alt="Logo" />
         </Link>
       </div>
-
-      {/* Icônes à droite */}
-      <div id="header-icons">
+      
+      {/* User menu and logout buttons */}
+      <div className="header-buttons">
         <div id="user-icon">
           <FaUser />
           <div className="dropdown-menu">
