@@ -28,7 +28,7 @@ const Header = () => {
           <div className="dropdown-menu">
             <Link to="/profile">Mon Profil</Link>
             <Link to="/dashboard">Tableau de Bord</Link>
-            <Link to="/combinedpage">Exercices</Link>
+            <Link to="/combined">Exercices</Link>
           </div>
         </div>
 
