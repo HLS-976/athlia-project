@@ -25,11 +25,11 @@ function Header() {
       {/* login button */}
       <div className="header-buttons">
         <Link to="/login">
-          <button id="header-login">Login</button>
+          <button id="header-login">Connexion</button>
         </Link>
         {/* Sign Up button */}
         <Link to="/signup">
-          <button id="header-signup">Sign Up</button>
+          <button id="header-signup">Inscription</button>
         </Link>
       </div>
     </header>
