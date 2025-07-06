@@ -63,7 +63,7 @@ const HomePage = () => {
       <div id="hero-section" ref={heroRef}>
         <div className="video-background">
           <video autoPlay muted loop playsInline>
-            <source src="/Landing_Page.mp4" type="video/mp4" />
+            <source src="/video1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <div className="video-overlay"></div>
