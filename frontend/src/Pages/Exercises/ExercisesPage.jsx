@@ -1,4 +1,3 @@
-import Header from "./Header";
 import ExercicesCards from "./ExercisesCards";
 import "./ExercisesPage.css";
 
@@ -15,12 +14,6 @@ const ExercisesPage = ({
 }) => {
   return (
     <main>
-      {showHeader && (
-        <header>
-          <Header />
-        </header>
-      )}
-
       <div className="Exercises">
         <ExercicesCards
           selectedZones={selectedZones}
