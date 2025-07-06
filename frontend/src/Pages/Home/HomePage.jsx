@@ -4,7 +4,6 @@ import CardsFeatures from "./CardsFeatures";
 import FeaturesSection from "./FeaturesSection";
 import ContactSection from "./ContactSection";
 import AboutSection from "./AboutSection";
-import Header from "./Header";
 import { useEffect, useState, useRef } from "react";
 import "./HomePage.css";
 
@@ -57,9 +56,6 @@ const HomePage = () => {
 
   return (
     <main>
-      {/* Header */}
-      <Header />
-      
       <div id="hero-section" ref={heroRef}>
         <div className="video-background">
           <video autoPlay muted loop playsInline>
