@@ -60,7 +60,6 @@ const CombinedPage = () => {
         <div className="combined-header">
           <Header />
         </div>
-
         <div className="combined-content">
           {/* Section squelette - côté gauche */}
           <div className="skeleton-section">
