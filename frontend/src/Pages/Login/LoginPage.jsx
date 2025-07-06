@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Header from "./Header";
 import "./LoginPage.css";
 
 /**
@@ -135,9 +134,6 @@ function LoginPage() {
 
   return (
     <main>
-      <header>
-        <Header />
-      </header>
       <div id="login-container">
         <h2>Connexion</h2>
         <form id="login" onSubmit={handleLogin}>
