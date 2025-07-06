@@ -1,38 +1,28 @@
 import "./CardsFeatures.css";
 
-/**
- * CardsFeatures component
- *
- * This component displays feature cards on the home page.
- *
- * - The returned JSX contains a section with three cards:
- *   - Progress Tracking: Shows stats and visuals to monitor improvements.
- *   - Personalized Programs: Customized exercise plans for each user.
- *   - 3D Mannequin: Lets users select body parts to work on using a 3D model.
- */
+// Affichage cards de fonctionnalités
+
 function CardsFeatures() {
   return (
     <section id="cards-features">
       {/* Progress Tracking card */}
       <div className="card">
-        <h3>Progress Tracking</h3>
+        <h3>Suivi des progrès</h3>
         <p>
-          Monitor your improvements and stay motivated with detailed stats and
-          visuals.
+          Suivez vos progrès et restez motivé avec des statistiques détaillées et des visualisations.
         </p>
       </div>
       {/* Personalized Programs card */}
       <div className="card">
-        <h3>Personalized Programs</h3>
+        <h3>Programmes personnalisés</h3>
         <p>
-          Customized exercise plans suited to your level and goals, updated as
-          you progress.
+          Créez des programmes personnalisés adaptés à votre niveau et à vos objectifs, mis à jour à mesure que vous progressez.
         </p>
       </div>
       {/* 3D Mannequin card */}
       <div className="card">
-        <h3>3D Mannequin</h3>
-        <p>Use a 3D model to choose the part you want to work.</p>
+        <h3>Mannequin 3D</h3>
+        <p>Utilisez un mannequin 3D pour choisir la partie que vous voulez travailler.</p>
       </div>
     </section>
   );
