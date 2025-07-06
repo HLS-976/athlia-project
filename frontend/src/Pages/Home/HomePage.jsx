@@ -1,68 +1,108 @@
-import Header from "./Header";
+import React from "react";
 import { Link } from "react-router-dom";
 import CardsFeatures from "./CardsFeatures";
+import FeaturesSection from "./FeaturesSection";
+import ContactSection from "./ContactSection";
+import AboutSection from "./AboutSection";
+import Header from "./Header";
+import { useEffect, useState, useRef } from "react";
 import "./HomePage.css";
 
 /**
- * HomePage component
- *
- * This component displays the main landing page of the application.
- *
- * - The returned JSX contains:
- *   - The header bar at the top.
- *   - A main section with content on the left and video on the right.
- *   - Two main buttons: "Get Started" (links to login) and "Explore Features".
- *   - A section with feature cards (CardsFeatures component).
+ * HomePage Component
+ * 
+ * This component renders the main homepage with:
+ * - The header bar at the top.
+ * - A hero section with video background and overlay text.
+ * - A main button: "Get Started" (links to login).
  */
-const tittle = "Transform your body with Athlia";
-const presentation =
-  "Discover personalized sports exercises, track your progress, and reach your goals with a clean and motivating platform designed for athletes and beginners alike even with your injuries";
 
 const HomePage = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const heroHeight = window.innerHeight;
+      
+      // Gestion du scroll pour l'animation
+      if (scrollPosition > heroHeight * 0.3) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+      
+      // Premier scroll détecté
+      if (scrollPosition > 10) {
+        setHasScrolled(true);
+      }
+    };
+
+    // Déclencher les animations immédiatement
+    const timer = setTimeout(() => {
+      setHasScrolled(true);
+    }, 100); // Réduit de 1000ms à 100ms
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  const title = "Transformez votre corps avec Athlia";
+  const presentation = "Découvrez une approche révolutionnaire de la remise en forme, combinant technologie de pointe et expertise scientifique pour des résultats exceptionnels.";
+
   return (
     <main>
-      {/* Top header bar */}
-      <header>
-        <Header />
-      </header>
-      <div id="Home-Contenaire">
-        <div id="HomePage">
-          <div id="home">
-            {/* Content section - left side */}
-            <div className="content-section">
-              {/* Main title and presentation */}
-              <h1 id="tittle">{tittle}</h1>
-              <p id="presentation">{presentation}</p>
-              
-              {/* Main action buttons */}
-              <div id="Home-Button">
-                {/* Get Started button (links to login) */}
-                <Link to="/login">
-                  <button id="Get-Started">Get Started</button>
-                </Link>
-                {/* Explore Features button */}
-                <button id="Explore-Features">Explore Features</button>
-              </div>
-            </div>
+      {/* Header */}
+      <Header />
+      
+      <div id="hero-section" ref={heroRef}>
+        <div className="video-background">
+          <video autoPlay muted loop playsInline>
+            <source src="/Landing_Page.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="video-overlay"></div>
+        </div>
+        
+        {/* Content overlay with scroll animation */}
+        <div className={`hero-content ${isScrolled ? 'scroll-hidden' : ''}`}>
+          <div className="content-container">
+            <h1 id="hero-title">
+              <span className="title-line">{title}</span>
+            </h1>
             
-            {/* Video section - right side */}
-            <div className="video-section">
-              <div className="video-container">
-                <div className="corner-dots">
-                  <div className="bottom-left"></div>
-                  <div className="bottom-right"></div>
-                </div>
-                <div className="video-frame">
-                  <video autoPlay muted loop playsInline>
-                    <source src="/Landing_Page.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              </div>
+            <p id="hero-presentation">
+              {presentation}
+            </p>
+            
+            <div id="hero-button">
+              <Link to="/login">
+                <button id="hero-get-started">
+                  <span>Commencer</span>
+                  <span className="button-icon">→</span>
+                </button>
+              </Link>
             </div>
           </div>
-          {/* Feature cards section */}
+        </div>
+        
+        <div className="scroll-indicator">
+          <div className="scroll-arrow"></div>
+          <span>Découvrir</span>
+        </div>
+      </div>
+      
+      <div id="Home-Contenaire">
+        <div id="HomePage" className={hasScrolled ? 'scroll-triggered' : ''}>
           <CardsFeatures />
+          <AboutSection />
+          <FeaturesSection />
+          <ContactSection />
         </div>
       </div>
     </main>
