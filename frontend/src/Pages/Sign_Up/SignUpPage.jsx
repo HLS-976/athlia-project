@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Header from "./Header";
 import "./SignUpPage.css";
 
 /**
@@ -144,10 +143,6 @@ function SignUpPage() {
 
   return (
     <main>
-      {/* Top header bar */}
-      <header>
-        <Header />
-      </header>
       <div id="signup-container">
         {/* Success message after registration */}
         {submitted ? (
