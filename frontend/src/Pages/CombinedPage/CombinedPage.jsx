@@ -101,22 +101,20 @@ const CombinedPage = () => {
           {/* Section exercices - côté droit */}
           <div className="exercises-section">
             <div className="exercises-header">
-              <h2>
-                {selectedZones.length > 0
-                  ? `Exercices pour ${
-                      selectedZones.length === 1
-                        ? selectedZones[0]
-                        : "les zones sélectionnées"
-                    }`
-                  : "Tous les exercices disponibles"}
-              </h2>
-              <p>
-                {selectedZones.length > 0
-                  ? `${selectedZones.length} zone(s) sélectionnée(s)`
-                  : "Cliquez sur une ou plusieurs zones du squelette pour filtrer les exercices"}
-              </p>
+              {selectedZones.length > 0 ? (
+                <>
+                  <h2>
+                    {`Exercices pour ${selectedZones.length === 1 ? selectedZones[0] : "les zones sélectionnées"}`}
+                  </h2>
+                  <p>{`${selectedZones.length} zone(s) sélectionnée(s)`}</p>
+                </>
+              ) : (
+                <>
+                  <h2 className="exos-main-title">Tous les exercices disponibles</h2>
+                  <p className="exos-main-sub">Cliquez sur une ou plusieurs zones du squelette pour filtrer les exercices</p>
+                </>
+              )}
             </div>
-
             <ExercisesPage
               selectedZones={selectedZones}
               onExerciseSelect={handleExerciseSelect}
