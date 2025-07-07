@@ -230,10 +230,13 @@ function ProfilePage() {
           </button>
           {passwordMsg && <p>{passwordMsg}</p>}
         </form>
-        <div id="sport-profile">
-          <div id="sport-profile-title">
-            <h1>Mon Profil Sportif</h1>
-          </div>
+        
+        <div id="sport-profile-title">
+          <h1>Mon Profil Sportif</h1>
+        </div>
+        
+        {/* Formulaire d'édition du profil sportif */}
+        <div id="sport-profile-edit">
           <label id="age">
             Âge :
             <input
@@ -272,7 +275,7 @@ function ProfilePage() {
           </label>
           <br />
           <br />
-          <div style={{ border: "1px solid #ccc", borderRadius: "5px" }}>
+          <div>
             <button
               id="constraints"
               type="button"
