@@ -8,22 +8,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 0 1rem 1rem 1rem;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+  background: transparent;
   position: relative;
-}
-
-#profile-page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    45deg,
-    rgba(36, 96, 242, 0.05),
-    rgba(74, 222, 128, 0.05)
-  );
-  z-index: 0;
+  border-radius: 30px;
+  overflow: hidden;
 }
 
 #profile-title,
@@ -36,59 +26,122 @@
 
 #profile-user,
 #password-change,
-#sport-profile {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.8),
-    rgba(36, 96, 242, 0.1)
-  );
-  padding: 2rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--white-trans);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 10px 30px var(--shadow);
-  margin-bottom: 2rem;
+#sport-profile-edit {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  position: relative;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  z-index: 1;
   width: 100%;
   max-width: 700px;
-  z-index: 1;
-  position: relative;
+  margin-bottom: 2rem;
 }
 
-#profile-user div {
+#profile-user::before,
+#password-change::before,
+#sport-profile-edit::before {
+  display: none;
+}
+
+#profile-user label,
+#password-change label,
+#sport-profile-edit label {
+  display: block;
+  color: #e0f2fe;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  pointer-events: auto;
+}
+
+#profile-user input,
+#password-change input,
+#sport-profile-edit input,
+#sport-profile-edit select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(96,165,250,0.18);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.1);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  color: #1e293b;
+  position: relative;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+#profile-user input:focus,
+#password-change input:focus,
+#sport-profile-edit input:focus,
+#sport-profile-edit select:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96,165,250,0.18);
+  background: rgba(255,255,255,0.2);
+  color: #1e293b;
+}
+
+#profile-user button,
+#password-change button,
+#sport-profile-edit button {
+  width: 100%;
+  padding: 16px 0;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  cursor: pointer;
+  position: relative;
+  border: none;
+  outline: none;
+  background: #2460f2;
+  color: #fff;
+  box-shadow: none;
+  transition: background 0.15s, transform 0.12s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.02em;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  z-index: 999;
+  pointer-events: auto;
+  overflow: visible;
+}
+
+#profile-user button:hover,
+#password-change button:hover,
+#sport-profile-edit button:hover {
+  background: #1746b3;
+  transform: translateY(-2px) scale(1.01);
+}
+
+#profile-user button:active,
+#password-change button:active,
+#sport-profile-edit button:active {
+  background: #1746b3;
+  transform: scale(0.98);
+}
+
+#profile-user div,
+#password-change div,
+#sport-profile-edit div {
   margin-bottom: 0.75rem;
   font-size: 1rem;
+  color: rgba(255,255,255,0.9);
+  position: relative;
+  z-index: 1;
 }
 
-label {
-  display: block;
-  margin-bottom: 1rem;
+#profile-user strong,
+#password-change strong,
+#sport-profile-edit strong {
+  color: #fff;
   font-weight: 600;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="number"],
-select {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.25rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-button {
-  background-color: #2460f2;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-button:hover {
-  background-color: #1d4ed8;
 }
 
 #submit-password,
@@ -109,12 +162,6 @@ button:hover {
   text-decoration: underline;
 }
 
-#sport-profile > div {
-  background-color: rgba(255, 255, 255, 0.4);
-  padding: 1rem;
-  border-radius: 10px;
-}
-
 #sport-profile input[type="checkbox"] {
   margin-right: 0.5rem;
 }
@@ -123,4 +170,63 @@ button:hover {
   margin-top: 1rem;
   font-style: italic;
   color: #15803d;
+}
+
+#profile-title h1,
+#sport-profile-title h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(96, 165, 250, 0.4), 0 0 60px rgba(52, 211, 153, 0.2);
+  letter-spacing: -0.5px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  animation: titleGlow 10s ease-in-out infinite;
+  filter: brightness(1.1);
+  text-transform: uppercase;
+  position: relative;
+}
+
+#profile-title h1::after,
+#sport-profile-title h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #60a5fa, #34d399);
+  border-radius: 2px;
+}
+
+@keyframes titleGlow {
+  0%, 100% { 
+    filter: brightness(1.1); 
+    text-shadow: 0 0 30px rgba(96, 165, 250, 0.4), 0 0 60px rgba(52, 211, 153, 0.2);
+  }
+  50% { 
+    filter: brightness(1.3); 
+    text-shadow: 0 0 40px rgba(96, 165, 250, 0.6), 0 0 80px rgba(52, 211, 153, 0.4);
+  }
+}
+
+#sport-profile-title h1 {
+  margin-top: 1.2rem;
+}
+
+#sport-profile-edit > div {
+  border: none;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+#sport-profile-edit #constraints {
+  border: none !important;
+  box-shadow: none !important;
 }
