@@ -24,24 +24,28 @@
   justify-content: center;
   word-break: break-word;
   cursor: pointer;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.9) 0%, 
-    rgba(255, 255, 255, 0.7) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
   border-radius: 25px;
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, rgba(36, 96, 242, 0.05) 0%, rgba(74, 222, 128, 0.05) 100%);
+  background: linear-gradient(
+    45deg,
+    rgba(36, 96, 242, 0.05) 0%,
+    rgba(74, 222, 128, 0.05) 100%
+  );
   border-radius: 25px;
   z-index: 0;
   opacity: 0;
@@ -49,7 +53,7 @@
 }
 
 .card::after {
-  content: '';
+  content: "";
   position: absolute;
   top: -2px;
   left: -2px;
@@ -64,7 +68,8 @@
 
 .card:hover {
   transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   border-color: rgba(36, 96, 242, 0.2);
 }
 
@@ -113,6 +118,70 @@
   align-items: center;
   justify-content: center;
 }
+.card-difficulty {
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-difficulty p {
+  font-size: 0.75rem; /* Police plus petite */
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Code couleur avec effet gradient/lumière */
+.difficulty-facile {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+}
+
+.difficulty-moyen {
+  background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba(253, 126, 20, 0.3);
+}
+
+.difficulty-difficile {
+  background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
+}
+
+.difficulty-adaptatif {
+  background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba(108, 117, 125, 0.2);
+}
+
+/* Responsive pour les difficultés */
+@media (max-width: 768px) {
+  .card-difficulty p {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-difficulty p {
+    font-size: 0.65rem;
+  }
+}
 
 /* Animation d'entrée pour les cartes */
 .card {
@@ -121,12 +190,24 @@
   transform: translateY(30px);
 }
 
-.card:nth-child(1) { animation-delay: 0.1s; }
-.card:nth-child(2) { animation-delay: 0.2s; }
-.card:nth-child(3) { animation-delay: 0.3s; }
-.card:nth-child(4) { animation-delay: 0.4s; }
-.card:nth-child(5) { animation-delay: 0.5s; }
-.card:nth-child(6) { animation-delay: 0.6s; }
+.card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.card:nth-child(6) {
+  animation-delay: 0.6s;
+}
 
 @keyframes cardEntrance {
   to {
@@ -137,14 +218,14 @@
 
 /* Styles pour les cartes sélectionnées */
 .exercise-card-selected {
-  background: linear-gradient(135deg, 
-    rgba(255, 215, 0, 0.95) 0%, 
-    rgba(255, 237, 78, 0.9) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.95) 0%,
+    rgba(255, 237, 78, 0.9) 100%
+  ) !important;
   border: 2px solid #ffd700 !important;
-  box-shadow: 
-    0 20px 40px rgba(255, 215, 0, 0.3),
-    0 0 0 1px rgba(255, 215, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3),
+    0 0 0 1px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
   transform: translateY(-5px) scale(1.02);
 }
 
@@ -198,4 +279,4 @@
     height: 160px;
     padding: 15px 12px;
   }
-} 
+}

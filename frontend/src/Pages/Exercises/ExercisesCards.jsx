@@ -160,6 +160,22 @@ const ExercisesCards = ({
     return selectedExercises.some((ex) => ex.id === exercise.id);
   };
 
+  const getDifficultyClass = (difficulty) => {
+    if (!difficulty || difficulty === null) return "difficulty-adaptatif";
+
+    const difficultyLower = difficulty.toLowerCase();
+
+    if (difficultyLower === "facile") {
+      return "difficulty-facile";
+    } else if (difficultyLower === "modéré") {
+      return "difficulty-moyen";
+    } else if (difficultyLower === "difficile") {
+      return "difficulty-difficile";
+    } else {
+      return "difficulty-adaptatif";
+    }
+  };
+
   return (
     <section id="cards-features">
       <div
@@ -188,7 +204,9 @@ const ExercisesCards = ({
               <h3>{ex.name}</h3>
               <p>{ex.description}</p>
               <div className="card-difficulty">
-                <p>{ex.difficulty}</p>
+                <p className={getDifficultyClass(ex.difficulty)}>
+                  {ex.difficulty}
+                </p>
               </div>
               {selected && (
                 <div className="exercise-history-card">
