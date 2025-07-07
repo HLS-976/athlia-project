@@ -13,6 +13,7 @@ from .serializers import (
     ExerciseEntrySerializer
 )
 from django.shortcuts import get_list_or_404, get_object_or_404
+from sport_profile.models import SportProfile, ConstraintField
 # Create your views here.
 
 
@@ -30,10 +31,52 @@ class CategoryDetailAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ExerciseAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
-        exercise = Exercise.objects.filter(is_adaptive=False)
-        serializer = ExerciseSerializer(exercise, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        user = request.user
+        exercises_to_display_ids = set()
+        zones_covered_by_adaptive = set()
+        user_has_relevant_adaptive_exercises = False
+
+        try:
+            sport_profile = SportProfile.objects.prefetch_related('constraints').get(user=user)
+
+            if sport_profile.constraints.exists():
+                adaptive_exercises = Exercise.objects.filter(
+                    is_adaptive=True,
+                    adaptative_for__in=sport_profile.constraints.all()
+                ).distinct()
+
+                if adaptive_exercises.exists():
+                    exercises_to_display_ids.update(adaptive_exercises.values_list('id', flat=True))
+                    zones_covered_by_adaptive.update(adaptive_exercises.values_list('category__id', flat=True))
+                    user_has_relevant_adaptive_exercises = True
+
+        except SportProfile.DoesNotExist:
+            pass
+
+        if user_has_relevant_adaptive_exercises:
+            normal_exercises_query = Exercise.objects.filter(is_adaptive=False)
+
+            if exercises_to_display_ids:
+                normal_exercises_query = normal_exercises_query.exclude(id__in=list(exercises_to_display_ids))
+
+            if zones_covered_by_adaptive:
+                normal_exercises_query = normal_exercises_query.exclude(category__id__in=list(zones_covered_by_adaptive))
+        else:
+            normal_exercises_query = Exercise.objects.filter(is_adaptive=False)
+
+        exercises_to_display_ids.update(normal_exercises_query.values_list('id', flat=True))
+
+        final_exercises_list = Exercise.objects.filter(id__in=list(exercises_to_display_ids)).order_by('name')
+
+        serializer = ExerciseSerializer(final_exercises_list, many=True)
+
+        return Response({
+            'exercises': serializer.data,
+            'message': "Liste des exercices personnalisée."
+        }, status=status.HTTP_200_OK)
 
 
 class ExerciseEntryListCreateAPIView(APIView):
