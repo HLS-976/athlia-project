@@ -187,6 +187,9 @@ const ExercisesCards = ({
 
               <h3>{ex.name}</h3>
               <p>{ex.description}</p>
+              <div className="card-difficulty">
+                <p>{ex.difficulty}</p>
+              </div>
               {selected && (
                 <div className="exercise-history-card">
                   <ExercisesHistoryCard exercise={ex} isSelected={selected} />
