@@ -73,10 +73,7 @@ class ExerciseAPIView(APIView):
 
         serializer = ExerciseSerializer(final_exercises_list, many=True)
 
-        return Response({
-            'exercises': serializer.data,
-            'message': "Liste des exercices personnalisée."
-        }, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ExerciseEntryListCreateAPIView(APIView):
