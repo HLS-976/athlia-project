@@ -148,13 +148,14 @@ function ProfilePage() {
     }
   };
 
-  // Gestion du changement de mot de passe (nécessite un endpoint côté back)
+  // Gestion du changement de mot de passe
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     setPasswordMsg("");
+
     try {
       const response = await fetchWithAuth(
-        "http://localhost:8000/api/change-password/",
+        "http://localhost:8000/auth/password/change/", // ✅ Endpoint existant de dj-rest-auth
         {
           method: "POST",
           headers: {
@@ -162,23 +163,38 @@ function ProfilePage() {
           },
           body: JSON.stringify({
             old_password: oldPassword,
-            new_password: newPassword,
+            new_password1: newPassword, // ← Notez le "1" à la fin
+            new_password2: newPassword, // ← dj-rest-auth demande une confirmation
           }),
         }
       );
+
       if (response.ok) {
-        setPasswordMsg("Mot de passe modifié avec succès !");
+        setPasswordMsg("✅ Mot de passe modifié avec succès !");
         setOldPassword("");
         setNewPassword("");
       } else {
         const data = await response.json();
-        setPasswordMsg(
-          data.detail || "Erreur lors du changement de mot de passe."
-        );
+        // dj-rest-auth peut retourner différents formats d'erreur
+        let errorMessage = "Erreur lors du changement de mot de passe.";
+
+        if (data.old_password) {
+          errorMessage = data.old_password[0];
+        } else if (data.new_password1) {
+          errorMessage = data.new_password1[0];
+        } else if (data.new_password2) {
+          errorMessage = data.new_password2[0];
+        } else if (data.detail) {
+          errorMessage = data.detail;
+        } else if (data.non_field_errors) {
+          errorMessage = data.non_field_errors[0];
+        }
+
+        setPasswordMsg(`❌ ${errorMessage}`);
       }
     } catch (error) {
-      setPasswordMsg("Erreur lors du changement de mot de passe.");
-      console.error(error);
+      setPasswordMsg("❌ Erreur de connexion au serveur.");
+      console.error("Erreur changement mot de passe:", error);
     }
   };
 
@@ -203,76 +219,66 @@ function ProfilePage() {
           <div id="email">
             <strong>Email:</strong> {user.email || ""}
           </div>
-        </div>
-        <form id="password-change" onSubmit={handlePasswordChange}>
-          <label id="old-password">
-            Ancien mot de passe:
+          <form id="password-change" onSubmit={handlePasswordChange}>
+            <label id="old-password">Ancien mot de passe:</label>
             <input
               type="password"
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               required
             />
-          </label>
-          <br />
-          <label id="new-password">
-            Nouveau mot de passe:
+            <br />
+            <label id="new-password">Nouveau mot de passe:</label>
             <input
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
             />
-          </label>
-          <br />
-          <button id="submit-password" type="submit">
-            Modifier le mot de passe
-          </button>
-          {passwordMsg && <p>{passwordMsg}</p>}
-        </form>
-        
+
+            <br />
+            <button id="submit-password" type="submit">
+              Modifier le mot de passe
+            </button>
+            {passwordMsg && <p>{passwordMsg}</p>}
+          </form>
+        </div>
         <div id="sport-profile-title">
           <h1>Mon Profil Sportif</h1>
         </div>
-        
+
         {/* Formulaire d'édition du profil sportif */}
         <div id="sport-profile-edit">
-          <label id="age">
-            Âge :
-            <input
-              type="number"
-              value={sportProfile.age}
-              onChange={(e) =>
-                setSportProfile({ ...sportProfile, age: e.target.value })
-              }
-            />
-          </label>
+          <label id="age">Âge :</label>
+          <input
+            type="number"
+            value={sportProfile.age}
+            onChange={(e) =>
+              setSportProfile({ ...sportProfile, age: e.target.value })
+            }
+          />
           <br />
-          <label id="goals">
-            Objectifs :
-            <input
-              type="text"
-              value={sportProfile.goals}
-              onChange={(e) =>
-                setSportProfile({ ...sportProfile, goals: e.target.value })
-              }
-            />
-          </label>
+          <label id="goals">Objectifs :</label>
+          <input
+            type="text"
+            value={sportProfile.goals}
+            onChange={(e) =>
+              setSportProfile({ ...sportProfile, goals: e.target.value })
+            }
+          />
           <br />
-          <label id="level_user">
-            Niveau :
-            <select
-              value={sportProfile.level_user}
-              onChange={(e) =>
-                setSportProfile({ ...sportProfile, level_user: e.target.value })
-              }
-            >
-              <option value="">-- Choisir un niveau --</option>
-              <option value="beginner">Débutant</option>
-              <option value="intermediate">Intermédiaire</option>
-              <option value="advanced">Avancé</option>
-            </select>
-          </label>
+          <label id="level_user">Niveau :</label>
+          <select
+            value={sportProfile.level_user}
+            onChange={(e) =>
+              setSportProfile({ ...sportProfile, level_user: e.target.value })
+            }
+          >
+            <option value="">-- Choisir un niveau --</option>
+            <option value="beginner">Débutant</option>
+            <option value="intermediate">Intermédiaire</option>
+            <option value="advanced">Avancé</option>
+          </select>
           <br />
           <br />
           <div>
