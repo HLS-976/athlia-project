@@ -25,16 +25,16 @@ class CategoryExercise(models.Model):
 
 
 class Exercise(models.Model):
-    DIFFICULTY_LOW = "beginner"
-    DIFFICULTY_MODERATE = "intermediate"
-    DIFFICULTY_HIGH = "advanced"
-    DIFFICULTY_NULL = "null"
+    DIFFICULTY_LOW = "facile"
+    DIFFICULTY_MODERATE = "modéré"
+    DIFFICULTY_HIGH = "difficile"
+    DIFFICULTY_NULL = "adaptatif"
 
     DIFFICULTY_CHOICES = [
-        (DIFFICULTY_LOW, "Beginner"),
-        (DIFFICULTY_MODERATE, "Intermediate"),
-        (DIFFICULTY_HIGH, "Advanced"),
-        (DIFFICULTY_NULL, 'Null')
+        (DIFFICULTY_LOW, "Facile"),
+        (DIFFICULTY_MODERATE, "Modéré"),
+        (DIFFICULTY_HIGH, "Difficile"),
+        (DIFFICULTY_NULL, 'Adaptatif')
     ]
 
     name = models.CharField(max_length=255)
