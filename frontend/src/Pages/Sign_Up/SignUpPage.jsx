@@ -1,19 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import "./SignUpPage.css";
 
 /**
  * SignUpPage component
  *
  * This component displays the user registration form.
- *
- * - The returned JSX contains:
- *   - The header bar at the top.
- *   - A signup form with fields for first name, last name, username, email, password, password confirmation, and terms acceptance.
- *   - Error messages if registration fails or fields are invalid.
- *   - A submit button for creating an account.
- *   - A link to the login page for existing users.
  */
 function SignUpPage() {
   // State for form fields
@@ -23,11 +17,11 @@ function SignUpPage() {
     user_name: "",
     email: "",
     password: "",
-    confirmPassword: "", // Nouveau champ
+    confirmPassword: "",
   });
 
   // State for checkbox
-  const [acceptTerms, setAcceptTerms] = useState(false); // Nouveau state
+  const [acceptTerms, setAcceptTerms] = useState(false);
 
   // State for error messages and submission status
   const [errorMsg, setErrorMsg] = useState([]);
@@ -53,7 +47,6 @@ function SignUpPage() {
     }
   }, [submitted, navigate]);
 
-  //Handles the signup form submission.
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -61,12 +54,10 @@ function SignUpPage() {
     });
   };
 
-  // Handles the checkbox change
   const handleTermsChange = (e) => {
     setAcceptTerms(e.target.checked);
   };
 
-  // Handles the signup form submission.
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -132,7 +123,7 @@ function SignUpPage() {
       }
 
       // Registration successful
-      console.log("Registered succefully :", data);
+      console.log("Registered successfully :", data);
       setSubmitted(true);
     } catch (error) {
       // Handle network or unexpected errors
@@ -141,141 +132,215 @@ function SignUpPage() {
     }
   };
 
+  // Google OAuth success handler - NOUVELLE API
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      console.log("Google OAuth Success:", credentialResponse);
+
+      // La nouvelle API utilise credentialResponse.credential (JWT token)
+      const backendResponse = await fetch(
+        "http://localhost:8000/api/google-register/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            google_token: credentialResponse.credential, // Token JWT
+          }),
+        }
+      );
+
+      const data = await backendResponse.json();
+
+      if (!backendResponse.ok) {
+        console.error("Server responded with error:", data);
+        setErrorMsg([
+          data.detail || "Erreur lors de l'inscription avec Google",
+        ]);
+        return;
+      }
+
+      // Inscription réussie avec Google
+      console.log("Google registration successful:", data);
+
+      // Sauvegarder les tokens si nécessaire
+      if (data.access && data.refresh) {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("accessToken", data.access);
+        localStorage.setItem("refreshToken", data.refresh);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Redirection directe vers le dashboard
+        navigate("/combined");
+      } else {
+        // Juste afficher le message de succès et rediriger vers login
+        setSubmitted(true);
+      }
+    } catch (error) {
+      console.error("Google registration error:", error);
+      setErrorMsg(["Erreur lors de l'inscription avec Google"]);
+    }
+  };
+
+  // Google OAuth failure handler
+  const handleGoogleFailure = () => {
+    console.error("Google OAuth Failed");
+    setErrorMsg(["Échec de la connexion Google"]);
+  };
+
   return (
-    <main>
-      <div id="signup-container">
-        {/* Success message after registration */}
-        {submitted ? (
-          <div id="success-msg">
-            <div className="success-content">
-              <h1>Bienvenue chez Athlia ! 🎉</h1>
-              <p className="countdown-text">
-                Redirection vers la connexion dans {countdown} seconde
-                {countdown !== 1 ? "s" : ""}...
-              </p>
+    <GoogleOAuthProvider clientId="VOTRE_GOOGLE_CLIENT_ID">
+      <main>
+        <div id="signup-container">
+          {/* Success message after registration */}
+          {submitted ? (
+            <div id="success-msg">
+              <div className="success-content">
+                <h1>Bienvenue chez Athlia ! 🎉</h1>
+                <p className="countdown-text">
+                  Redirection vers la connexion dans {countdown} seconde
+                  {countdown !== 1 ? "s" : ""}...
+                </p>
+              </div>
             </div>
-          </div>
-        ) : (
-          <>
-            <h2>Inscription</h2>
-            {/* Signup form */}
-            <form id="signup" onSubmit={handleSubmit}>
-              {/* First name and Last name in two columns */}
-              <div id="names">
-                <div className="name">
-                  <label>Prénom* : </label>
+          ) : (
+            <>
+              <h2>Inscription</h2>
+              {/* Signup form */}
+              <form id="signup" onSubmit={handleSubmit}>
+                {/* First name and Last name in two columns */}
+                <div id="names">
+                  <div className="name">
+                    <label>Prénom* : </label>
+                    <input
+                      type="text"
+                      name="first_name"
+                      value={formData.first_name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="name">
+                    <label>Nom* : </label>
+                    <input
+                      type="text"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Username input */}
+                <div className="field-group">
+                  <label>Nom d'utilisateur* : </label>
                   <input
                     type="text"
-                    name="first_name"
-                    value={formData.first_name}
+                    name="user_name"
+                    value={formData.user_name}
                     onChange={handleChange}
                     required
                   />
                 </div>
 
-                <div className="name">
-                  <label>Nom* : </label>
+                {/* Email input */}
+                <div className="field-group">
+                  <label>Email* : </label>
                   <input
-                    type="text"
-                    name="last_name"
-                    value={formData.last_name}
+                    type="email"
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
                     required
                   />
                 </div>
-              </div>
 
-              {/* Username input */}
-              <div className="field-group">
-                <label>Nom d'utilisateur* : </label>
-                <input
-                  type="text"
-                  name="user_name"
-                  value={formData.user_name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+                {/* Password and Confirm Password in two columns */}
+                <div id="passwords">
+                  <div className="password-field">
+                    <label>Mot de passe* : </label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
 
-              {/* Email input */}
-              <div className="field-group">
-                <label>Email* : </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+                  <div className="password-field">
+                    <label>Confirmer le mot de passe* : </label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
 
-              {/* Password and Confirm Password in two columns */}
-              <div id="passwords">
-                <div className="password-field">
-                  <label>Mot de passe* : </label>
+                {/* Terms and Conditions */}
+                <div id="terms-container">
                   <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
+                    type="checkbox"
+                    id="accept-terms"
+                    checked={acceptTerms}
+                    onChange={handleTermsChange}
                     required
                   />
+                  <label htmlFor="accept-terms">
+                    J'accepte les{" "}
+                    <Link to="/terms" target="_blank" rel="noopener noreferrer">
+                      Conditions Générales
+                    </Link>{" "}
+                    et la{" "}
+                    <Link
+                      to="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Politique de Confidentialité
+                    </Link>
+                    *
+                  </label>
                 </div>
 
-                <div className="password-field">
-                  <label>Confirmer le mot de passe* : </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
+                {/* Error messages */}
+                {errorMsg.length > 0 &&
+                  errorMsg.map((msg, i) => (
+                    <p key={i} id="error">
+                      {msg}
+                    </p>
+                  ))}
+
+                {/* Google Sign Up Button */}
+                <div className="google-auth-section">
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleFailure}
+                    text="signup_with"
+                    shape="rectangular"
+                    theme="outline"
+                    size="large"
                   />
                 </div>
-              </div>
+                {/* Submit button */}
+                <button type="submit">S'inscrire</button>
 
-              {/* Terms and Conditions */}
-              <div id="terms-container">
-                <input
-                  type="checkbox"
-                  id="accept-terms"
-                  checked={acceptTerms}
-                  onChange={handleTermsChange}
-                  required
-                />
-                <label htmlFor="accept-terms">
-                  J'accepte les{" "}
-                  <Link to="/terms" target="_blank" rel="noopener noreferrer">
-                    Conditions Générales
-                  </Link>{" "}
-                  et la{" "}
-                  <Link to="/privacy" target="_blank" rel="noopener noreferrer">
-                    Politique de Confidentialité
-                  </Link>
-                  *
-                </label>
-              </div>
-
-              {/* Error messages */}
-              {errorMsg.length > 0 &&
-                errorMsg.map((msg, i) => (
-                  <p key={i} id="error">
-                    {msg}
-                  </p>
-                ))}
-
-              {/* Submit button */}
-              <button type="submit">S'inscrire</button>
-
-              {/* Link to login page */}
-              <p id="signup-link">
-                Vous avez un compte ? <Link to="/login">Se connecter</Link>
-              </p>
-            </form>
-          </>
-        )}
-      </div>
-    </main>
+                {/* Link to login page */}
+                <p id="signup-link">
+                  Vous avez un compte ? <Link to="/login">Se connecter</Link>
+                </p>
+              </form>
+            </>
+          )}
+        </div>
+      </main>
+    </GoogleOAuthProvider>
   );
 }
 
