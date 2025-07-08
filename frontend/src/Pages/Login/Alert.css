@@ -4,7 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4); /* fond assombri */
+  background: rgba(16, 24, 40, 0.55);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,36 +13,73 @@
 }
 
 .alert-modal {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 30px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  max-width: 420px;
+  width: 92%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   text-align: center;
   z-index: 1001;
+  color: #2460f2;
+  font-weight: 600;
+  font-size: 1.15rem;
 }
 
 .alert-modal h2 {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(96, 165, 250, 0.4), 0 0 60px rgba(52, 211, 153, 0.2);
+  letter-spacing: -0.5px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  filter: brightness(1.1);
+  text-transform: uppercase;
+  position: relative;
 }
 
 .alert-modal p {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  color: #fff;
+  font-size: 1.13rem;
+  font-weight: 500;
+  opacity: 0.95;
 }
 
 .alert-button {
-  background-color: #2460f2;
+  background: #2460f2;
   color: #fff;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 8px;
+  padding: 16px 0;
+  width: 100%;
+  font-weight: 700;
+  font-size: 1.15rem;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  box-shadow: none;
+  transition: background 0.15s, transform 0.12s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.02em;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  z-index: 999;
+  pointer-events: auto;
+  overflow: visible;
+  margin-top: 8px;
 }
 
 .alert-button:hover {
-  background-color: #1d4ed8;
+  background: #1746b3;
+  transform: translateY(-2px) scale(1.01);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(60px); }
+  to { opacity: 1; transform: translateY(0); }
 }
