@@ -12,6 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
+import { Box } from '@mui/material';
 
 const ExerciseHistory = () => {
   const [history, setHistory] = useState([]);
