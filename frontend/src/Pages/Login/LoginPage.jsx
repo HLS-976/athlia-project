@@ -24,8 +24,8 @@ function LoginPage() {
   const queryParams = new URLSearchParams(location.search);
   const redirectTo = queryParams.get("redirect") || "/combined";
 
-  // State for error messages and submission status
-  const [errorMsg, setErrorMsg] = useState([]);
+  // State for error messages - utiliser une chaîne au lieu d'un tableau
+  const [errorMsg, setErrorMsg] = useState("");
 
   // State for form fields - récupérer l'email sauvegardé
   const [formData, setFormData] = useState({
@@ -161,13 +161,8 @@ function LoginPage() {
             />
           </div>
 
-          {/* Error messages */}
-          {errorMsg.length > 0 &&
-            errorMsg.map((msg, i) => (
-              <p key={i} id="error">
-                {msg}
-              </p>
-            ))}
+          {/* Error messages - afficher directement la chaîne */}
+          {errorMsg && <p id="error">{errorMsg}</p>}
 
           {/* Submit button */}
           <button type="submit">Se connecter</button>

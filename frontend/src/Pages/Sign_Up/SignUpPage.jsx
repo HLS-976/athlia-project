@@ -163,7 +163,7 @@ function SignUpPage() {
               {/* First name and Last name in two columns */}
               <div id="names">
                 <div className="name">
-                  <label>Prénom : </label>
+                  <label>Prénom* : </label>
                   <input
                     type="text"
                     name="first_name"
@@ -174,7 +174,7 @@ function SignUpPage() {
                 </div>
 
                 <div className="name">
-                  <label>Nom : </label>
+                  <label>Nom* : </label>
                   <input
                     type="text"
                     name="last_name"
