@@ -317,7 +317,7 @@ function SignUpPage() {
                     </p>
                   ))}
 
-                {/* Google Sign Up Button */}
+                {/* Google Sign Up Button
                 <div className="google-auth-section">
                   <GoogleLogin
                     onSuccess={handleGoogleSuccess}
@@ -327,7 +327,7 @@ function SignUpPage() {
                     theme="outline"
                     size="large"
                   />
-                </div>
+                </div> */}
                 {/* Submit button */}
                 <button type="submit">S'inscrire</button>
 
