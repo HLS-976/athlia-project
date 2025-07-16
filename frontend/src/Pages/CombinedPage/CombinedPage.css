@@ -97,6 +97,11 @@
     overflow: auto;
     padding: 20px;
     text-align: center;
+    scrollbar-width: none;
+    -ms-overflow-style: none; 
+}
+.exercises-section::-webkit-scrollbar {
+    display: none;
 }
 
 #cards-features {
