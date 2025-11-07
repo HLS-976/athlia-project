@@ -30,8 +30,7 @@ class UserDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        user = CustomUser.objects.get(id=request.user.id)
-        serializer = UserDetailSerializer(user)
+        serializer = UserDetailSerializer(request.user)
         return Response(serializer.data)
 
 class MyTokenObtainPairView(TokenObtainPairView):
