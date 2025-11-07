@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.shortcuts import get_object_or_404
 
@@ -58,7 +59,7 @@ class SportProfileDetailAPIView(APIView):
     def get_object(self, pk):
         obj = get_object_or_404(SportProfile, pk=pk)
         if not self.request.user.is_superuser and obj.user != self.request.user:
-            raise status.HTTP_403_FORBIDDEN
+            raise PermissionDenied("Vous n'avez pas la permission d'accéder à ce profil.")
         return obj
 
     def get(self, request, pk, format=None):
@@ -84,8 +85,5 @@ class SportProfileDetailAPIView(APIView):
 
     def delete(self, request, pk, format=None):
         sport_profile = self.get_object(pk)
-        if not self.request.user.is_superuser and sport_profile.user != self.request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        
         sport_profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
