@@ -153,9 +153,25 @@ function ProfilePage() {
     e.preventDefault();
     setPasswordMsg("");
 
+    // ✅ Vérification que les mots de passe sont différents
+    if (oldPassword === newPassword) {
+      setPasswordMsg(
+        "❌ Le nouveau mot de passe doit être différent de l'ancien."
+      );
+      return;
+    }
+
+    // ✅ Vérification optionnelle de la longueur minimale
+    if (newPassword.length < 8) {
+      setPasswordMsg(
+        "❌ Le nouveau mot de passe doit contenir au moins 8 caractères."
+      );
+      return;
+    }
+
     try {
       const response = await fetchWithAuth(
-        "http://localhost:8000/auth/password/change/", // ✅ Endpoint existant de dj-rest-auth
+        "http://localhost:8000/auth/password/change/",
         {
           method: "POST",
           headers: {
@@ -163,8 +179,8 @@ function ProfilePage() {
           },
           body: JSON.stringify({
             old_password: oldPassword,
-            new_password1: newPassword, // ← Notez le "1" à la fin
-            new_password2: newPassword, // ← dj-rest-auth demande une confirmation
+            new_password1: newPassword,
+            new_password2: newPassword,
           }),
         }
       );
