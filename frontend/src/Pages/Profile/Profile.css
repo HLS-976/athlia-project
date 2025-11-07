@@ -38,47 +38,41 @@
   width: 100%;
   max-width: 700px;
   margin-bottom: 2rem;
+  box-sizing: border-box;
 }
 
-#profile-user::before,
-#password-change::before,
-#sport-profile-edit::before {
-  display: none;
+/* Classes pour les champs en ligne responsive */
+.profile-field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 15px;
 }
 
-#profile-user label,
-#password-change label,
-#sport-profile-edit label {
-  display: block;
+.profile-field label {
+  min-width: 200px;
+  margin-bottom: 0;
   color: #e0f2fe;
   font-weight: 600;
-  margin-bottom: 8px;
   font-size: 1rem;
-  pointer-events: auto;
+  flex-shrink: 0;
 }
 
-#profile-user input,
-#password-change input,
-#sport-profile-edit input,
-#sport-profile-edit select {
-  width: 100%;
+.profile-field input {
+  flex: 1;
   padding: 12px 16px;
   border: 1.5px solid rgba(96, 165, 250, 0.18);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.1);
   font-size: 1rem;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
   color: #1e293b;
-  position: relative;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
   pointer-events: auto;
   z-index: 1;
 }
 
-#profile-user input:focus,
-#password-change input:focus,
-#sport-profile-edit input:focus,
-#sport-profile-edit select:focus {
+.profile-field input:focus {
   outline: none;
   border-color: #60a5fa;
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
@@ -86,9 +80,8 @@
   color: #1e293b;
 }
 
-#profile-user button,
-#password-change button,
-#sport-profile-edit button {
+/* Boutons cohérents */
+.profile-button {
   width: 100%;
   padding: 16px 0;
   border-radius: 8px;
@@ -110,42 +103,430 @@
   z-index: 999;
   pointer-events: auto;
   overflow: visible;
+  margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
-#profile-user button:hover,
-#password-change button:hover,
-#sport-profile-edit button:hover {
+.profile-button:hover {
   background: #1746b3;
   transform: translateY(-2px) scale(1.01);
 }
 
-#profile-user button:active,
-#password-change button:active,
-#sport-profile-edit button:active {
+.profile-button:active {
   background: #1746b3;
   transform: scale(0.98);
 }
 
-#profile-user div,
-#password-change div,
-#sport-profile-edit div {
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9);
-  position: relative;
-  z-index: 1;
+/* Bouton de suppression */
+.delete-button {
+  background: #d63031 !important;
 }
 
-#profile-user strong,
-#password-change strong,
-#sport-profile-edit strong {
-  color: #fff;
+.delete-button:hover {
+  background: #b71c1c !important;
+  transform: translateY(-2px) scale(1.01);
+}
+
+.delete-button:active {
+  background: #b71c1c !important;
+  transform: scale(0.98);
+}
+
+/* Bouton d'annulation */
+.cancel-button {
+  background: #636e72 !important;
+}
+
+.cancel-button:hover {
+  background: #4a5568 !important;
+  transform: translateY(-2px) scale(1.01);
+}
+
+.cancel-button:active {
+  background: #4a5568 !important;
+  transform: scale(0.98);
+}
+
+/* Container pour les boutons côte à côte */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.button-group .profile-button {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* Section de suppression */
+.delete-section {
+  margin-top: 30px;
+}
+
+.delete-warning {
+  color: #d63031;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.update-message {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* Media queries pour la responsivité */
+@media (max-width: 768px) {
+  #profile-user,
+  #sport-profile-edit {
+    padding: 20px;
+    margin: 0 0.5rem 1rem 0.5rem;
+  }
+
+  .profile-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .profile-field label {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .profile-field input {
+    width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .button-group .profile-button {
+    width: 100%;
+  }
+
+  #profile-title h1,
+  #sport-profile-title h1 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #profile-page {
+    padding: 0 0.5rem 1rem 0.5rem;
+  }
+
+  #profile-user,
+  #sport-profile-edit {
+    padding: 15px;
+    margin: 0 0 1rem 0;
+  }
+
+  .profile-field {
+    gap: 5px;
+  }
+
+  .profile-field label {
+    font-size: 0.9rem;
+  }
+
+  .profile-field input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .profile-button {
+    padding: 14px 0;
+    font-size: 1rem;
+  }
+
+  #profile-title h1,
+  #sport-profile-title h1 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Styles pour le profil sportif */
+#sport-profile-edit label {
+  display: block;
+  color: #e0f2fe;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  pointer-events: auto;
+}
+
+#sport-profile-edit input,
+#sport-profile-edit select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(96, 165, 250, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  color: #1e293b;
+  position: relative;
+  pointer-events: auto;
+  z-index: 1;
+  margin-bottom: 15px;
+}
+
+#sport-profile-edit input:focus,
+#sport-profile-edit select:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
+  background: rgba(255, 255, 255, 0.2);
+  color: #1e293b;
+}
+
+/* NOUVEAU: Composant select personnalisé pour les contraintes */
+.custom-constraints-select {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.constraints-display {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(96, 165, 250, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 1rem;
+  color: #1e293b;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.constraints-display:hover {
+  border-color: rgba(96, 165, 250, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.constraints-display:focus,
+.constraints-display.open {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.constraints-text {
+  flex: 1;
+  text-align: left;
+}
+
+.dropdown-arrow {
+  font-size: 0.8rem;
+  color: #60a5fa;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.constraints-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(96, 165, 250, 0.3);
+  border-radius: 14px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  margin-top: 4px;
+}
+
+.constraint-option {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.constraint-option:last-child {
+  border-bottom: none;
+}
+
+.constraint-option:hover {
+  background: rgba(96, 165, 250, 0.2);
+}
+
+.constraint-option.selected {
+  background: rgba(96, 165, 250, 0.3);
+  color: #1e293b;
   font-weight: 600;
 }
 
-#submit-password,
-#update-sport-profile {
-  margin-top: 1rem;
+.constraint-option.selected:hover {
+  background: rgba(96, 165, 250, 0.4);
+}
+
+.constraint-name {
+  flex: 1;
+  text-align: left;
+}
+
+.check-mark {
+  color: #60a5fa;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Scrollbar pour le dropdown */
+.constraints-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.constraints-dropdown::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.constraints-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.3);
+  border-radius: 3px;
+}
+
+.constraints-dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.5);
+}
+
+/* Media queries pour le select personnalisé */
+@media (max-width: 768px) {
+  .constraints-dropdown {
+    max-height: 150px;
+  }
+
+  .constraint-option {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .check-mark {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .constraints-dropdown {
+    max-height: 120px;
+  }
+
+  .constraint-option {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .check-mark {
+    font-size: 1rem;
+  }
+}
+
+/* Style spécifique pour le select multiple des contraintes */
+.constraints-select {
+  height: auto !important;
+  min-height: 50px !important;
+  max-height: 150px !important;
+  overflow-y: auto !important;
+  padding: 8px 12px !important;
+  line-height: 1.4 !important;
+}
+
+.constraints-select option {
+  padding: 6px 8px;
+  margin: 1px 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #1e293b;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.constraints-select option:checked {
+  background: #60a5fa !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.constraints-select option:hover {
+  background: rgba(96, 165, 250, 0.2) !important;
+}
+
+.constraints-select option:disabled {
+  color: #9ca3af;
+  font-style: italic;
+  background: transparent !important;
+  font-weight: 400;
+}
+
+/* Scrollbar pour le select des contraintes */
+.constraints-select::-webkit-scrollbar {
+  width: 4px;
+}
+
+.constraints-select::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.constraints-select::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.3);
+  border-radius: 2px;
+}
+
+.constraints-select::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.5);
+}
+
+/* Media queries pour les contraintes */
+@media (max-width: 768px) {
+  .constraints-select {
+    min-height: 45px !important;
+    max-height: 120px !important;
+  }
+
+  .constraints-select option {
+    padding: 5px 6px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .constraints-select {
+    min-height: 40px !important;
+    max-height: 100px !important;
+  }
+
+  .constraints-select option {
+    padding: 4px 5px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Suppression des anciens styles pour les contraintes container */
+.constraints-container,
+.constraint-item,
+.constraint-text {
+  display: none !important;
 }
 
 #constraints {
@@ -155,20 +536,16 @@
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 0.5rem;
+  padding: 10px;
 }
 
 #constraints:hover {
   text-decoration: underline;
 }
 
-#sport-profile input[type="checkbox"] {
+#sport-profile-edit input[type="checkbox"] {
   margin-right: 0.5rem;
-}
-
-#password-change p {
-  margin-top: 1rem;
-  font-style: italic;
-  color: #15803d;
+  width: auto;
 }
 
 #profile-title h1,

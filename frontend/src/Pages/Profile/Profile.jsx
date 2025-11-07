@@ -19,17 +19,39 @@ function ProfilePage() {
     return stored ? JSON.parse(stored) : {};
   });
 
+  // États pour l'édition du profil utilisateur
+  const [editableUser, setEditableUser] = useState({
+    first_name: "",
+    last_name: "",
+    user_name: "",
+    email: "",
+  });
+
   // Pour la modification du mot de passe
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [passwordMsg, setPasswordMsg] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   // Pour la suppression de compte
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deletePassword, setDeletePassword] = useState("");
   const [deleteMsg, setDeleteMsg] = useState("");
 
+  // Pour les messages de mise à jour
+  const [updateMsg, setUpdateMsg] = useState("");
+
+  // État pour l'ouverture/fermeture du dropdown des contraintes
+  const [isConstraintsOpen, setIsConstraintsOpen] = useState(false);
+
   useEffect(() => {
+    // Initialiser les champs éditables avec les données utilisateur
+    setEditableUser({
+      first_name: user.first_name || "",
+      last_name: user.last_name || "",
+      user_name: user.user_name || user.username || "",
+      email: user.email || "",
+    });
+
     async function fetchData() {
       try {
         // 1. Charger les contraintes physiques d'abord
@@ -108,6 +130,132 @@ function ProfilePage() {
     fetchData();
   }, [user]);
 
+  // Fonction unique pour mettre à jour profil + mot de passe
+  const handleCompleteUpdate = async (e) => {
+    e.preventDefault();
+    setUpdateMsg("");
+
+    let successMessages = [];
+    let errorMessages = [];
+
+    try {
+      // 1. Mise à jour du profil utilisateur
+      const profileResponse = await fetchWithAuth(
+        `http://localhost:8000/api/users/${user.id}/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editableUser),
+        }
+      );
+
+      if (profileResponse.ok) {
+        const updatedUser = await profileResponse.json();
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser);
+        successMessages.push("Profil utilisateur mis à jour");
+      } else {
+        const data = await profileResponse.json();
+        let errorMessage = "Erreur lors de la mise à jour du profil";
+
+        if (data.email) {
+          errorMessage = data.email[0];
+        } else if (data.user_name) {
+          errorMessage = data.user_name[0];
+        } else if (data.detail) {
+          errorMessage = data.detail;
+        }
+
+        errorMessages.push(errorMessage);
+      }
+
+      // 2. Modification du mot de passe (seulement si les champs sont remplis)
+      if (oldPassword && newPassword) {
+        // Vérifications du mot de passe
+        if (oldPassword === newPassword) {
+          errorMessages.push(
+            "Le nouveau mot de passe doit être différent de l'ancien"
+          );
+        } else if (newPassword.length < 8) {
+          errorMessages.push(
+            "Le nouveau mot de passe doit contenir au moins 8 caractères"
+          );
+        } else if (newPassword !== confirmPassword) {
+          errorMessages.push(
+            "La confirmation du mot de passe ne correspond pas"
+          );
+        } else {
+          const passwordResponse = await fetchWithAuth(
+            "http://localhost:8000/auth/password/change/",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                old_password: oldPassword,
+                new_password1: newPassword,
+                new_password2: newPassword,
+              }),
+            }
+          );
+
+          if (passwordResponse.ok) {
+            successMessages.push("Mot de passe modifié");
+            setOldPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+          } else {
+            const data = await passwordResponse.json();
+            let errorMessage = "Erreur lors du changement de mot de passe";
+
+            if (data.old_password) {
+              errorMessage = data.old_password[0];
+            } else if (data.new_password1) {
+              errorMessage = data.new_password1[0];
+            } else if (data.new_password2) {
+              errorMessage = data.new_password2[0];
+            } else if (data.detail) {
+              errorMessage = data.detail;
+            } else if (data.non_field_errors) {
+              errorMessage = data.non_field_errors[0];
+            }
+
+            errorMessages.push(errorMessage);
+          }
+        }
+      } else if (
+        (oldPassword && !newPassword) ||
+        (!oldPassword && newPassword) ||
+        (!oldPassword && !newPassword && confirmPassword)
+      ) {
+        errorMessages.push(
+          "Pour changer le mot de passe, veuillez remplir l'ancien et le nouveau mot de passe"
+        );
+      }
+
+      // Affichage des messages
+      if (successMessages.length > 0 && errorMessages.length === 0) {
+        setUpdateMsg(`✅ ${successMessages.join(" et ")} avec succès !`);
+      } else if (successMessages.length > 0 && errorMessages.length > 0) {
+        setUpdateMsg(
+          `✅ ${successMessages.join(
+            " et "
+          )} avec succès ! ❌ ${errorMessages.join(", ")}`
+        );
+      } else if (errorMessages.length > 0) {
+        setUpdateMsg(`❌ ${errorMessages.join(", ")}`);
+      } else {
+        setUpdateMsg("✅ Informations sauvegardées avec succès !");
+      }
+    } catch (error) {
+      setUpdateMsg("❌ Erreur de connexion au serveur.");
+      console.error("Erreur mise à jour complète:", error);
+    }
+  };
+
   const handleConstraintToggle = (id) => {
     const updated = sportProfile.constraints.includes(id)
       ? sportProfile.constraints.filter((c) => c !== id)
@@ -144,78 +292,11 @@ function ProfilePage() {
             ? "Profil sportif créé !"
             : "Profil sportif mis à jour !"
         );
-        // (optionnel) : tu peux rappeler fetchData() ici si tu veux rafraîchir l'affichage
       } else {
         alert("Erreur lors de la sauvegarde du profil sportif.");
       }
     } catch (error) {
       console.error("Erreur sport submit :", error);
-    }
-  };
-
-  // Gestion du changement de mot de passe
-  const handlePasswordChange = async (e) => {
-    e.preventDefault();
-    setPasswordMsg("");
-
-    // ✅ Vérification que les mots de passe sont différents
-    if (oldPassword === newPassword) {
-      setPasswordMsg(
-        "❌ Le nouveau mot de passe doit être différent de l'ancien."
-      );
-      return;
-    }
-
-    // ✅ Vérification optionnelle de la longueur minimale
-    if (newPassword.length < 8) {
-      setPasswordMsg(
-        "❌ Le nouveau mot de passe doit contenir au moins 8 caractères."
-      );
-      return;
-    }
-
-    try {
-      const response = await fetchWithAuth(
-        "http://localhost:8000/auth/password/change/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            old_password: oldPassword,
-            new_password1: newPassword,
-            new_password2: newPassword,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        setPasswordMsg("✅ Mot de passe modifié avec succès !");
-        setOldPassword("");
-        setNewPassword("");
-      } else {
-        const data = await response.json();
-        // dj-rest-auth peut retourner différents formats d'erreur
-        let errorMessage = "Erreur lors du changement de mot de passe.";
-
-        if (data.old_password) {
-          errorMessage = data.old_password[0];
-        } else if (data.new_password1) {
-          errorMessage = data.new_password1[0];
-        } else if (data.new_password2) {
-          errorMessage = data.new_password2[0];
-        } else if (data.detail) {
-          errorMessage = data.detail;
-        } else if (data.non_field_errors) {
-          errorMessage = data.non_field_errors[0];
-        }
-
-        setPasswordMsg(`${errorMessage}`);
-      }
-    } catch (error) {
-      setPasswordMsg("Erreur de connexion au serveur.");
-      console.error("Erreur changement mot de passe:", error);
     }
   };
 
@@ -244,15 +325,12 @@ function ProfilePage() {
       );
 
       if (response.ok) {
-        // Supprimer les données locales
         localStorage.removeItem("user");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
 
         alert("✅ Compte supprimé avec succès. Vous allez être redirigé.");
-
-        // Rediriger vers la page de connexion ou d'accueil
-        window.location.href = "/login"; // ou "/" selon votre routing
+        window.location.href = "/login";
       } else {
         const data = await response.json();
         let errorMessage = "Erreur lors de la suppression du compte.";
@@ -265,13 +343,27 @@ function ProfilePage() {
           errorMessage = data.error;
         }
 
-        setDeleteMsg(` ${errorMessage}`);
+        setDeleteMsg(`${errorMessage}`);
       }
     } catch (error) {
       setDeleteMsg("Erreur de connexion au serveur.");
       console.error("Erreur suppression compte:", error);
     }
   };
+
+  // Fermer le dropdown quand on clique ailleurs
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".custom-constraints-select")) {
+        setIsConstraintsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -281,110 +373,165 @@ function ProfilePage() {
           <h1>Mon Profil</h1>
         </div>
         <div id="profile-user">
-          <div id="firstname">
-            <strong>Prénom:</strong> {user.first_name || ""}
-          </div>
-          <div id="lastname">
-            <strong>Nom:</strong> {user.last_name || ""}
-          </div>
-          <div id="username">
-            <strong>Nom d'utilisateur:</strong>{" "}
-            {user.user_name || user.username || ""}
-          </div>
-          <div id="email">
-            <strong>Email:</strong> {user.email || ""}
-          </div>
-          <form id="password-change" onSubmit={handlePasswordChange}>
-            <label id="old-password">Ancien mot de passe:</label>
-            <input
-              type="password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              required
-            />
-            <br />
-            <label id="new-password">Nouveau mot de passe:</label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
+          <form onSubmit={handleCompleteUpdate}>
+            <div className="profile-field">
+              <label>
+                <strong>Prénom:</strong>
+              </label>
+              <input
+                type="text"
+                value={editableUser.first_name}
+                onChange={(e) =>
+                  setEditableUser({
+                    ...editableUser,
+                    first_name: e.target.value,
+                  })
+                }
+                placeholder="Votre prénom"
+              />
+            </div>
 
-            <br />
-            <button id="submit-password" type="submit">
-              Modifier le mot de passe
+            <div className="profile-field">
+              <label>
+                <strong>Nom:</strong>
+              </label>
+              <input
+                type="text"
+                value={editableUser.last_name}
+                onChange={(e) =>
+                  setEditableUser({
+                    ...editableUser,
+                    last_name: e.target.value,
+                  })
+                }
+                placeholder="Votre nom"
+              />
+            </div>
+
+            <div className="profile-field">
+              <label>
+                <strong>Nom d'utilisateur:</strong>
+              </label>
+              <input
+                type="text"
+                value={editableUser.user_name}
+                onChange={(e) =>
+                  setEditableUser({
+                    ...editableUser,
+                    user_name: e.target.value,
+                  })
+                }
+                placeholder="Votre nom d'utilisateur"
+              />
+            </div>
+
+            <div className="profile-field">
+              <label>
+                <strong>Email:</strong>
+              </label>
+              <input
+                type="email"
+                value={editableUser.email}
+                onChange={(e) =>
+                  setEditableUser({
+                    ...editableUser,
+                    email: e.target.value,
+                  })
+                }
+                placeholder="Votre email"
+              />
+            </div>
+
+            <div className="profile-field">
+              <label>
+                <strong>Ancien mot de passe:</strong>
+              </label>
+              <input
+                type="password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                placeholder="Laissez vide si pas de changement"
+              />
+            </div>
+
+            <div className="profile-field">
+              <label>
+                <strong>Nouveau mot de passe:</strong>
+              </label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Laissez vide si pas de changement"
+              />
+            </div>
+
+            <div className="profile-field">
+              <label>
+                <strong>Confirmer mot de passe:</strong>
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Laissez vide si pas de changement"
+              />
+            </div>
+
+            <button type="submit" className="profile-button">
+              Sauvegarder toutes les modifications
             </button>
-            {passwordMsg && <p>{passwordMsg}</p>}
+            {updateMsg && <p className="update-message">{updateMsg}</p>}
           </form>
 
           {/* Section suppression de compte */}
-          <div id="delete-account-section">
+          <div className="delete-section">
             {!showDeleteConfirm ? (
               <button
-                id="show-delete-confirm"
                 type="button"
                 onClick={() => setShowDeleteConfirm(true)}
-                style={{
-                  backgroundColor: "#d63031",
-                  color: "white",
-                  padding: "10px 20px",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
+                className="profile-button delete-button"
               >
                 Supprimer mon compte
               </button>
             ) : (
               <form onSubmit={handleDeleteAccount}>
-                <p style={{ color: "#d63031", fontWeight: "bold" }}>
+                <p className="delete-warning">
                   ⚠️ Cette action est irréversible ! Tous vos données seront
                   définitivement supprimées.
                 </p>
-                <label>Confirmez avec votre mot de passe :</label>
-                <input
-                  type="password"
-                  value={deletePassword}
-                  onChange={(e) => setDeletePassword(e.target.value)}
-                  placeholder="Votre mot de passe"
-                  required
-                  style={{ margin: "10px 0", padding: "5px", width: "200px" }}
-                />
-                <br />
-                <button
-                  type="submit"
-                  style={{
-                    backgroundColor: "#d63031",
-                    color: "white",
-                    padding: "10px 20px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    marginRight: "10px",
-                  }}
-                >
-                  Confirmer la suppression
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowDeleteConfirm(false);
-                    setDeletePassword("");
-                    setDeleteMsg("");
-                  }}
-                  style={{
-                    backgroundColor: "#636e72",
-                    color: "white",
-                    padding: "10px 20px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Annuler
-                </button>
-                {deleteMsg && <p style={{ marginTop: "10px" }}>{deleteMsg}</p>}
+                <div className="profile-field">
+                  <label>
+                    <strong>Confirmez avec votre mot de passe:</strong>
+                  </label>
+                  <input
+                    type="password"
+                    value={deletePassword}
+                    onChange={(e) => setDeletePassword(e.target.value)}
+                    placeholder="Votre mot de passe"
+                    required
+                  />
+                </div>
+                <div className="button-group">
+                  <button
+                    type="submit"
+                    className="profile-button delete-button"
+                  >
+                    Confirmer la suppression
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowDeleteConfirm(false);
+                      setDeletePassword("");
+                      setDeleteMsg("");
+                    }}
+                    className="profile-button cancel-button"
+                  >
+                    Annuler
+                  </button>
+                </div>
+                {deleteMsg && <p className="update-message">{deleteMsg}</p>}
               </form>
             )}
           </div>
@@ -396,7 +543,7 @@ function ProfilePage() {
 
         {/* Formulaire d'édition du profil sportif */}
         <div id="sport-profile-edit">
-          <label id="age">Âge :</label>
+          <label>Âge :</label>
           <input
             type="number"
             value={sportProfile.age}
@@ -404,8 +551,8 @@ function ProfilePage() {
               setSportProfile({ ...sportProfile, age: e.target.value })
             }
           />
-          <br />
-          <label id="goals">Objectifs :</label>
+
+          <label>Objectifs :</label>
           <input
             type="text"
             value={sportProfile.goals}
@@ -413,8 +560,8 @@ function ProfilePage() {
               setSportProfile({ ...sportProfile, goals: e.target.value })
             }
           />
-          <br />
-          <label id="level_user">Niveau :</label>
+
+          <label>Niveau :</label>
           <select
             value={sportProfile.level_user}
             onChange={(e) =>
@@ -426,40 +573,49 @@ function ProfilePage() {
             <option value="intermediate">Intermédiaire</option>
             <option value="advanced">Avancé</option>
           </select>
-          <br />
-          <br />
-          <div>
-            <button
-              id="constraints"
-              type="button"
-              onClick={() => setShowConstraints(!showConstraints)}
-            >
-              Contraintes physiques {showConstraints ? "▲" : "▼"}
-            </button>
 
-            {showConstraints && (
-              <div style={{ padding: "10px" }}>
-                {constraints.map((c) => (
-                  <label
-                    key={c.id}
-                    style={{ display: "block", marginBottom: "5px" }}
+          <label>Contraintes physiques :</label>
+          <div className="custom-constraints-select">
+            <div
+              className="constraints-display"
+              onClick={() => setIsConstraintsOpen(!isConstraintsOpen)}
+            >
+              <span className="constraints-text">
+                {sportProfile.constraints.length === 0
+                  ? "-- Sélectionner des contraintes --"
+                  : `${sportProfile.constraints.length} contrainte(s) sélectionnée(s)`}
+              </span>
+              <span className="dropdown-arrow">
+                {isConstraintsOpen ? "▲" : "▼"}
+              </span>
+            </div>
+
+            {isConstraintsOpen && (
+              <div className="constraints-dropdown">
+                {constraints.map((constraint) => (
+                  <div
+                    key={constraint.id}
+                    className={`constraint-option ${
+                      sportProfile.constraints.includes(constraint.id)
+                        ? "selected"
+                        : ""
+                    }`}
+                    onClick={() => handleConstraintToggle(constraint.id)}
                   >
-                    <input
-                      type="checkbox"
-                      checked={sportProfile.constraints.includes(c.id)}
-                      onChange={() => handleConstraintToggle(c.id)}
-                    />
-                    {c.name}
-                  </label>
+                    <span className="constraint-name">{constraint.name}</span>
+                    {sportProfile.constraints.includes(constraint.id) && (
+                      <span className="check-mark">✓</span>
+                    )}
+                  </div>
                 ))}
               </div>
             )}
           </div>
-          <br />
+
           <button
-            id="update-sport-profile"
             type="button"
             onClick={handleSportSubmit}
+            className="profile-button"
           >
             Mettre à jour le profil sportif
           </button>
