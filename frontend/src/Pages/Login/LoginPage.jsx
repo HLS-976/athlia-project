@@ -133,31 +133,35 @@ function LoginPage() {
   };
 
   return (
-    <main>
+    <main role="main">
       <div id="login-container">
         <h2>Connexion</h2>
         <form id="login" onSubmit={handleLogin}>
           {/* Username or Email field */}
           <div className="field-group">
-            <label>Email* : </label>
+            <label htmlFor="email">Email* : </label>
             <input
-              type="text"
+              type="email"
+              id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               required
+              autoComplete="email"
             />
           </div>
 
           {/* Password field */}
           <div className="field-group">
-            <label>Mot de passe* : </label>
+            <label htmlFor="password">Mot de passe* : </label>
             <input
               type="password"
+              id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
               required
+              autoComplete="current-password"
             />
           </div>
 

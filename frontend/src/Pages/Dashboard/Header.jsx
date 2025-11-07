@@ -18,7 +18,7 @@ const Header = () => {
       <div id="logo">
         {/* Logo with button to go back to home page */}
         <Link to="/">
-          <img src="/Logo.png" alt="Logo" />
+          <img src="/Logo.png" alt="Athlia - Logo" />
         </Link>
       </div>
       

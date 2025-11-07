@@ -191,7 +191,7 @@ function SignUpPage() {
 
   return (
     <GoogleOAuthProvider clientId="VOTRE_GOOGLE_CLIENT_ID">
-      <main>
+      <main role="main">
         <div id="signup-container">
           {/* Success message after registration */}
           {submitted ? (
@@ -212,73 +212,85 @@ function SignUpPage() {
                 {/* First name and Last name in two columns */}
                 <div id="names">
                   <div className="name">
-                    <label>Prénom* : </label>
+                    <label htmlFor="first_name">Prénom* : </label>
                     <input
                       type="text"
+                      id="first_name"
                       name="first_name"
                       value={formData.first_name}
                       onChange={handleChange}
                       required
+                      autoComplete="given-name"
                     />
                   </div>
 
                   <div className="name">
-                    <label>Nom* : </label>
+                    <label htmlFor="last_name">Nom* : </label>
                     <input
                       type="text"
+                      id="last_name"
                       name="last_name"
                       value={formData.last_name}
                       onChange={handleChange}
                       required
+                      autoComplete="family-name"
                     />
                   </div>
                 </div>
 
                 {/* Username input */}
                 <div className="field-group">
-                  <label>Nom d'utilisateur* : </label>
+                  <label htmlFor="user_name">Nom d'utilisateur* : </label>
                   <input
                     type="text"
+                    id="user_name"
                     name="user_name"
                     value={formData.user_name}
                     onChange={handleChange}
                     required
+                    autoComplete="username"
                   />
                 </div>
 
                 {/* Email input */}
                 <div className="field-group">
-                  <label>Email* : </label>
+                  <label htmlFor="signup-email">Email* : </label>
                   <input
                     type="email"
+                    id="signup-email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
+                    autoComplete="email"
                   />
                 </div>
 
                 {/* Password and Confirm Password in two columns */}
                 <div id="passwords">
                   <div className="password-field">
-                    <label>Mot de passe* : </label>
+                    <label htmlFor="signup-password">Mot de passe* : </label>
                     <input
                       type="password"
+                      id="signup-password"
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
                       required
+                      autoComplete="new-password"
                     />
                   </div>
 
                   <div className="password-field">
-                    <label>Confirmer le mot de passe* : </label>
+                    <label htmlFor="confirmPassword">Confirmer le mot de passe* : </label>
                     <input
                       type="password"
+                      id="confirmPassword"
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       required
+                      autoComplete="new-password"
                     />
                   </div>
                 </div>
