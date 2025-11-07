@@ -2,12 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
 from .models import ConstraintField, SportProfile
 from .serializers import ConstraintFieldSerializer, SportProfileSerializer
-from user_account.models import CustomUser
 
 class ConstraintFieldListAPIView(APIView):
     permission_classes = [IsAuthenticated]
