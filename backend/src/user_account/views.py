@@ -34,6 +34,30 @@ class UserDetailView(APIView):
         serializer = UserDetailSerializer(request.user)
         return Response(serializer.data)
 
+    def patch(self, request, format=None):
+        serializer = UserUpdateSerializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            # On renvoie la vue "détail" standard après update
+            return Response(UserDetailSerializer(request.user).data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, format=None):
+        serializer = UserUpdateSerializer(
+            request.user,
+            data=request.data,
+            partial=False
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(UserDetailSerializer(request.user).data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
