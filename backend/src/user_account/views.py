@@ -9,6 +9,7 @@ from .serializers import (
     UserCreateSerializer,
     UserDetailSerializer,
     DeleteAccountSerializer,
+    UserUpdateSerializer,
 )
 from .models import CustomUser
 
