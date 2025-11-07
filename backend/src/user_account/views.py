@@ -3,10 +3,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import MyTokenObtainPairSerializer
-from .serializers import UserCreateSerializer, UserDetailSerializer, UserDetailSerializer
-from .models import CustomUser
 
+from .serializers import (
+    MyTokenObtainPairSerializer,
+    UserCreateSerializer,
+    UserDetailSerializer,
+    DeleteAccountSerializer,
+)
+from .models import CustomUser
 
 # Create your views here.
 
@@ -32,3 +36,27 @@ class UserDetailView(APIView):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+class UserDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        serializer = DeleteAccountSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        password = serializer.validated_data["password"]
+        user = request.user
+
+        if not user.check_password(password):
+            return Response(
+                {"detail": "Mot de passe incorrect."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user.delete()
+        return Response(
+            {"message": "Compte supprimé avec succès."},
+            status=status.HTTP_204_NO_CONTENT,
+        )
