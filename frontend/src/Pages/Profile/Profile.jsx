@@ -211,10 +211,10 @@ function ProfilePage() {
           errorMessage = data.non_field_errors[0];
         }
 
-        setPasswordMsg(`❌ ${errorMessage}`);
+        setPasswordMsg(`${errorMessage}`);
       }
     } catch (error) {
-      setPasswordMsg("❌ Erreur de connexion au serveur.");
+      setPasswordMsg("Erreur de connexion au serveur.");
       console.error("Erreur changement mot de passe:", error);
     }
   };
@@ -225,7 +225,7 @@ function ProfilePage() {
     setDeleteMsg("");
 
     if (!deletePassword) {
-      setDeleteMsg("❌ Veuillez saisir votre mot de passe.");
+      setDeleteMsg("Veuillez saisir votre mot de passe.");
       return;
     }
 
@@ -265,10 +265,10 @@ function ProfilePage() {
           errorMessage = data.error;
         }
 
-        setDeleteMsg(`❌ ${errorMessage}`);
+        setDeleteMsg(` ${errorMessage}`);
       }
     } catch (error) {
-      setDeleteMsg("❌ Erreur de connexion au serveur.");
+      setDeleteMsg("Erreur de connexion au serveur.");
       console.error("Erreur suppression compte:", error);
     }
   };
