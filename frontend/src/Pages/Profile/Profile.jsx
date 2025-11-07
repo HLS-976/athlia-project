@@ -24,6 +24,11 @@ function ProfilePage() {
   const [newPassword, setNewPassword] = useState("");
   const [passwordMsg, setPasswordMsg] = useState("");
 
+  // Pour la suppression de compte
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deleteMsg, setDeleteMsg] = useState("");
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -214,6 +219,60 @@ function ProfilePage() {
     }
   };
 
+  // Gestion de la suppression de compte
+  const handleDeleteAccount = async (e) => {
+    e.preventDefault();
+    setDeleteMsg("");
+
+    if (!deletePassword) {
+      setDeleteMsg("❌ Veuillez saisir votre mot de passe.");
+      return;
+    }
+
+    try {
+      const response = await fetchWithAuth(
+        "http://127.0.0.1:8000/api/delete-account/",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            password: deletePassword,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Supprimer les données locales
+        localStorage.removeItem("user");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+
+        alert("✅ Compte supprimé avec succès. Vous allez être redirigé.");
+
+        // Rediriger vers la page de connexion ou d'accueil
+        window.location.href = "/login"; // ou "/" selon votre routing
+      } else {
+        const data = await response.json();
+        let errorMessage = "Erreur lors de la suppression du compte.";
+
+        if (data.password) {
+          errorMessage = data.password[0];
+        } else if (data.detail) {
+          errorMessage = data.detail;
+        } else if (data.error) {
+          errorMessage = data.error;
+        }
+
+        setDeleteMsg(`❌ ${errorMessage}`);
+      }
+    } catch (error) {
+      setDeleteMsg("❌ Erreur de connexion au serveur.");
+      console.error("Erreur suppression compte:", error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -258,7 +317,79 @@ function ProfilePage() {
             </button>
             {passwordMsg && <p>{passwordMsg}</p>}
           </form>
+
+          {/* Section suppression de compte */}
+          <div id="delete-account-section">
+            {!showDeleteConfirm ? (
+              <button
+                id="show-delete-confirm"
+                type="button"
+                onClick={() => setShowDeleteConfirm(true)}
+                style={{
+                  backgroundColor: "#d63031",
+                  color: "white",
+                  padding: "10px 20px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Supprimer mon compte
+              </button>
+            ) : (
+              <form onSubmit={handleDeleteAccount}>
+                <p style={{ color: "#d63031", fontWeight: "bold" }}>
+                  ⚠️ Cette action est irréversible ! Tous vos données seront
+                  définitivement supprimées.
+                </p>
+                <label>Confirmez avec votre mot de passe :</label>
+                <input
+                  type="password"
+                  value={deletePassword}
+                  onChange={(e) => setDeletePassword(e.target.value)}
+                  placeholder="Votre mot de passe"
+                  required
+                  style={{ margin: "10px 0", padding: "5px", width: "200px" }}
+                />
+                <br />
+                <button
+                  type="submit"
+                  style={{
+                    backgroundColor: "#d63031",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
+                >
+                  Confirmer la suppression
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDeleteConfirm(false);
+                    setDeletePassword("");
+                    setDeleteMsg("");
+                  }}
+                  style={{
+                    backgroundColor: "#636e72",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Annuler
+                </button>
+                {deleteMsg && <p style={{ marginTop: "10px" }}>{deleteMsg}</p>}
+              </form>
+            )}
+          </div>
         </div>
+
         <div id="sport-profile-title">
           <h1>Mon Profil Sportif</h1>
         </div>
