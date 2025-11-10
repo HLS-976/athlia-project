@@ -53,10 +53,21 @@ const ExercisesCards = ({
   selectedZones = [],
   onExerciseSelect = null,
   isExerciseSelected = null,
-  selectedConstraint = "",
+  selectedConstraint = ""
 }) => {
   const [exercises, setExercises] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState([]); // État local
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : {};
+  });
+  const [sportProfile, setSportProfile] = useState({
+    id: null,
+    age: "",
+    goals: "",
+    level_user: "",
+    constraints: [],
+  });
 
   useEffect(() => {
     const fetchExercises = async () => {
@@ -89,6 +100,50 @@ const ExercisesCards = ({
     };
 
     fetchExercises();
+  }, []);
+
+  // Récupérer le niveau de l'utilisateur depuis son profil sportif
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetchWithAuth(
+          "http://localhost:8000/api/sport-profiles/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const profiles = await response.json();
+          let myProfile = null;
+          if (Array.isArray(profiles)) {
+            myProfile = profiles.find(
+              (p) => p.user === user.id || p.user_username === user.user_name
+            );
+          } else if (profiles && profiles.user === user.id) {
+            myProfile = profiles;
+          }
+            setSportProfile({
+              id: myProfile.id || null,
+              age: myProfile.age || "",
+              goals: myProfile.goals || "",
+              level_user: myProfile.level_user || "",
+              constraints: Array.isArray(myProfile.display_constraints)
+                ? myProfile.display_constraints.map((c) => c.id)
+                : [],
+            });
+        } else {
+          console.error("Failed to fetch user profile");
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchUserProfile();
   }, []);
 
   // Filtre exo par zone
@@ -127,6 +182,29 @@ const ExercisesCards = ({
           constraint.id?.toString() === selectedConstraint.toString()
       )
     );
+  }
+
+  // Filtrer par difficulté selon le niveau de l'utilisateur
+  if (sportProfile.level_user) {
+    filteredExercises = filteredExercises.filter((exercise) => {
+      const difficulty = exercise.difficulty?.toLowerCase();
+      console.log(exercise);
+      // Mapper le niveau de l'utilisateur aux difficultés autorisées
+      if (sportProfile.level_user === "beginner") {
+        // Débutant: seulement exercices faciles
+        return difficulty === "facile" || difficulty === "adaptatif";
+      } else if (sportProfile.level_user === "intermediate") {
+        // Intermédiaire: exercices faciles et modérés
+        return difficulty === "facile" || difficulty === "modéré"|| difficulty === "adaptatif";
+      } else if (sportProfile.level_user === "advanced") {
+        // Avancé: tous les exercices
+        return true;
+      } else {
+        console.log("Adaptatif");
+        return true;
+      }
+
+    });
   }
 
   // Fonction pour gérer la sélection d'un exercice
