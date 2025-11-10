@@ -43,6 +43,9 @@ function ProfilePage() {
   // État pour l'ouverture/fermeture du dropdown des contraintes
   const [isConstraintsOpen, setIsConstraintsOpen] = useState(false);
 
+  // Ajout d'un état pour le dropdown des niveaux
+  const [isLevelOpen, setIsLevelOpen] = useState(false);
+
   useEffect(() => {
     // Initialiser les champs éditables avec les données utilisateur
     setEditableUser({
@@ -141,7 +144,7 @@ function ProfilePage() {
     try {
       // 1. Mise à jour du profil utilisateur
       const profileResponse = await fetchWithAuth(
-        `http://localhost:8000/api/users/${user.id}/`,
+        `http://localhost:8000/api/user/`,
         {
           method: "PUT",
           headers: {
@@ -351,11 +354,14 @@ function ProfilePage() {
     }
   };
 
-  // Fermer le dropdown quand on clique ailleurs
+  // Fermer les dropdowns quand on clique ailleurs
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".custom-constraints-select")) {
         setIsConstraintsOpen(false);
+      }
+      if (!event.target.closest(".custom-level-select")) {
+        setIsLevelOpen(false);
       }
     };
 
@@ -562,17 +568,95 @@ function ProfilePage() {
           />
 
           <label>Niveau :</label>
-          <select
-            value={sportProfile.level_user}
-            onChange={(e) =>
-              setSportProfile({ ...sportProfile, level_user: e.target.value })
-            }
-          >
-            <option value="">-- Choisir un niveau --</option>
-            <option value="beginner">Débutant</option>
-            <option value="intermediate">Intermédiaire</option>
-            <option value="advanced">Avancé</option>
-          </select>
+          <div className={`custom-level-select ${isLevelOpen ? "open" : ""}`}>
+            <div
+              className="level-display"
+              onClick={() => setIsLevelOpen(!isLevelOpen)}
+            >
+              <span className="level-text">
+                {sportProfile.level_user === ""
+                  ? "-- Choisir un niveau --"
+                  : sportProfile.level_user === "beginner"
+                  ? "Débutant"
+                  : sportProfile.level_user === "intermediate"
+                  ? "Intermédiaire"
+                  : sportProfile.level_user === "advanced"
+                  ? "Avancé"
+                  : sportProfile.level_user}
+              </span>
+              <span className="dropdown-arrow">{isLevelOpen ? "▲" : "▼"}</span>
+            </div>
+
+            {isLevelOpen && (
+              <div className="level-dropdown">
+                <div
+                  className={`level-option ${
+                    sportProfile.level_user === "" ? "selected" : ""
+                  }`}
+                  onClick={() => {
+                    setSportProfile({ ...sportProfile, level_user: "" });
+                    setIsLevelOpen(false);
+                  }}
+                >
+                  <span className="level-name">-- Choisir un niveau --</span>
+                  {sportProfile.level_user === "" && (
+                    <span className="check-mark">✓</span>
+                  )}
+                </div>
+                <div
+                  className={`level-option ${
+                    sportProfile.level_user === "beginner" ? "selected" : ""
+                  }`}
+                  onClick={() => {
+                    setSportProfile({
+                      ...sportProfile,
+                      level_user: "beginner",
+                    });
+                    setIsLevelOpen(false);
+                  }}
+                >
+                  <span className="level-name">Débutant</span>
+                  {sportProfile.level_user === "beginner" && (
+                    <span className="check-mark">✓</span>
+                  )}
+                </div>
+                <div
+                  className={`level-option ${
+                    sportProfile.level_user === "intermediate" ? "selected" : ""
+                  }`}
+                  onClick={() => {
+                    setSportProfile({
+                      ...sportProfile,
+                      level_user: "intermediate",
+                    });
+                    setIsLevelOpen(false);
+                  }}
+                >
+                  <span className="level-name">Intermédiaire</span>
+                  {sportProfile.level_user === "intermediate" && (
+                    <span className="check-mark">✓</span>
+                  )}
+                </div>
+                <div
+                  className={`level-option ${
+                    sportProfile.level_user === "advanced" ? "selected" : ""
+                  }`}
+                  onClick={() => {
+                    setSportProfile({
+                      ...sportProfile,
+                      level_user: "advanced",
+                    });
+                    setIsLevelOpen(false);
+                  }}
+                >
+                  <span className="level-name">Avancé</span>
+                  {sportProfile.level_user === "advanced" && (
+                    <span className="check-mark">✓</span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
 
           <label>Contraintes physiques :</label>
           <div className="custom-constraints-select">

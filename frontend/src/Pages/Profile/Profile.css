@@ -39,6 +39,8 @@
   max-width: 700px;
   margin-bottom: 2rem;
   box-sizing: border-box;
+  overflow: visible;
+  min-height: auto;
 }
 
 /* Classes pour les champs en ligne responsive */
@@ -284,11 +286,17 @@
   color: #1e293b;
 }
 
-/* NOUVEAU: Composant select personnalisé pour les contraintes */
+/* MODIFIÉ: Composant select personnalisé pour les contraintes */
 .custom-constraints-select {
   position: relative;
   width: 100%;
   margin-bottom: 15px;
+}
+
+/* NOUVEAU: Agrandissement du conteneur quand le dropdown est ouvert */
+.custom-constraints-select.open + * {
+  margin-top: 200px;
+  transition: margin-top 0.3s ease;
 }
 
 .constraints-display {
@@ -333,20 +341,34 @@
   margin-left: 10px;
 }
 
+/* MODIFIÉ: Dropdown intégré dans le flux du document */
 .constraints-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  width: 100%;
   background: rgba(255, 255, 255, 0.95);
   border: 1.5px solid rgba(96, 165, 250, 0.3);
   border-radius: 14px;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1000;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   margin-top: 4px;
+  margin-bottom: 15px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+    margin-top: 4px;
+    margin-bottom: 15px;
+  }
 }
 
 .constraint-option {
@@ -609,4 +631,153 @@
 #sport-profile-edit #constraints {
   border: none !important;
   box-shadow: none !important;
+}
+
+/* AJOUT: Composant select personnalisé pour le niveau */
+.custom-level-select {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.level-display {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(96, 165, 250, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 1rem;
+  color: #1e293b;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.level-display:hover {
+  border-color: rgba(96, 165, 250, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.level-display:focus,
+.level-display.open {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.level-text {
+  flex: 1;
+  text-align: left;
+}
+
+/* Dropdown pour le niveau */
+.level-dropdown {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(96, 165, 250, 0.3);
+  border-radius: 14px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  margin-top: 4px;
+  margin-bottom: 15px;
+  animation: slideDownLevel 0.3s ease-out;
+}
+
+@keyframes slideDownLevel {
+  from {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+    margin-top: 4px;
+    margin-bottom: 15px;
+  }
+}
+
+.level-option {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.level-option:last-child {
+  border-bottom: none;
+}
+
+.level-option:hover {
+  background: rgba(96, 165, 250, 0.2);
+}
+
+.level-option.selected {
+  background: rgba(96, 165, 250, 0.3);
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.level-option.selected:hover {
+  background: rgba(96, 165, 250, 0.4);
+}
+
+.level-name {
+  flex: 1;
+  text-align: left;
+}
+
+/* Scrollbar pour le dropdown niveau */
+.level-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.level-dropdown::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.level-dropdown::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.3);
+  border-radius: 3px;
+}
+
+.level-dropdown::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.5);
+}
+
+/* Media queries pour le select niveau personnalisé */
+@media (max-width: 768px) {
+  .level-dropdown {
+    max-height: 150px;
+  }
+
+  .level-option {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .level-dropdown {
+    max-height: 120px;
+  }
+
+  .level-option {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
 }
