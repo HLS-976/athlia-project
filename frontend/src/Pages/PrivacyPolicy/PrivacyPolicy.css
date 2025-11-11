@@ -1,116 +1,430 @@
 .privacy-policy {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding: 80px 0 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.privacy-policy::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(36, 96, 242, 0.15), transparent);
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.privacy-policy::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.12), transparent);
+  border-radius: 50%;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
 }
 
 .privacy-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-  background: white;
-  border-radius: 20px;
-  padding: 3rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: 3.5rem;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  line-height: 1.7;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 1;
+  animation: containerEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes containerEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.privacy-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(36, 96, 242, 0.05), rgba(74, 222, 128, 0.05));
+  border-radius: 30px;
+  z-index: -1;
 }
 
 .privacy-container h1 {
-  color: #2d3748;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   margin-bottom: 0.5rem;
   text-align: center;
-  font-weight: 700;
+  font-weight: 800;
+  background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -1px;
+  position: relative;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.3));
+  }
+  50% { 
+    filter: drop-shadow(0 0 30px rgba(52, 211, 153, 0.4));
+  }
 }
 
 .last-updated {
   text-align: center;
-  color: #718096;
+  color: rgba(255, 255, 255, 0.5);
   font-style: italic;
   margin-bottom: 3rem;
   font-size: 0.9rem;
+  font-weight: 300;
 }
 
 .privacy-container section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.8rem;
+  animation: sectionEntrance 0.6s ease-out both;
+  animation-delay: calc(var(--section-index, 0) * 0.1s);
+}
+
+@keyframes sectionEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .privacy-container h2 {
-  color: #2d3748;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 0.5rem;
+  font-size: 1.8rem;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, #2460f2, #4ade80) 1;
+  padding-bottom: 0.8rem;
+  position: relative;
+  letter-spacing: -0.5px;
+}
+
+.privacy-container h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #2460f2, #4ade80);
+  box-shadow: 0 0 10px rgba(36, 96, 242, 0.5);
+  animation: lineExpand 0.6s ease-out both;
+}
+
+@keyframes lineExpand {
+  from { width: 0; }
+  to { width: 60px; }
 }
 
 .privacy-container h3 {
-  color: #4a5568;
-  font-size: 1.2rem;
-  margin: 1.5rem 0 0.5rem 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.3rem;
+  margin: 1.8rem 0 0.8rem 0;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.privacy-container h3::before {
+  content: '▸';
+  color: #4ade80;
+  font-size: 1.2rem;
 }
 
 .privacy-container p {
-  color: #4a5568;
-  margin-bottom: 1rem;
-  text-align: justify;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 1.2rem;
+  text-align: left;
+  line-height: 1.8;
+  font-weight: 300;
 }
 
 .privacy-container ul {
-  color: #4a5568;
-  margin: 1rem 0;
-  padding-left: 1.5rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 1.2rem 0;
+  padding-left: 1.8rem;
+  list-style: none;
 }
 
 .privacy-container li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  position: relative;
+  padding-left: 1.5rem;
+  line-height: 1.7;
+}
+
+.privacy-container li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #4ade80;
+  font-weight: 700;
 }
 
 .privacy-container strong {
-  color: #2d3748;
+  color: rgba(255, 255, 255, 0.95);
   font-weight: 600;
+  background: linear-gradient(135deg, #60a5fa, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .privacy-footer {
-  margin-top: 3rem;
-  padding: 1.5rem;
-  background: #f7fafc;
-  border-radius: 10px;
-  border-left: 4px solid #667eea;
+  margin-top: 3.5rem;
+  padding: 2rem;
+  background: rgba(36, 96, 242, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(36, 96, 242, 0.2);
+  border-left: 4px solid #2460f2;
+  box-shadow: 0 4px 20px rgba(36, 96, 242, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.privacy-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(36, 96, 242, 0.05), rgba(74, 222, 128, 0.05));
+  z-index: 0;
 }
 
 .privacy-footer p {
   margin: 0;
-  font-size: 0.9rem;
-  color: #718096;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 1;
+  line-height: 1.6;
+}
+
+/* Style pour les notes info */
+.info-note {
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-left: 4px solid #4ade80;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.info-note strong {
+  color: #4ade80;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+}
+
+/* Style pour le badge Beta */
+.beta-notice {
+  position: relative;
+  overflow: hidden;
+}
+
+.beta-notice::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.05), rgba(255, 152, 0, 0.05));
+  z-index: 0;
+}
+
+.beta-notice strong {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Scroll to top button */
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #2460f2, #4ade80);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(36, 96, 242, 0.4);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(36, 96, 242, 0.6);
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .privacy-container {
-    margin: 0 1rem;
-    padding: 2rem;
+    max-width: 800px;
+    padding: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .privacy-policy {
+    padding: 60px 0 3rem 0;
+  }
+
+  .privacy-container {
+    margin: 0 1.5rem;
+    padding: 2.5rem;
+    border-radius: 25px;
   }
   
   .privacy-container h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
   
   .privacy-container h2 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   }
   
   .privacy-container h3 {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+  }
+
+  .privacy-container p,
+  .privacy-container li {
+    font-size: 0.95rem;
+  }
+
+  .info-note,
+  .privacy-footer {
+    padding: 1.2rem;
   }
 }
 
 @media (max-width: 480px) {
+  .privacy-policy {
+    padding: 50px 0 2rem 0;
+  }
+
   .privacy-container {
-    padding: 1.5rem;
+    margin: 0 1rem;
+    padding: 2rem;
+    border-radius: 20px;
   }
   
   .privacy-container h1 {
     font-size: 1.8rem;
+    letter-spacing: -0.5px;
+  }
+
+  .privacy-container h2 {
+    font-size: 1.3rem;
+  }
+
+  .privacy-container h3 {
+    font-size: 1.05rem;
+  }
+
+  .privacy-container p,
+  .privacy-container li {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .last-updated {
+    font-size: 0.85rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .info-note,
+  .privacy-footer {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .scroll-to-top {
+    width: 45px;
+    height: 45px;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .privacy-container {
+    padding: 1.5rem;
+    margin: 0 0.8rem;
+  }
+
+  .privacy-container h1 {
+    font-size: 1.6rem;
+  }
+
+  .privacy-container h2 {
+    font-size: 1.2rem;
+  }
+
+  .privacy-container h3 {
+    font-size: 1rem;
+  }
+
+  .privacy-container p,
+  .privacy-container li {
+    font-size: 0.85rem;
   }
 } 
