@@ -146,7 +146,7 @@ function ProfilePage() {
       const profileResponse = await fetchWithAuth(
         `http://localhost:8000/api/user/`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
