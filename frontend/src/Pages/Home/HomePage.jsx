@@ -1,48 +1,128 @@
-import Header from "./Header";
+import React from "react";
 import { Link } from "react-router-dom";
 import CardsFeatures from "./CardsFeatures";
+import FeaturesSection from "./FeaturesSection";
+import ContactSection from "./ContactSection";
+import AboutSection from "./AboutSection";
+import { useEffect, useState, useRef } from "react";
+import Header from "../../components/Header";
+import DashboardHeader from "../Dashboard/Header";
 import "./HomePage.css";
 
 /**
- * HomePage component
+ * HomePage Component
  *
- * This component displays the main landing page of the application.
- *
- * - The returned JSX contains:
- *   - The header bar at the top.
- *   - A main section with the title and presentation text.
- *   - Two main buttons: "Get Started" (links to login) and "Explore Features".
- *   - A section with feature cards (CardsFeatures component).
+ * This component renders the main homepage with:
+ * - The appropriate header based on login status
+ * - A hero section with video background and overlay text.
+ * - A main button: "Get Started" (links to login).
  */
-const tittle = "Transform your body with Athlia";
-const presentation =
-  "Discover personalized sports exercises, track your progress, and reach your goals with a clean and motivating platform designed for athletes and beginners alike even with your injuries";
 
 const HomePage = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    // Vérifier l'état de connexion
+    const checkLoginStatus = () => {
+      const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const token = localStorage.getItem("accessToken");
+      setIsLoggedIn(loggedIn && token);
+    };
+
+    checkLoginStatus();
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const heroHeight = window.innerHeight;
+
+      // Gestion du scroll pour l'animation
+      if (scrollPosition > heroHeight * 0.3) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+
+      // Premier scroll détecté
+      if (scrollPosition > 10) {
+        setHasScrolled(true);
+      }
+    };
+
+    // Déclencher les animations immédiatement
+    const timer = setTimeout(() => {
+      setHasScrolled(true);
+    }, 100);
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Écouter les changements de localStorage pour l'état de connexion
+    const handleStorageChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("storage", handleStorageChange);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  const title = "Transformez votre corps avec Athlia";
+  const presentation =
+    "Découvrez une approche révolutionnaire de la remise en forme, combinant technologie de pointe et expertise scientifique pour des résultats exceptionnels.";
+
   return (
     <main>
-      {/* Top header bar */}
-      <header>
-        <Header />
-      </header>
-      <div id="HomePage">
-        <div id="home">
-          {/* Main title and presentation */}
-          <h1 id="tittle">{tittle}</h1>
-          <p id="presentation">{presentation}</p>
-          {/* Main action buttons */}
-          <div id="Home-Button">
-            {/* Get Started button (links to login) */}
-            <Link to="/login">
-              <button id="Get-Started">Get Started</button>
-            </Link>
-            {/* Explore Features button */}
-            <button id="Explore-Features">Explore Features</button>
+      {/* Afficher le header approprié selon l'état de connexion */}
+      {isLoggedIn ? <DashboardHeader /> : <Header />}
+
+      <div id="hero-section" ref={heroRef}>
+        <div className="video-background">
+          <video autoPlay muted loop playsInline>
+            <source src="/video1.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div className="video-overlay"></div>
+        </div>
+
+        {/* Content overlay with scroll animation */}
+        <div className={`hero-content ${isScrolled ? "scroll-hidden" : ""}`}>
+          <div className="content-container">
+            <h1 id="hero-title">
+              <span className="title-line">{title}</span>
+            </h1>
+
+            <p id="hero-presentation">{presentation}</p>
+
+            <div id="hero-button">
+              {/* Adapter le bouton selon l'état de connexion */}
+              <Link to={isLoggedIn ? "/combined" : "/login"}>
+                <button id="hero-get-started">
+                  <span>{isLoggedIn ? "Mes Exercices" : "Commencer"}</span>
+                  <span className="button-icon">→</span>
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
-        {/* Feature cards section */}
-        <div id="HomeCards">
+
+        <div className="scroll-indicator">
+          <div className="scroll-arrow"></div>
+          <span>Découvrir</span>
+        </div>
+      </div>
+
+      <div id="Home-Contenaire">
+        <div id="HomePage" className={hasScrolled ? "scroll-triggered" : ""}>
           <CardsFeatures />
+          <AboutSection />
+          <FeaturesSection />
+          <ContactSection />
         </div>
       </div>
     </main>

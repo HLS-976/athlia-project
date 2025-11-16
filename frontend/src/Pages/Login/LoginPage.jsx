@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import Header from "./Header";
+import { useState, useEffect } from "react";
 import "./LoginPage.css";
 
 /**
@@ -21,18 +20,25 @@ function LoginPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Extract the redirect query parameter or default to /dashboard
+  // Extract the redirect query parameter or default to /combined
   const queryParams = new URLSearchParams(location.search);
-  const redirectTo = queryParams.get("redirect") || "/dashboard";
+  const redirectTo = queryParams.get("redirect") || "/combined";
 
-  // State for error messages and submission status
-  const [errorMsg, setErrorMsg] = useState([]);
+  // State for error messages - utiliser une chaîne au lieu d'un tableau
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // State for form fields and error message
+  // State for form fields - récupérer l'email sauvegardé
   const [formData, setFormData] = useState({
-    email: "",
+    email: localStorage.getItem("rememberedEmail") || "",
     password: "",
   });
+
+  // Sauvegarder l'email dans localStorage quand il change
+  useEffect(() => {
+    if (formData.email.trim() !== "") {
+      localStorage.setItem("rememberedEmail", formData.email);
+    }
+  }, [formData.email]);
 
   //Handles the signup form submission.
   const handleChange = (e) => {
@@ -60,12 +66,15 @@ function LoginPage() {
 
     // Send login request to backend
     try {
-      const response = await fetch("http://localhost:8000/api/users/login/", {
+      const response = await fetch("http://localhost:8000/api/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
       // Parse response data
@@ -80,63 +89,91 @@ function LoginPage() {
         return;
       }
 
-      // Save login state and token in localStorage only if the token exists
-      if (data.refresh) {
+      // Save login state and tokens in localStorage only if the tokens exist
+      if (data.access && data.refresh) {
         localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("accessToken", data.access);
         localStorage.setItem("refreshToken", data.refresh);
+        localStorage.setItem("justAuthenticated", "true");
+
+        // Sauvegarder l'email pour la prochaine connexion
+        localStorage.setItem("rememberedEmail", formData.email);
 
         // Optional: log token for debugging
-        console.log("Token correctly saved:", data);
+        console.log("Tokens correctly saved:", data);
 
-        // Redirect to the intended page after login
+        try {
+          const userRes = await fetch("http://localhost:8000/api/user/", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${data.access}`,
+            },
+          });
+
+          if (userRes.ok) {
+            const userData = await userRes.json();
+            localStorage.setItem("user", JSON.stringify(userData));
+            console.log("User info:", userData);
+          } else {
+            console.error("Failed to fetch user info");
+          }
+        } catch (fetchError) {
+          console.error("Error fetching user info:", fetchError);
+        }
+
+        // ✅ Redirection après login + récupération infos
         navigate(redirectTo, { replace: true });
       } else {
-        setErrorMsg("Login failed. No token received.");
+        setErrorMsg("Login failed. No tokens received.");
       }
     } catch (error) {
-      // Handle network or unexpected errors
       console.error("Login error:", error);
       setErrorMsg("Login failed. Please check your email or password.");
     }
   };
 
   return (
-    <main>
-      {/* Top header bar */}
-      <header>
-        <Header />
-      </header>
+    <main role="main">
       <div id="login-container">
-        <h2>Welcome Back</h2>
-        {/* Login form */}
+        <h2>Connexion</h2>
         <form id="login" onSubmit={handleLogin}>
-          {/* Email input */}
-          <label>Email</label>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          {/* Password input */}
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          {/* Error message */}
+          {/* Username or Email field */}
+          <div className="field-group">
+            <label htmlFor="email">Email* : </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              autoComplete="email"
+            />
+          </div>
+
+          {/* Password field */}
+          <div className="field-group">
+            <label htmlFor="password">Mot de passe* : </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              autoComplete="current-password"
+            />
+          </div>
+
+          {/* Error messages - afficher directement la chaîne */}
           {errorMsg && <p id="error">{errorMsg}</p>}
+
           {/* Submit button */}
-          <button type="submit">Log In</button>
-          {/* Signup link */}
+          <button type="submit">Se connecter</button>
+
+          {/* Link to signup page */}
           <p id="signup-link">
-            Don't have an account? <Link to="/signup">Sign up</Link>
+            Pas encore de compte ? <Link to="/signup">S'inscrire</Link>
           </p>
         </form>
       </div>

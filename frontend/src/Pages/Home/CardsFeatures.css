@@ -1,37 +1,116 @@
-/* CardsFeatures.css */
-
 #cards-features {
   display: flex;
   justify-content: center;
   gap: 30px;
-  padding: 60px 10%;
-  background-color: #f8f9ff;
+  padding: 180px 10% 60px 10%;
   flex-wrap: wrap;
+  background-color: transparent;
+  position: relative;
 }
 
-#card {
-  background: white;
-  padding: 30px 20px;
-  border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-  width: 280px;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.card {
+  background: linear-gradient(135deg, rgba(59,130,246,0.18) 0%, rgba(16,185,129,0.12) 100%) !important;
+  border-radius: 22px !important;
+  border: 2px solid #3b82f6 !important;
+  box-shadow: 0 0 32px 0 rgba(59,130,246,0.18), 0 2px 24px 0 rgba(16,185,129,0.15) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  color: #e2e8f0 !important;
+  padding: 32px 20px !important;
+  transition: box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.3s, transform 0.2s !important;
+  position: relative !important;
+  overflow: hidden !important;
+  width: 240px !important;
+  height: 240px !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  word-break: break-word !important;
+  will-change: transform, opacity, filter;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s, transform 0.8s;
 }
 
-#card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+.scroll-triggered .card {
+  opacity: 1;
+  transform: translateY(0);
+  animation: cardEntrance 0.8s ease-out forwards;
 }
 
-#card h3 {
-  color: #1f1f1f;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
+.scroll-triggered .card:nth-child(1) { animation-delay: 0.1s; }
+.scroll-triggered .card:nth-child(2) { animation-delay: 0.3s; }
+.scroll-triggered .card:nth-child(3) { animation-delay: 0.5s; }
+
+.card:hover {
+  box-shadow: 0 0 40px 8px #3b82f6, 0 0 32px 4px #10b981 !important;
+  border-color: #10b981 !important;
+  transform: translateY(-8px) scale(1.04) !important;
 }
 
-#card p {
-  color: #555;
-  font-size: 0.95rem;
-  line-height: 1.5;
+.card h3 {
+  font-family: "Inter", "Segoe UI", sans-serif !important;
+  font-size: 1.18rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 12px !important;
+  color: #eaf6ff !important;
+  letter-spacing: -0.5px !important;
+  text-shadow: 0 2px 8px rgba(59,130,246,0.18), 0 1px 2px rgba(16,185,129,0.10) !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  background-clip: initial !important;
+}
+
+.card p {
+  color: #e0f2fe !important;
+  font-size: 1.08rem !important;
+  line-height: 1.6 !important;
+  font-family: "Inter", "Segoe UI", sans-serif !important;
+  margin-bottom: 0 !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-shadow: 0 0 10px rgba(59,130,246,0.12) !important;
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  #cards-features {
+    gap: 25px;
+    padding: 150px 5% 50px 5%;
+  }
+  .card {
+    width: 220px;
+    height: 180px;
+    padding: 20px 15px;
+  }
+  .card h3 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #cards-features {
+    gap: 20px;
+    padding: 120px 3% 40px 3%;
+  }
+  .card {
+    width: 100%;
+    max-width: 240px;
+    height: 160px;
+    padding: 15px 12px;
+  }
 }

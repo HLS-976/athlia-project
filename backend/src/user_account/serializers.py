@@ -32,6 +32,28 @@ class UserDetailSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["email", "user_name", "first_name", "last_name"]
+
+    def validate_email(self, value):
+        user = self.instance
+        if CustomUser.objects.exclude(pk=user.pk).filter(email=value).exists():
+            raise serializers.ValidationError("Un compte avec cet email existe déjà.")
+        return value
+
+    def validate_user_name(self, value):
+        user = self.instance
+        if CustomUser.objects.exclude(pk=user.pk).filter(user_name=value).exists():
+            raise serializers.ValidationError("This username is already used")
+        return value
+
+
+class DeleteAccountSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True, min_length=8)
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -43,3 +65,5 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         attrs['username'] = attrs.get('email')
         return super().validate(attrs)
+
+

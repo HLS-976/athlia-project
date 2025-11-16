@@ -1,0 +1,125 @@
+.exercise-history-card {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+.card.exercise-card-selected .exercise-history-card {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.exercise-history-form {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.exercise-history-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.exercise-history-form input,
+.exercise-history-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+}
+
+.exercise-history-form input:focus,
+.exercise-history-form textarea:focus {
+  outline: none;
+  border-color: #2460f2;
+  box-shadow: 0 0 0 2px rgba(36, 96, 242, 0.1);
+}
+
+.exercise-history-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  background: #2460f2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: #1a4bc7;
+}
+
+.submit-button.submitting {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.submit-message {
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.submit-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.submit-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Styles spécifiques pour la page combinée - priorité maximale */
+.combined-page .exercise-history-card {
+  max-height: none !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+  transition: all 0.4s ease-out;
+  display: block !important;
+}
+
+.exercise-history-form {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Force l'affichage du formulaire dans les cartes sélectionnées */
+.card.exercise-card-selected .exercise-history-card {
+  max-height: none !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+  display: block !important;
+}
