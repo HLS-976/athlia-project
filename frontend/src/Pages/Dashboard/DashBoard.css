@@ -1,0 +1,47 @@
+#Dashboard-Container {
+  display: flex;
+  justify-content: center;
+}
+
+#Dashboard-Content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "welcome-message welcome-message"
+    "left-panel right-top"
+    "left-panel right-bottom"
+    "full-bottom full-bottom";
+  gap: 2rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: 90%;
+  border-radius: 12px;
+  padding: 100px 10%;
+}
+
+#welcome-message {
+  grid-area: welcome-message;
+  text-align: center;
+}
+#frequency {
+  grid-area: left-panel;
+}
+#history {
+  grid-area: right-top;
+}
+#muscles {
+  grid-area: right-bottom;
+}
+#progress {
+  grid-area: full-bottom;
+}
+
+#frequency,
+#history,
+#muscles,
+#progress {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+}

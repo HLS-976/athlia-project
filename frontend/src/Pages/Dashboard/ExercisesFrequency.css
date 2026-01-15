@@ -1,0 +1,49 @@
+.workout-frequency {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 500px;
+  margin-bottom: 2rem;
+}
+
+.workout-frequency h3 {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.workout-frequency ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.workout-frequency li {
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  background-color: #f4f7fb;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #34495e;
+}
+
+.range-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.2rem;
+}
+
+.range-buttons button {
+  padding: 8px 16px;
+  background-color: #e5edfa;
+  color: #1d3557;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.range-buttons button:hover {
+  background-color: #d0dff4;
+}

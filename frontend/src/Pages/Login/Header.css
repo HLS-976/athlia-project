@@ -1,0 +1,36 @@
+#header {
+  display: inline-flex;
+  gap: 12px;
+}
+
+#header-login,
+#header-signup {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Segoe UI", sans-serif;
+}
+
+#header-login {
+  background-color: white;
+  color: #2460f2;
+  border: 2px solid #2460f2;
+}
+
+#header-signup {
+  background-color: #2460f2;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#header-login:hover {
+  background-color: #f0f4ff;
+}
+
+#header-signup:hover {
+  background-color: #1e4ed8;
+}

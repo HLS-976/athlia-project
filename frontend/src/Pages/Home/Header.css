@@ -1,0 +1,56 @@
+#header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#logo img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+#header-login,
+#header-signup {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 20px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#header-login {
+  background-color: white;
+  color: #2460f2;
+  border: 2px solid #2460f2;
+}
+
+#header-signup {
+  background-color: #2460f2;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#header-login:hover {
+  background-color: #f0f4ff;
+}
+
+#header-signup:hover {
+  background-color: #1e4ed8;
+}
